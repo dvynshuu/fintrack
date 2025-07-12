@@ -1,0 +1,197 @@
+.expense-summary {
+  background: #fff;
+  border-radius: 8px;
+  padding: 20px;
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+}
+
+.summary-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 20px;
+}
+
+.summary-header h2 {
+  margin: 0;
+  color: #333;
+  font-size: 1.5rem;
+}
+
+.time-range-selector {
+  display: flex;
+  gap: 10px;
+}
+
+.time-range-selector button {
+  padding: 6px 12px;
+  border: 1px solid #ddd;
+  border-radius: 4px;
+  background: #fff;
+  color: #666;
+  cursor: pointer;
+  transition: all 0.2s ease;
+}
+
+.time-range-selector button:hover {
+  background: #f8f9fa;
+}
+
+.time-range-selector button.active {
+  background: #3498db;
+  color: #fff;
+  border-color: #3498db;
+}
+
+.summary-content {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 20px;
+}
+
+.total-expenses {
+  grid-column: 1 / -1;
+  text-align: center;
+  padding: 20px;
+  background: #f8f9fa;
+  border-radius: 6px;
+}
+
+.total-expenses h3 {
+  margin: 0 0 10px 0;
+  color: #666;
+  font-size: 1.1rem;
+}
+
+.total-expenses .amount {
+  font-size: 2rem;
+  font-weight: 600;
+  color: #333;
+  margin: 0;
+}
+
+.category-breakdown {
+  grid-column: 1;
+}
+
+.recent-expenses {
+  grid-column: 2;
+}
+
+.category-breakdown h3,
+.recent-expenses h3 {
+  margin: 0 0 15px 0;
+  color: #333;
+  font-size: 1.2rem;
+}
+
+.category-list {
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+}
+
+.category-item {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 10px;
+  background: #f8f9fa;
+  border-radius: 4px;
+}
+
+.category-info {
+  display: flex;
+  flex-direction: column;
+}
+
+.category-name {
+  font-weight: 500;
+  color: #333;
+}
+
+.category-amount {
+  font-size: 0.9rem;
+  color: #666;
+}
+
+.category-percentage {
+  font-weight: 500;
+  color: #3498db;
+}
+
+.transactions-list {
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+}
+
+.transaction-item {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 10px;
+  background: #f8f9fa;
+  border-radius: 4px;
+}
+
+.transaction-info {
+  display: flex;
+  flex-direction: column;
+}
+
+.transaction-title {
+  font-weight: 500;
+  color: #333;
+}
+
+.transaction-category {
+  font-size: 0.8rem;
+  color: #666;
+}
+
+.transaction-amount {
+  font-weight: 500;
+  color: #333;
+}
+
+/* Loading state */
+.expense-summary.loading {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  min-height: 300px;
+}
+
+.loading-spinner {
+  width: 40px;
+  height: 40px;
+  border: 4px solid #f3f3f3;
+  border-top: 4px solid #3498db;
+  border-radius: 50%;
+  animation: spin 1s linear infinite;
+}
+
+@keyframes spin {
+  0% { transform: rotate(0deg); }
+  100% { transform: rotate(360deg); }
+}
+
+/* Error state */
+.expense-summary.error {
+  color: #ff4d4d;
+  text-align: center;
+  padding: 20px;
+}
+
+/* Responsive adjustments */
+@media (max-width: 768px) {
+  .summary-content {
+    grid-template-columns: 1fr;
+  }
+
+  .category-breakdown,
+  .recent-expenses {
+    grid-column: 1;
+  }
+} 

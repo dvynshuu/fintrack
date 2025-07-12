@@ -1,0 +1,378 @@
+.goals-container {
+  min-height: 100vh;
+  padding: 2rem;
+  position: relative;
+  overflow: hidden;
+  max-width: 1400px;
+  margin: 0 auto;
+}
+
+.goals-container::before {
+  content: '';
+  position: absolute;
+  width: 100%;
+  height: 100%;
+  background-image: 
+    radial-gradient(circle at 25px 25px, var(--shadow-color) 2%, transparent 0%),
+    radial-gradient(circle at 75px 75px, var(--shadow-color) 2%, transparent 0%);
+  background-size: 100px 100px;
+  opacity: 0.1;
+  pointer-events: none;
+}
+
+.goals-header {
+  margin-bottom: 2rem;
+  text-align: center;
+  animation: fadeIn 0.5s ease forwards;
+}
+
+.goals-header h1 {
+  color: var(--text-primary);
+  font-size: 2rem;
+  margin-bottom: 0.5rem;
+}
+
+.goals-header p {
+  color: var(--text-secondary);
+  font-size: 1.1rem;
+}
+
+.goals-content {
+  display: grid;
+  grid-template-columns: 250px 1fr;
+  gap: 2rem;
+}
+
+.goals-sidebar {
+  background-color: var(--bg-primary);
+  border-radius: 12px;
+  padding: 1.5rem;
+  box-shadow: 0 2px 4px var(--shadow-color);
+}
+
+.category-list h3 {
+  color: var(--text-primary);
+  margin-bottom: 1rem;
+  font-size: 1.2rem;
+}
+
+.category-item {
+  display: flex;
+  align-items: center;
+  gap: 0.75rem;
+  width: 100%;
+  padding: 0.75rem;
+  border: none;
+  background: none;
+  color: var(--text-secondary);
+  cursor: pointer;
+  border-radius: 8px;
+  transition: all 0.3s ease;
+  text-align: left;
+}
+
+.category-item:hover {
+  background-color: var(--bg-secondary);
+  color: var(--text-primary);
+}
+
+.category-item.active {
+  background-color: var(--bg-secondary);
+  color: var(--primary-color);
+}
+
+.category-icon {
+  width: 32px;
+  height: 32px;
+  border-radius: 8px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  color: white;
+}
+
+.goals-main {
+  background-color: var(--bg-primary);
+  border-radius: 12px;
+  padding: 1.5rem;
+  box-shadow: 0 2px 4px var(--shadow-color);
+}
+
+.goals-actions {
+  margin-bottom: 1.5rem;
+}
+
+.add-goal-btn {
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+  padding: 0.75rem 1.5rem;
+  background-color: var(--primary-color);
+  color: white;
+  border: none;
+  border-radius: 8px;
+  cursor: pointer;
+  font-weight: 500;
+  transition: background-color 0.3s ease;
+}
+
+.add-goal-btn:hover {
+  background-color: var(--primary-hover);
+}
+
+.goals-list {
+  display: grid;
+  gap: 1rem;
+}
+
+.goal-card {
+  display: flex;
+  align-items: center;
+  gap: 1rem;
+  padding: 1rem;
+  background-color: var(--bg-secondary);
+  border-radius: 8px;
+  transition: transform 0.3s ease;
+}
+
+.goal-card:hover {
+  transform: translateY(-2px);
+}
+
+.goal-icon {
+  width: 48px;
+  height: 48px;
+  border-radius: 12px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  color: white;
+  font-size: 1.5rem;
+}
+
+.goal-details {
+  flex: 1;
+}
+
+.goal-details h4 {
+  color: var(--text-primary);
+  margin: 0 0 0.25rem 0;
+  font-size: 1.1rem;
+}
+
+.goal-category {
+  display: inline-block;
+  padding: 0.25rem 0.75rem;
+  background-color: var(--bg-primary);
+  color: var(--text-secondary);
+  border-radius: 12px;
+  font-size: 0.875rem;
+  margin-right: 0.75rem;
+}
+
+.goal-date {
+  color: var(--text-secondary);
+  font-size: 0.875rem;
+}
+
+.goal-amount {
+  font-weight: 600;
+  color: var(--text-primary);
+  font-size: 1.1rem;
+}
+
+.goal-actions {
+  display: flex;
+  gap: 0.5rem;
+}
+
+.action-btn {
+  width: 32px;
+  height: 32px;
+  border-radius: 8px;
+  border: none;
+  background-color: var(--bg-primary);
+  color: var(--text-secondary);
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  transition: all 0.3s ease;
+}
+
+.action-btn:hover {
+  background-color: var(--bg-hover);
+  color: var(--text-primary);
+}
+
+.action-btn.delete:hover {
+  background-color: var(--error-bg);
+  color: var(--error-text);
+}
+
+.no-goals {
+  text-align: center;
+  padding: 2rem;
+  color: var(--text-secondary);
+}
+
+/* Modal Styles */
+.modal-overlay {
+  position: fixed;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  background-color: rgba(0, 0, 0, 0.5);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  z-index: 1000;
+}
+
+.modal-content {
+  background-color: var(--bg-primary);
+  border-radius: 12px;
+  padding: 2rem;
+  width: 100%;
+  max-width: 500px;
+  box-shadow: 0 4px 6px var(--shadow-color);
+}
+
+.modal-content h2 {
+  color: var(--text-primary);
+  margin-bottom: 1.5rem;
+  font-size: 1.5rem;
+}
+
+.form-group {
+  margin-bottom: 1.5rem;
+}
+
+.form-group label {
+  display: block;
+  color: var(--text-primary);
+  margin-bottom: 0.5rem;
+  font-weight: 500;
+}
+
+.form-group input,
+.form-group select {
+  width: 100%;
+  padding: 0.75rem;
+  border: 1px solid var(--border-color);
+  border-radius: 8px;
+  background-color: var(--bg-secondary);
+  color: var(--text-primary);
+  font-size: 1rem;
+}
+
+.form-group input:focus,
+.form-group select:focus {
+  outline: none;
+  border-color: var(--primary-color);
+}
+
+.modal-actions {
+  display: flex;
+  justify-content: flex-end;
+  gap: 1rem;
+  margin-top: 2rem;
+}
+
+.modal-actions button {
+  padding: 0.75rem 1.5rem;
+  border-radius: 8px;
+  font-weight: 500;
+  cursor: pointer;
+  transition: all 0.3s ease;
+}
+
+.modal-actions button:first-child {
+  background-color: var(--bg-secondary);
+  color: var(--text-primary);
+  border: none;
+}
+
+.modal-actions button:first-child:hover {
+  background-color: var(--bg-hover);
+}
+
+.modal-actions button:last-child {
+  background-color: var(--primary-color);
+  color: white;
+  border: none;
+}
+
+.modal-actions button:last-child:hover {
+  background-color: var(--primary-hover);
+}
+
+.delete-modal .modal-actions button:last-child {
+  background-color: var(--error-color);
+}
+
+.delete-modal .modal-actions button:last-child:hover {
+  background-color: var(--error-hover);
+}
+
+@keyframes fadeIn {
+  from {
+    opacity: 0;
+  }
+  to {
+    opacity: 1;
+  }
+}
+
+@media (max-width: 1024px) {
+  .goals-content {
+    grid-template-columns: 1fr;
+  }
+  .goals-sidebar {
+    position: sticky;
+    top: 1rem;
+  }
+}
+
+@media (max-width: 768px) {
+  .goals-container {
+    padding: 1rem;
+  }
+  .goals-main {
+    padding: 1.5rem;
+  }
+  .goals-content {
+    grid-template-columns: 1fr;
+  }
+  .goals-sidebar {
+    display: none;
+  }
+  .goal-card {
+    flex-direction: column;
+    text-align: center;
+  }
+  .goal-actions {
+    margin-top: 1rem;
+  }
+}
+
+@media (max-width: 480px) {
+  .goals-header h1 {
+    font-size: 1.75rem;
+  }
+  .goal-card {
+    padding: 0.75rem;
+  }
+  .goal-icon {
+    width: 40px;
+    height: 40px;
+    font-size: 1rem;
+  }
+  .goal-details h4 {
+    font-size: 0.95rem;
+  }
+  .goal-category {
+    font-size: 0.75rem;
+  }
+} 
