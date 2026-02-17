@@ -34,7 +34,20 @@ const Settings = () => {
       setIsLoading(true);
       setError(null);
       const response = await api.get('/api/users/settings');
-      setSettings(response.data || settings);
+      if (response.data) {
+        setSettings(prev => ({
+          ...prev,
+          ...response.data,
+          notifications: {
+            ...prev.notifications,
+            ...(response.data.notifications || {})
+          },
+          display: {
+            ...prev.display,
+            ...(response.data.display || {})
+          }
+        }));
+      }
     } catch (err) {
       console.error('Error fetching settings:', err);
       setError('Failed to load settings. Please try again later.');
@@ -44,16 +57,22 @@ const Settings = () => {
   };
 
   const handleChange = async (section, field, value) => {
+    // If updating theme, also inform ThemeContext
     if (field === 'theme') {
-      await toggleTheme(value);
+      try {
+        await toggleTheme(value);
+      } catch (err) {
+        console.error('Error toggling theme:', err);
+      }
     }
-    
+
     setSettings(prev => {
+      const sectionData = section ? (prev[section] || {}) : {};
       if (section) {
         return {
           ...prev,
           [section]: {
-            ...prev[section],
+            ...sectionData,
             [field]: value
           }
         };
@@ -64,6 +83,7 @@ const Settings = () => {
       };
     });
   };
+
 
   const handleSubmit = async (e) => {
     e.preventDefault();

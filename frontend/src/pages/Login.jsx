@@ -13,35 +13,35 @@ const Login = () => {
   const [showPassword, setShowPassword] = useState(false);
   const { login, user, loginWithGoogle, loginWithGithub } = useAuth();
   const navigate = useNavigate();
-  
+
   // Redirect if already authenticated
   useEffect(() => {
     if (user) {
       navigate('/');
     }
   }, [user, navigate]);
-  
+
   const handleChange = (e) => {
     setFormData({
       ...formData,
       [e.target.name]: e.target.value
     });
-    
+
     // Clear error when user types
     if (submitError) {
       setSubmitError('');
     }
   };
-  
+
   const handleSubmit = async (e) => {
     e.preventDefault();
     const { email, password } = formData;
-    
+
     if (!email || !password) {
       setSubmitError('Please enter both email and password');
       return;
     }
-    
+
     setIsLoading(true);
     try {
       await login(email, password);
@@ -69,27 +69,28 @@ const Login = () => {
     }
   };
 
-  
+
   return (
     <div className="login-container">
       <div className="login-card">
         <div className="login-header">
-          <h1>Welcome Back!</h1>
-          <p>Enter your credentials to access your account</p>
+          <div className="brand-logo">
+            <i className="fas fa-wallet"></i>
+          </div>
+          <h1>Welcome Back</h1>
+          <p>Securely sign in to your accounts</p>
         </div>
-        
+
         {submitError && (
           <div className="error-message">
-            <i className="fas fa-exclamation-circle"></i>
-            {submitError}
+            <i className="fas fa-circle-exclamation"></i>
+            <span>{submitError}</span>
           </div>
         )}
-        
+
         <form onSubmit={handleSubmit} className="login-form">
           <div className="form-group">
-            <label className="form-label" htmlFor="email">
-              <i className="fas fa-envelope"></i> Email
-            </label>
+            <label className="form-label" htmlFor="email">Email Address</label>
             <input
               type="email"
               id="email"
@@ -97,16 +98,14 @@ const Login = () => {
               className="form-input"
               value={formData.email}
               onChange={handleChange}
-              placeholder="Enter your email"
+              placeholder="e.g. name@company.com"
               required
               autoComplete="email"
             />
           </div>
-          
+
           <div className="form-group">
-            <label className="form-label" htmlFor="password">
-              <i className="fas fa-lock"></i> Password
-            </label>
+            <label className="form-label" htmlFor="password">Password</label>
             <div className="password-input-container">
               <input
                 type={showPassword ? "text" : "password"}
@@ -115,7 +114,7 @@ const Login = () => {
                 className="form-input"
                 value={formData.password}
                 onChange={handleChange}
-                placeholder="Enter your password"
+                placeholder="Your secure password"
                 required
                 autoComplete="current-password"
               />
@@ -129,50 +128,50 @@ const Login = () => {
               </button>
             </div>
           </div>
-          
+
           <div className="form-options">
             <label className="remember-me">
-              <input type="checkbox" /> Remember me
+              <input type="checkbox" />
+              <span>Remember me</span>
             </label>
             <Link to="/forgot-password" className="forgot-password">
-              Forgot Password?
+              Forgot security code?
             </Link>
           </div>
 
-          <button 
-            type="submit" 
+          <button
+            type="submit"
             className="login-button"
             disabled={isLoading}
           >
             {isLoading ? (
               <>
                 <span className="loading"></span>
-                Signing in...
+                Authenticating...
               </>
             ) : (
               'Sign In'
             )}
           </button>
         </form>
-        
+
         <div className="divider">
-          <span>OR</span>
+          <span>OR CONTINUE WITH</span>
         </div>
 
         <div className="social-login">
-          <button 
-            className="social-button google"
+          <button
+            className="social-button"
             onClick={handleGoogleLogin}
             disabled={isLoading}
           >
             <i className="fab fa-google"></i>
-            Continue with Google
+            <span>Google</span>
           </button>
-          
         </div>
-        
+
         <div className="register-link">
-          New to FinTrack? <Link to="/register">Create an account</Link>
+          Don't have an account? <Link to="/register">Join the community</Link>
         </div>
       </div>
     </div>

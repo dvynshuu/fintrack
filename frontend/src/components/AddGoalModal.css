@@ -12,13 +12,12 @@
 }
 
 .modal {
-  background: var(--bg-primary);
-  border-radius: 12px;
+  background: var(--bg-card);
+  border-radius: var(--radius-xl);
   width: 100%;
   max-width: 450px;
-  max-height: 85vh;
-  overflow-y: auto;
-  box-shadow: 0 4px 6px var(--shadow-color);
+  box-shadow: var(--shadow-xl);
+  animation: animate-slide-up 0.4s cubic-bezier(0.165, 0.84, 0.44, 1);
 }
 
 .modal-header {
@@ -161,4 +160,4 @@ textarea {
     grid-template-columns: 1fr;
     gap: 0;
   }
-} 
+}

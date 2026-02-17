@@ -1,0 +1,124 @@
+.metric-card {
+    position: relative;
+    background: var(--card-surface);
+    border: 1px solid var(--card-border);
+    border-radius: var(--radius-xl);
+    padding: 1.25rem 1.5rem;
+    box-shadow: var(--shadow-lg);
+    transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+    animation: cardFadeIn 0.6s ease-out both;
+    overflow: hidden;
+}
+
+.metric-card::before {
+    content: '';
+    position: absolute;
+    top: 1.25rem;
+    left: 0;
+    width: 3px;
+    height: 2.5rem;
+    border-radius: 0 3px 3px 0;
+    transition: height 0.3s ease;
+}
+
+.metric-card--income::before {
+    background: var(--chart-income);
+}
+
+.metric-card--expense::before {
+    background: var(--chart-expense);
+}
+
+.metric-card:hover {
+    transform: translateY(-4px);
+    box-shadow: var(--shadow-xl);
+    border-color: var(--card-hover-border);
+}
+
+.metric-card:hover::before {
+    height: 3.5rem;
+}
+
+.metric-card__icon-box {
+    width: 36px;
+    height: 36px;
+    border-radius: var(--radius-md);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 0.9375rem;
+    margin-bottom: 1rem;
+}
+
+.metric-card--income .metric-card__icon-box {
+    background: var(--chart-income-light);
+    color: var(--chart-income);
+}
+
+.metric-card--expense .metric-card__icon-box {
+    background: var(--chart-expense-light);
+    color: var(--chart-expense);
+}
+
+.metric-card__label {
+    font-size: 0.875rem;
+    font-weight: 600;
+    color: var(--text-muted);
+    margin-bottom: 0.5rem;
+}
+
+.metric-card__value {
+    font-size: 1.5rem;
+    font-weight: 800;
+    color: var(--text-main);
+    letter-spacing: -0.02em;
+    margin-bottom: 0.5rem;
+    line-height: 1.2;
+}
+
+.metric-card__currency {
+    font-size: 1rem;
+    font-weight: 700;
+    margin-right: 0.15rem;
+}
+
+.metric-card__change {
+    display: inline-flex;
+    align-items: center;
+    gap: 0.3rem;
+    font-size: 0.8125rem;
+    font-weight: 600;
+    padding: 0.2rem 0.6rem;
+    border-radius: 2rem;
+}
+
+.metric-card__change.positive {
+    background: var(--success-light);
+    color: var(--success);
+}
+
+.metric-card__change.negative {
+    background: var(--error-light);
+    color: var(--error);
+}
+
+.metric-card__change svg {
+    font-size: 0.625rem;
+}
+
+.metric-card__change-label {
+    font-size: 0.75rem;
+    font-weight: 500;
+    opacity: 0.7;
+    margin-left: 0.15rem;
+}
+
+@media (max-width: 768px) {
+    .metric-card {
+        padding: 1.25rem;
+    }
+
+    .metric-card__value {
+        font-size: 1.5rem;
+    }
+}

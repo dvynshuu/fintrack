@@ -1,39 +1,45 @@
 import React from 'react';
 import { Link } from 'react-router-dom';
 import { FaGithub, FaTwitter, FaLinkedin, FaFacebook, FaInstagram } from 'react-icons/fa';
+import logo from '../assets/logo.png';
 import './Footer.css';
 
 const Footer = () => {
   return (
-    <footer className="footer">
+    <footer className="footer footer-animate-in">
+      <div className="footer-pattern"></div>
+      <div className="footer-glow-center"></div>
+
       <div className="footer-content">
         <div className="footer-section about">
-          <h3>FinTrack</h3>
+          <div className="footer-brand">
+            <img src={logo} alt="FinTrack Logo" className="footer-logo" />
+            <h3>FinTrack</h3>
+          </div>
           <p>
-            Your personal finance companion. Track expenses, manage income, and achieve your financial goals with ease.
-            Take control of your financial future today.
+            The benchmark for personal financial control. Track, analyze, and optimize your wealth with institutional-grade clarity.
           </p>
           <div className="social-links">
-            <a href="https://github.com" target="_blank" rel="noopener noreferrer">
+            <a href="https://github.com" target="_blank" rel="noopener noreferrer" aria-label="GitHub">
               <FaGithub />
             </a>
-            <a href="https://twitter.com" target="_blank" rel="noopener noreferrer">
+            <a href="https://twitter.com" target="_blank" rel="noopener noreferrer" aria-label="Twitter">
               <FaTwitter />
             </a>
-            <a href="https://linkedin.com" target="_blank" rel="noopener noreferrer">
+            <a href="https://linkedin.com" target="_blank" rel="noopener noreferrer" aria-label="LinkedIn">
               <FaLinkedin />
             </a>
-            <a href="https://facebook.com" target="_blank" rel="noopener noreferrer">
+            <a href="https://facebook.com" target="_blank" rel="noopener noreferrer" aria-label="Facebook">
               <FaFacebook />
             </a>
-            <a href="https://instagram.com" target="_blank" rel="noopener noreferrer">
+            <a href="https://instagram.com" target="_blank" rel="noopener noreferrer" aria-label="Instagram">
               <FaInstagram />
             </a>
           </div>
         </div>
 
         <div className="footer-section links">
-          <h3>Quick Links</h3>
+          <h3>Platform</h3>
           <ul>
             <li><Link to="/">Home</Link></li>
             <li><Link to="/expenses">Expenses</Link></li>
@@ -44,34 +50,30 @@ const Footer = () => {
         </div>
 
         <div className="footer-section faq">
-          <h3>Frequently Asked Questions</h3>
+          <h3>Knowledge Base</h3>
           <div className="faq-item">
-            <h4>How secure is my financial data?</h4>
-            <p>We use industry-standard encryption and security measures to protect your data. Your information is never shared with third parties.</p>
+            <h4>How secure is my data?</h4>
+            <p>We apply bank-level encryption to ensure your financial footprint remains private and protected.</p>
           </div>
           <div className="faq-item">
-            <h4>Can I export my financial data?</h4>
-            <p>Yes, you can export your data in various formats including CSV and PDF for your records.</p>
-          </div>
-          <div className="faq-item">
-            <h4>Is FinTrack free to use?</h4>
-            <p>We offer both free and premium plans. The free plan includes basic features, while premium plans offer advanced analytics and features.</p>
+            <h4>Can I export my reports?</h4>
+            <p>Yes. Institutional-grade data portability is built-in; export to CSV or PDF at any time.</p>
           </div>
         </div>
 
         <div className="footer-section contact">
-          <h3>Contact Us</h3>
-          <p>Have questions? We're here to help!</p>
+          <h3>Contact</h3>
+          <p>Expert support is only a message away.</p>
           <ul>
             <li>Email: support@fintrack.com</li>
             <li>Phone: +1 (555) 123-4567</li>
-            <li>Address: 123 Finance Street, Money City, MC 12345</li>
+            <li>Address: 123 Finance Street, MC 12345</li>
           </ul>
         </div>
       </div>
 
       <div className="footer-bottom">
-        <p>&copy; {new Date().getFullYear()} FinTrack. All rights reserved.</p>
+        <p>&copy; {new Date().getFullYear()} FinTrack. Engineered for financial clarity.</p>
         <div className="footer-bottom-links">
           <Link to="/privacy">Privacy Policy</Link>
           <Link to="/terms">Terms of Service</Link>
@@ -81,5 +83,6 @@ const Footer = () => {
     </footer>
   );
 };
+
 
 export default Footer; 

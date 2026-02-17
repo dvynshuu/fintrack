@@ -1,0 +1,112 @@
+.donut-chart {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 1.5rem;
+}
+
+.donut-chart__visual {
+    position: relative;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+.donut-chart__svg {
+    display: block;
+    max-width: 100%;
+    height: auto;
+}
+
+.donut-chart__svg .donut-chart__segment {
+    transition: opacity 0.25s ease, transform 0.25s ease;
+    transform-origin: center;
+    cursor: pointer;
+}
+
+.donut-chart__svg.animated .donut-chart__segment {
+    animation: donutReveal 0.8s cubic-bezier(0.4, 0, 0.2, 1) both;
+}
+
+.donut-chart__svg .donut-chart__segment:hover {
+    filter: brightness(1.1);
+}
+
+.donut-chart__center {
+    position: absolute;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    text-align: center;
+    pointer-events: none;
+}
+
+.donut-chart__center-label {
+    font-size: 0.75rem;
+    font-weight: 600;
+    color: var(--text-muted);
+    text-transform: uppercase;
+    letter-spacing: 0.03em;
+}
+
+.donut-chart__center-value {
+    font-size: 1.125rem;
+    font-weight: 800;
+    color: var(--text-main);
+    margin-top: 0.15rem;
+}
+
+.donut-chart__legend {
+    width: 100%;
+    display: flex;
+    flex-direction: column;
+    gap: 0.5rem;
+}
+
+.donut-chart__legend-item {
+    display: flex;
+    align-items: center;
+    gap: 0.5rem;
+    padding: 0.375rem 0.5rem;
+    border-radius: var(--radius-sm);
+    transition: background 0.2s ease;
+    cursor: pointer;
+}
+
+.donut-chart__legend-item:hover,
+.donut-chart__legend-item.active {
+    background: var(--accent-glow);
+}
+
+.donut-chart__legend-dot {
+    width: 10px;
+    height: 10px;
+    border-radius: 50%;
+    flex-shrink: 0;
+}
+
+.donut-chart__legend-name {
+    flex: 1;
+    font-size: 0.8125rem;
+    font-weight: 500;
+    color: var(--text-main);
+}
+
+.donut-chart__legend-pct {
+    font-size: 0.8125rem;
+    font-weight: 700;
+    color: var(--primary-accent);
+}
+
+@keyframes donutReveal {
+    from {
+        opacity: 0;
+        transform: scale(0.85) rotate(-10deg);
+    }
+
+    to {
+        opacity: 1;
+        transform: scale(1) rotate(0);
+    }
+}

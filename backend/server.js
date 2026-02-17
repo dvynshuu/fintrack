@@ -21,8 +21,8 @@ mongoose.connect(process.env.MONGODB_URI || 'mongodb://127.0.0.1:27017/budgeting
   useNewUrlParser: true,
   useUnifiedTopology: true
 })
-.then(() => console.log('Connected to MongoDB'))
-.catch(err => console.error('MongoDB connection error:', err));
+  .then(() => console.log('Connected to MongoDB'))
+  .catch(err => console.error('MongoDB connection error:', err));
 
 // User Schema
 const userSchema = new mongoose.Schema({
@@ -97,16 +97,28 @@ const Income = mongoose.model('Income', incomeSchema);
 // Middleware to verify JWT token
 const auth = async (req, res, next) => {
   try {
-    const token = req.header('Authorization')?.replace('Bearer ', '');
-    if (!token) throw new Error();
+    const authHeader = req.header('Authorization');
+    // console.log('Auth header:', authHeader);
+
+    const token = authHeader?.replace('Bearer ', '');
+    if (!token) {
+      console.log('No token provided');
+      throw new Error('No token provided');
+    }
 
     const decoded = jwt.verify(token, process.env.JWT_SECRET || 'your-secret-key');
+    // console.log('Decoded token:', decoded);
+
     const user = await User.findById(decoded.userId);
-    if (!user) throw new Error();
+    if (!user) {
+      console.log('User not found for token:', decoded.userId);
+      throw new Error('User not found');
+    }
 
     req.user = user;
     next();
   } catch (error) {
+    console.error('Auth error:', error.message || 'Authentication failed');
     res.status(401).json({ message: 'Please authenticate' });
   }
 };
@@ -318,15 +330,19 @@ app.get('/api/expenses/summary', auth, async (req, res) => {
   try {
     const expenses = await Expense.aggregate([
       { $match: { userId: req.user._id } },
-      { $group: { 
-        _id: '$category', 
-        amount: { $sum: '$amount' }
-      }},
-      { $project: {
-        category: '$_id',
-        amount: 1,
-        _id: 0
-      }}
+      {
+        $group: {
+          _id: '$category',
+          amount: { $sum: '$amount' }
+        }
+      },
+      {
+        $project: {
+          category: '$_id',
+          amount: 1,
+          _id: 0
+        }
+      }
     ]);
     res.json(expenses);
   } catch (error) {
@@ -336,27 +352,57 @@ app.get('/api/expenses/summary', auth, async (req, res) => {
 
 app.get('/api/expenses/monthly', auth, async (req, res) => {
   try {
-    const monthlyData = await Expense.aggregate([
+    const expenseData = await Expense.aggregate([
       { $match: { userId: req.user._id } },
-      { $group: {
-        _id: { 
-          year: { $year: '$date' },
-          month: { $month: '$date' }
-        },
-        expenses: { $sum: '$amount' }
-      }},
-      { $sort: { '_id.year': 1, '_id.month': 1 } },
-      { $project: {
-        month: { $concat: [
-          { $toString: '$_id.year' },
-          '-',
-          { $toString: '$_id.month' }
-        ]},
-        expenses: 1,
-        _id: 0
-      }}
+      {
+        $group: {
+          _id: {
+            year: { $year: '$date' },
+            month: { $month: '$date' }
+          },
+          expenses: { $sum: '$amount' }
+        }
+      }
     ]);
-    res.json(monthlyData);
+
+    const incomeData = await Income.aggregate([
+      { $match: { userId: req.user._id } },
+      {
+        $group: {
+          _id: {
+            year: { $year: '$date' },
+            month: { $month: '$date' }
+          },
+          income: { $sum: '$amount' }
+        }
+      }
+    ]);
+
+    // Create a map to merge the data
+    const monthlyMap = new Map();
+
+    expenseData.forEach(item => {
+      const key = `${item._id.year}-${item._id.month}`;
+      monthlyMap.set(key, { month: key, expenses: item.expenses, income: 0 });
+    });
+
+    incomeData.forEach(item => {
+      const key = `${item._id.year}-${item._id.month}`;
+      if (monthlyMap.has(key)) {
+        monthlyMap.get(key).income = item.income;
+      } else {
+        monthlyMap.set(key, { month: key, expenses: 0, income: item.income });
+      }
+    });
+
+    // Convert map to array and sort by date
+    const combinedData = Array.from(monthlyMap.values()).sort((a, b) => {
+      const [yearA, monthA] = a.month.split('-').map(Number);
+      const [yearB, monthB] = b.month.split('-').map(Number);
+      return yearA !== yearB ? yearA - yearB : monthA - monthB;
+    });
+
+    res.json(combinedData);
   } catch (error) {
     res.status(500).json({ message: error.message });
   }
@@ -419,7 +465,7 @@ app.post('/api/auth/google', async (req, res) => {
   try {
     console.log('Received Google auth request:', req.body);
     const { email, name, picture, token } = req.body;
-    
+
     if (!email || !name || !token) {
       console.error('Missing required fields in request');
       return res.status(400).json({ message: 'Missing required fields' });
@@ -464,7 +510,7 @@ app.post('/api/auth/google', async (req, res) => {
       stack: error.stack,
       name: error.name
     });
-    res.status(500).json({ 
+    res.status(500).json({
       message: 'Google authentication failed: ' + error.message,
       details: process.env.NODE_ENV === 'development' ? error.stack : undefined
     });
@@ -489,7 +535,7 @@ app.put('/api/users/profile', auth, async (req, res) => {
   try {
     console.log('Received profile update request:', req.body);
     const { name, email, phone, location, currency, language, notifications } = req.body;
-    
+
     // Check if email is being changed and if it's already taken
     if (email && email !== req.user.email) {
       const existingUser = await User.findOne({ email });
@@ -525,9 +571,9 @@ app.put('/api/users/profile', auth, async (req, res) => {
     res.json(user);
   } catch (error) {
     console.error('Error updating profile:', error);
-    res.status(500).json({ 
+    res.status(500).json({
       message: 'Error updating profile',
-      error: error.message 
+      error: error.message
     });
   }
 });
@@ -548,9 +594,23 @@ app.get('/api/users/settings', auth, async (req, res) => {
 
 app.put('/api/users/settings', auth, async (req, res) => {
   try {
+    const update = {};
+    const settings = req.body;
+
+    // Convert flat settings object to dot notation for Mongoose deep update
+    Object.keys(settings).forEach(key => {
+      if (typeof settings[key] === 'object' && settings[key] !== null) {
+        Object.keys(settings[key]).forEach(subKey => {
+          update[`settings.${key}.${subKey}`] = settings[key][subKey];
+        });
+      } else {
+        update[`settings.${key}`] = settings[key];
+      }
+    });
+
     const user = await User.findByIdAndUpdate(
       req.user._id,
-      { $set: { settings: req.body } },
+      { $set: update },
       { new: true, runValidators: true }
     ).select('settings');
 
@@ -564,6 +624,7 @@ app.put('/api/users/settings', auth, async (req, res) => {
     res.status(500).json({ message: 'Error updating settings' });
   }
 });
+
 
 // Start server
 const PORT = process.env.PORT || 5001;

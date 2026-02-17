@@ -46,19 +46,21 @@ const Navbar = () => {
     setIsUserMenuOpen(!isUserMenuOpen);
   };
 
+  const isAuthPage = location.pathname === '/login' || location.pathname === '/register';
+
   return (
-    <nav className="navbar">
+    <nav className={`navbar ${isAuthPage ? 'is-auth' : ''}`}>
       <div className="navbar-container">
         <Link to="/" className="navbar-brand">
-          <img 
-            src={logo} 
-            alt="FinTrack Logo" 
+          <img
+            src={logo}
+            alt="FinTrack Logo"
             className="navbar-logo"
           />
-          <h1>FinTrac</h1>
+          <h1>FinTrack</h1>
         </Link>
 
-        <button 
+        <button
           className="mobile-menu-button"
           onClick={toggleMobileMenu}
           aria-label="Toggle menu"
@@ -69,26 +71,26 @@ const Navbar = () => {
         <div className={`nav-links ${isMobileMenuOpen ? 'active' : ''}`}>
           {user ? (
             <>
-              <Link 
-                to="/" 
+              <Link
+                to="/"
                 className={`nav-link ${location.pathname === '/' ? 'active' : ''}`}
               >
                 <FaHome /> Dashboard
               </Link>
-              <Link 
-                to="/expenses" 
+              <Link
+                to="/expenses"
                 className={`nav-link ${location.pathname === '/expenses' ? 'active' : ''}`}
               >
                 <FaChartPie /> Expenses
               </Link>
-              <Link 
-                to="/income" 
+              <Link
+                to="/income"
                 className={`nav-link ${location.pathname === '/income' ? 'active' : ''}`}
               >
                 <FaMoneyBillWave /> Income
               </Link>
-              <Link 
-                to="/goals" 
+              <Link
+                to="/goals"
                 className={`nav-link ${location.pathname === '/goals' ? 'active' : ''}`}
               >
                 <FaBullseye /> Goals
@@ -98,29 +100,29 @@ const Navbar = () => {
 
           {user ? (
             <div className="user-menu">
-              <button 
+              <button
                 className="user-button"
                 onClick={toggleUserMenu}
                 aria-label="User menu"
               >
                 <span>{user.name || 'User'}</span>
-                <svg 
-                  width="12" 
-                  height="12" 
-                  viewBox="0 0 12 12" 
-                  fill="none" 
+                <svg
+                  width="12"
+                  height="12"
+                  viewBox="0 0 12 12"
+                  fill="none"
                   xmlns="http://www.w3.org/2000/svg"
                 >
-                  <path 
-                    d="M2 4L6 8L10 4" 
-                    stroke="currentColor" 
-                    strokeWidth="2" 
-                    strokeLinecap="round" 
+                  <path
+                    d="M2 4L6 8L10 4"
+                    stroke="currentColor"
+                    strokeWidth="2"
+                    strokeLinecap="round"
                     strokeLinejoin="round"
                   />
                 </svg>
               </button>
-              
+
               {isUserMenuOpen && (
                 <div className="user-dropdown">
                   <div className="user-info">
@@ -128,22 +130,22 @@ const Navbar = () => {
                     <span className="user-email">{user.email}</span>
                   </div>
                   <div className="user-menu-items">
-                    <Link 
-                      to="/profile" 
+                    <Link
+                      to="/profile"
                       className="user-menu-item"
                       onClick={() => setIsUserMenuOpen(false)}
                     >
                       <FaUser /> Profile
                     </Link>
-                    <Link 
-                      to="/settings" 
+                    <Link
+                      to="/settings"
                       className="user-menu-item"
                       onClick={() => setIsUserMenuOpen(false)}
                     >
                       <FaCog /> Settings
                     </Link>
-                    <button 
-                      className="user-menu-item"
+                    <button
+                      className="user-menu-item logout-btn"
                       onClick={handleLogout}
                     >
                       Logout
@@ -154,17 +156,17 @@ const Navbar = () => {
             </div>
           ) : (
             <div className="auth-links">
-              <Link 
-                to="/login" 
-                className={`nav-link ${location.pathname === '/login' ? 'active' : ''}`}
+              <Link
+                to="/login"
+                className="btn-login"
               >
                 Login
               </Link>
-              <Link 
-                to="/register" 
-                className={`nav-link ${location.pathname === '/register' ? 'active' : ''}`}
+              <Link
+                to="/register"
+                className="btn-register"
               >
-                Register
+                Get Started
               </Link>
             </div>
           )}

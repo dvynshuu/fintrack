@@ -1,0 +1,13 @@
+@import './Modal.css';
+
+/* AddIncomeModal specific styles */
+.error-message {
+    background: var(--error-light);
+    color: var(--error);
+    padding: 0.875rem 1rem;
+    border-radius: var(--radius-md);
+    margin-bottom: 1.5rem;
+    font-size: 0.875rem;
+    font-weight: 500;
+    border: 1px solid rgba(244, 63, 94, 0.1);
+}
