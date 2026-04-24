@@ -14,18 +14,21 @@ import Goals from './pages/Goals';
 import Settings from './pages/Settings';
 import Profile from './pages/Profile';
 import { ExpenseProvider } from './contexts/ExpenseContext';
+import { InsightsProvider } from './contexts/InsightsContext';
 import './App.css';
 
 const App = () => {
   return (
     <Router>
-      <ExpenseProvider>
-        <AuthProvider>
-          <ThemeProvider>
-            <AppContent />
-          </ThemeProvider>
-        </AuthProvider>
-      </ExpenseProvider>
+      <AuthProvider>
+        <ExpenseProvider>
+          <InsightsProvider>
+            <ThemeProvider>
+              <AppContent />
+            </ThemeProvider>
+          </InsightsProvider>
+        </ExpenseProvider>
+      </AuthProvider>
     </Router>
   );
 };
@@ -33,6 +36,7 @@ const App = () => {
 const AppContent = () => {
   const { pathname } = useLocation();
   const isAuthPage = pathname === '/login' || pathname === '/register';
+  const showFooter = !isAuthPage && pathname !== '/profile';
 
   return (
     <div className="layout-connected">
@@ -49,7 +53,7 @@ const AppContent = () => {
           <Route path="/profile" element={<ProtectedRoute><Profile /></ProtectedRoute>} />
         </Routes>
       </main>
-      {!isAuthPage && <Footer />}
+      {showFooter && <Footer />}
     </div>
   );
 };

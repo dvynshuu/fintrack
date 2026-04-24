@@ -3,7 +3,7 @@ import { FaChartLine, FaPiggyBank, FaLightbulb, FaExclamationTriangle, FaInfoCir
 import { useNavigate } from 'react-router-dom';
 import './FinancialScore.css';
 
-const FinancialScore = ({ healthScore, financialHealth, smartSuggestions }) => {
+const FinancialScore = ({ healthScore, financialHealth, smartSuggestions, insightsLoading, onRefreshInsights }) => {
     const navigate = useNavigate();
 
     const getScoreStatus = (score) => {
@@ -13,10 +13,21 @@ const FinancialScore = ({ healthScore, financialHealth, smartSuggestions }) => {
         return { label: 'Needs Attention', class: 'status-poor', tip: 'Let\'s focus on building your emergency fund first.' };
     };
 
+    const getInsightIcon = (type) => {
+        switch (type) {
+            case 'saving': return <FaPiggyBank />;
+            case 'alert': return <FaExclamationTriangle />;
+            case 'growth': return <FaChartLine />;
+            case 'milestone': return <FaLightbulb />;
+            default: return <FaInfoCircle />;
+        }
+    };
+
     const status = getScoreStatus(healthScore);
 
     return (
         <div className="financial-score-container animate-slide-up">
+            {/* Existing Score Content */}
             <div className="score-main-card">
                 <div className="score-header">
                     <div className="header-text">
@@ -116,31 +127,59 @@ const FinancialScore = ({ healthScore, financialHealth, smartSuggestions }) => {
                 </div>
             </div>
 
+            {/* AI Insights Section */}
             <div className="suggestions-section">
                 <div className="section-header">
-                    <h3>Strategic Insights</h3>
-                    <p>Personalized recommendations to boost your score</p>
+                    <div className="header-text">
+                        <h3>AI Financial Insights</h3>
+                    </div>
+                    <button 
+                        className={`refresh-insights-btn ${insightsLoading ? 'loading' : ''}`}
+                        onClick={onRefreshInsights}
+                        disabled={insightsLoading}
+                    >
+                        <i className="fas fa-sync-alt"></i>
+                        {insightsLoading ? ' Analyzing...' : ' Refresh AI'}
+                    </button>
                 </div>
+                
                 <div className="suggestions-wrapper">
-                    {smartSuggestions.map((suggestion, index) => (
-                        <div key={index} className="premium-suggestion-card card-hover">
-                            <div className="suggestion-icon-container">
-                                <FaLightbulb />
+                    {insightsLoading ? (
+                        // Skeleton Loaders
+                        [1, 2, 3].map(i => (
+                            <div key={i} className="premium-suggestion-card skeleton">
+                                <div className="suggestion-icon-container skeleton-bg"></div>
+                                <div className="suggestion-details">
+                                    <div className="skeleton-line title"></div>
+                                    <div className="skeleton-line text"></div>
+                                    <div className="skeleton-line text short"></div>
+                                </div>
                             </div>
-                            <div className="suggestion-details">
-                                <h4>{suggestion.title}</h4>
-                                <p>{suggestion.description}</p>
-                                {suggestion.action && (
-                                    <button
-                                        className="btn-text-action"
-                                        onClick={() => navigate(suggestion.action.link)}
-                                    >
-                                        {suggestion.action.text} →
-                                    </button>
-                                )}
+                        ))
+                    ) : (
+                        smartSuggestions.map((suggestion, index) => (
+                            <div key={index} className={`premium-suggestion-card card-hover type-${suggestion.type}`}>
+                                <div className={`suggestion-icon-container ${suggestion.type}`}>
+                                    {getInsightIcon(suggestion.type)}
+                                </div>
+                                <div className="suggestion-details">
+                                    <div className="suggestion-header">
+                                        <h4>{suggestion.title}</h4>
+                                        {suggestion.impact && <span className={`impact-badge ${suggestion.impact}`}>{suggestion.impact} Impact</span>}
+                                    </div>
+                                    <p>{suggestion.description}</p>
+                                    {suggestion.action && (
+                                        <button
+                                            className="btn-text-action"
+                                            onClick={() => navigate(suggestion.action.link)}
+                                        >
+                                            {suggestion.action.text} →
+                                        </button>
+                                    )}
+                                </div>
                             </div>
-                        </div>
-                    ))}
+                        ))
+                    )}
                 </div>
             </div>
         </div>

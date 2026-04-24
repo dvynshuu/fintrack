@@ -128,8 +128,10 @@
   top: calc(100% + 12px);
   right: 0;
   width: 260px;
-  background: var(--bg-card);
-  border: 1px solid var(--border-subtle);
+  background: var(--modal-bg);
+  backdrop-filter: blur(20px);
+  -webkit-backdrop-filter: blur(20px);
+  border: 1px solid var(--border-standard);
   border-radius: var(--radius-lg);
   box-shadow: var(--shadow-xl);
   padding: 0.5rem;

@@ -625,6 +625,163 @@ app.put('/api/users/settings', auth, async (req, res) => {
   }
 });
 
+app.post('/api/insights', auth, async (req, res) => {
+  try {
+    const userId = req.user._id;
+    const apiKey = process.env.OPENROUTER_API_KEY?.trim();
+
+    if (!apiKey || apiKey === 'your_openrouter_api_key_here' || !apiKey.startsWith('sk-or-')) {
+      return res.json([
+        {
+          "title": "AI Configuration Required",
+          "description": "Your OpenRouter API key is missing or invalid. Please check your .env file and restart the server.",
+          "type": "alert",
+          "impact": "high"
+        }
+      ]);
+    }
+
+    // 1. Gather all relevant data
+    const [expenses, incomes, goals] = await Promise.all([
+      Expense.find({ userId }).sort({ date: -1 }).limit(100),
+      Income.find({ userId }).sort({ date: -1 }).limit(50),
+      Goal.find({ userId })
+    ]);
+
+    // Handle case with no data yet
+    if (expenses.length === 0 && incomes.length === 0) {
+      return res.json([
+        {
+          "title": "Awaiting Financial Data",
+          "description": "Add some expenses or income to get personalized AI-driven financial insights and strategies.",
+          "type": "milestone",
+          "impact": "low"
+        }
+      ]);
+    }
+
+    // 2. Aggregate data with trend analysis
+    const now = new Date();
+    const currentMonth = now.getMonth();
+    const currentYear = now.getFullYear();
+    
+    const lastMonth = currentMonth === 0 ? 11 : currentMonth - 1;
+    const lastMonthYear = currentMonth === 0 ? currentYear - 1 : currentYear;
+
+    const filterByMonth = (data, m, y) => data.filter(item => {
+      const d = new Date(item.date);
+      return d.getMonth() === m && d.getFullYear() === y;
+    });
+
+    const cmExpenses = filterByMonth(expenses, currentMonth, currentYear);
+    const pmExpenses = filterByMonth(expenses, lastMonth, lastMonthYear);
+    
+    const totalExp = cmExpenses.reduce((sum, e) => sum + e.amount, 0);
+    const prevTotalExp = pmExpenses.reduce((sum, e) => sum + e.amount, 0);
+    
+    const categoryBreakdown = cmExpenses.reduce((acc, e) => {
+      acc[e.category] = (acc[e.category] || 0) + e.amount;
+      return acc;
+    }, {});
+
+    const totalInc = filterByMonth(incomes, currentMonth, currentYear).reduce((sum, i) => sum + i.amount, 0);
+    const savingsRate = totalInc > 0 ? ((totalInc - totalExp) / totalInc) * 100 : 0;
+
+    // 3. High-fidelity prompt
+    const prompt = `
+      You are FinTrack AI, a professional financial strategist.
+      Analyze this user's data and provide 3-4 professional insights in JSON format.
+      
+      DATA:
+      - Current Month: ${now.toLocaleString('default', { month: 'long' })} ${currentYear}
+      - Expenses: ₹${totalExp} (Previous Month: ₹${prevTotalExp})
+      - Income: ₹${totalInc}
+      - Savings Rate: ${savingsRate.toFixed(1)}%
+      - Top Categories: ${Object.entries(categoryBreakdown).slice(0, 3).map(([c, a]) => `${c}: ₹${a}`).join(', ') || 'None yet'}
+      - Goals: ${goals.slice(0, 3).map(g => `${g.title}: ${Math.round((g.currentAmount/g.targetAmount)*100)}%`).join(', ') || 'None set'}
+
+      INSTRUCTION:
+      Provide specific, actionable advice. If data is sparse, give general high-impact financial tips.
+      
+      OUTPUT FORMAT (JSON ARRAY ONLY):
+      [{"title": "...", "description": "...", "type": "saving|alert|growth|milestone", "impact": "low|medium|high"}]
+    `;
+
+    // 4. Smart Model Rotation Strategy (to bypass rate limits and downtime)
+    const models = [
+      'nousresearch/hermes-3-llama-3.1-405b:free',
+      'meta-llama/llama-3.3-70b-instruct:free',
+      'meta-llama/llama-3.2-3b-instruct:free',
+      'liquid/lfm-2.5-1.2b-instruct:free',
+      'tencent/hy3-preview:free',
+      'inclusionai/ling-2.6-flash:free'
+    ];
+
+    let lastError = null;
+    
+    for (const model of models) {
+      try {
+        const response = await axios({
+          method: 'post',
+          url: 'https://openrouter.ai/api/v1/chat/completions',
+          headers: {
+            'Authorization': `Bearer ${apiKey}`,
+            'HTTP-Referer': 'http://localhost:5173',
+            'X-Title': 'FinTrack AI',
+            'Content-Type': 'application/json'
+          },
+          data: {
+            model: model,
+            messages: [{ role: 'user', content: prompt }],
+            temperature: 0.5
+          },
+          timeout: 20000 
+        });
+
+        const content = response.data.choices[0].message.content.trim();
+        const jsonMatch = content.match(/\[[\s\S]*\]/);
+        const insights = JSON.parse(jsonMatch ? jsonMatch[0] : content);
+        
+        return res.json(Array.isArray(insights) ? insights : [insights]);
+
+      } catch (apiError) {
+        lastError = apiError.response?.data?.error?.message || apiError.message;
+        const statusCode = apiError.response?.status;
+        
+        console.warn(`Model ${model} failed (${statusCode}): ${lastError}`);
+        
+        // If it's a 429 (Rate Limit) or 404 (Not Found), try the next model
+        if (statusCode === 429 || statusCode === 404 || statusCode === 503) {
+          continue;
+        }
+        
+        // For other errors, break and use fallback
+        break;
+      }
+    }
+
+    // Ultimate Fallback if all models fail
+    console.error('All AI models failed. Using strategic fallback.');
+    return res.json([
+      {
+        "title": "Smart Savings Strategy",
+        "description": "Consider setting up an automated transfer to your savings account right after payday to maintain a healthy savings rate.",
+        "type": "saving",
+        "impact": "high"
+      },
+      {
+        "title": "Expense Visibility",
+        "description": "Regularly reviewing your 'Other' category can help identify hidden spending patterns and optimize your budget.",
+        "type": "growth",
+        "impact": "medium"
+      }
+    ]);
+
+  } catch (error) {
+    console.error('General AI Insights Error:', error);
+    res.status(500).json({ message: 'Internal Server Error during insight generation' });
+  }
+});
 
 // Start server
 const PORT = process.env.PORT || 5001;

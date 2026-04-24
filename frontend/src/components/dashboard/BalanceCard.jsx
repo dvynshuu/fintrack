@@ -25,7 +25,6 @@ const BalanceCard = ({ balance, change, onAddExpense }) => {
 
     return (
         <div className="balance-card">
-            <div className="balance-card__glow" />
             <div className="balance-card__content">
                 <div className="balance-card__header">
                     <span className="balance-card__label">My Balance</span>

@@ -91,6 +91,12 @@ textarea {
   color: var(--text-primary);
   font-size: 0.875rem;
   transition: all 0.2s ease;
+  color-scheme: inherit;
+}
+
+select option {
+  background-color: var(--bg-secondary);
+  color: var(--text-primary);
 }
 
 input:focus,

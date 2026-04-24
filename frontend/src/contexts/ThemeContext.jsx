@@ -1,5 +1,6 @@
 import React, { createContext, useContext, useState, useEffect } from 'react';
 import api from '../utils/api';
+import { useAuth } from './AuthContext';
 
 const ThemeContext = createContext();
 
@@ -13,10 +14,13 @@ export const useTheme = () => {
 
 export const ThemeProvider = ({ children }) => {
   const [theme, setTheme] = useState('light');
+  const { user, loading: authLoading } = useAuth();
 
   useEffect(() => {
-    // Load theme from settings when component mounts
+    // Load theme from settings when component mounts and user is authenticated
     const loadTheme = async () => {
+      if (authLoading || !user) return;
+      
       try {
         const response = await api.get('/api/users/settings');
         if (response.data && response.data.theme) {
@@ -28,7 +32,7 @@ export const ThemeProvider = ({ children }) => {
       }
     };
     loadTheme();
-  }, []);
+  }, [user, authLoading]);
 
   const toggleTheme = async (newTheme) => {
     try {
@@ -49,4 +53,4 @@ export const ThemeProvider = ({ children }) => {
       {children}
     </ThemeContext.Provider>
   );
-}; 
+};

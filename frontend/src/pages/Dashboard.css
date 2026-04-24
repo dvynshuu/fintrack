@@ -1,236 +1,108 @@
-/* ═══════════════════════════════════════════════════
-   Dashboard — Premium Fintech Analytics Layout
-   ═══════════════════════════════════════════════════ */
-
 .dashboard-container {
-  min-height: 100vh;
-  display: flex;
-  flex-direction: column;
+    min-height: 100vh;
+    background: var(--bg-app);
 }
 
 .dashboard {
-  flex: 1;
-  padding: 1.5rem 2rem 3rem;
-  max-width: 1400px;
-  margin: 0 auto;
-  width: 100%;
-  animation: animate-fade-in 0.6s ease-out;
+    flex: 1;
+    padding: 1.5rem 2rem 3rem;
+    max-width: 1300px;
+    margin: 0 auto;
+    width: 100%;
 }
 
-/* ── Welcome ── */
 .dashboard-welcome {
-  margin-bottom: 2.5rem;
+    margin-bottom: 2.5rem;
 }
 
 .dashboard-welcome h1 {
-  font-size: 2.25rem;
-  font-weight: 800;
-  color: var(--heading-color);
-  letter-spacing: -0.03em;
-  margin-bottom: 0.25rem;
+    font-size: 2.25rem;
+    font-weight: 800;
+    color: var(--text-main);
+    letter-spacing: -0.03em;
+    margin-bottom: 0.25rem;
 }
 
 .dashboard-subtitle {
-  font-size: 1rem;
-  color: var(--text-muted);
-  font-weight: 500;
+    font-size: 1rem;
+    color: var(--text-muted);
+    font-weight: 500;
 }
 
-/* ── Top Row: Balance + Metrics + Donut ── */
 .dashboard-top-row {
-  display: grid;
-  grid-template-columns: 1fr 320px;
-  gap: 1.25rem;
-  margin-bottom: 1.25rem;
+    display: grid;
+    grid-template-columns: 1fr 320px;
+    gap: 1.25rem;
+    margin-bottom: 1.25rem;
 }
 
 .dashboard-top-left {
-  display: flex;
-  flex-direction: column;
-  gap: 1.25rem;
+    display: flex;
+    flex-direction: column;
+    gap: 1.25rem;
 }
 
 .dashboard-metrics-row {
-  display: grid;
-  grid-template-columns: 1fr 1fr;
-  gap: 1.25rem;
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 1.25rem;
 }
 
-/* ── Donut Sidebar Panel ── */
 .dashboard-donut-panel {
-  animation: cardFadeIn 0.6s ease-out both;
+    background: var(--bg-card);
+    border: 1px solid var(--border-standard);
+    border-radius: var(--radius-xl);
+    padding: 1.25rem 1.5rem;
+    display: flex;
+    flex-direction: column;
 }
 
-/* ── Generic Dashboard Card ── */
-.dashboard-card {
-  background: var(--card-surface);
-  border: 1px solid var(--card-border);
-  border-radius: var(--radius-xl);
-  padding: 1.5rem;
-  box-shadow: var(--shadow-lg);
-  transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
-}
-
-.dashboard-card:hover {
-  box-shadow: var(--shadow-xl);
+.dashboard-card--chart {
+    background: var(--bg-card);
+    border: 1px solid var(--border-standard);
+    border-radius: var(--radius-xl);
+    padding: 1.5rem;
+    margin-bottom: 1.25rem;
 }
 
 .dashboard-card__title {
-  font-size: 1.125rem;
-  font-weight: 700;
-  color: var(--heading-color);
-  margin-bottom: 0.25rem;
-  letter-spacing: 0.01em;
+    font-size: 1.125rem;
+    font-weight: 700;
+    color: var(--text-main);
+    margin-bottom: 0.25rem;
 }
 
 .dashboard-card__subtitle {
-  font-size: 0.8125rem;
-  color: var(--text-muted);
-  font-weight: 500;
-  margin-bottom: 1rem;
+    font-size: 0.875rem;
+    color: var(--text-muted);
+    margin-bottom: 1.5rem;
 }
 
-.dashboard-card__header {
-  display: flex;
-  justify-content: space-between;
-  align-items: flex-start;
-  margin-bottom: 1.25rem;
-  flex-wrap: wrap;
-  gap: 0.75rem;
-}
-
-/* ── Chart Card ── */
-.dashboard-card--chart {
-  animation: cardFadeIn 0.6s ease-out 0.2s both;
-}
-
-/* ── Chart Legend ── */
 .dashboard-chart-legend {
-  display: flex;
-  gap: 1.25rem;
-  align-items: center;
+    display: flex;
+    gap: 1.5rem;
+    align-items: center;
 }
 
 .dashboard-chart-legend__item {
-  display: inline-flex;
-  align-items: center;
-  gap: 0.4rem;
-  font-size: 0.8125rem;
-  font-weight: 500;
-  color: var(--text-muted);
+    display: flex;
+    align-items: center;
+    gap: 0.5rem;
+    font-size: 0.8125rem;
+    font-weight: 600;
+    color: var(--text-muted);
 }
 
-.dashboard-chart-legend__dot {
-  width: 8px;
-  height: 8px;
-  border-radius: 50%;
-}
-
-/* ── Statistics Row ── */
-.dashboard-stats-row {
-  margin-bottom: 1.25rem;
-}
-
-/* ── Averages ── */
-.dashboard-averages {
-  display: grid;
-  grid-template-columns: 1fr 1fr;
-  gap: 1.25rem;
-  margin-bottom: 1.25rem;
-}
-
-.dashboard-avg-card {
-  display: flex;
-  flex-direction: column;
-  gap: 0.25rem;
-  animation: cardFadeIn 0.6s ease-out 0.35s both;
-}
-
-.dashboard-avg-label {
-  font-size: 0.8125rem;
-  font-weight: 600;
-  color: var(--text-muted);
-  text-transform: uppercase;
-  letter-spacing: 0.04em;
-}
-
-.dashboard-avg-value {
-  font-size: 1.75rem;
-  font-weight: 800;
-  color: var(--text-main);
-  letter-spacing: -0.02em;
-}
-
-.dashboard-avg-change {
-  font-size: 0.8125rem;
-  font-weight: 600;
-}
-
-.dashboard-avg-change.positive {
-  color: var(--success);
-}
-
-.dashboard-avg-change.negative {
-  color: var(--error);
-}
-
-/* ── Transaction Card ── */
 .dashboard-card--transactions {
-  margin-bottom: 2rem;
-  animation: cardFadeIn 0.6s ease-out 0.45s both;
-}
-
-/* ── Responsive ── */
-@media (max-width: 1200px) {
-  .dashboard-top-row {
-    grid-template-columns: 1fr 280px;
-  }
+    background: var(--bg-card);
+    border: 1px solid var(--border-standard);
+    border-radius: var(--radius-xl);
+    padding: 2rem;
+    margin-bottom: 2rem;
 }
 
 @media (max-width: 1024px) {
-  .dashboard-top-row {
-    grid-template-columns: 1fr;
-  }
-
-  .dashboard-donut-panel {
-    max-width: 480px;
-  }
-}
-
-@media (max-width: 768px) {
-  .dashboard {
-    padding: 1.25rem 1rem 3rem;
-  }
-
-  .dashboard-welcome h1 {
-    font-size: 1.75rem;
-  }
-
-  .dashboard-metrics-row {
-    grid-template-columns: 1fr;
-  }
-
-  .dashboard-averages {
-    grid-template-columns: 1fr;
-  }
-
-  .dashboard-card {
-    padding: 1.25rem;
-  }
-}
-
-@media (max-width: 480px) {
-  .dashboard-welcome h1 {
-    font-size: 1.5rem;
-  }
-
-  .dashboard-avg-value {
-    font-size: 1.375rem;
-  }
-
-  .dashboard-chart-legend {
-    flex-direction: column;
-    align-items: flex-start;
-    gap: 0.35rem;
-  }
+    .dashboard-top-row {
+        grid-template-columns: 1fr;
+    }
 }

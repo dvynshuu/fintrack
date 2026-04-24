@@ -72,31 +72,31 @@
 [data-theme="dark"] {
   color-scheme: dark;
   --bg-app: #0a0c12;
-  --bg-card: rgba(255, 255, 255, 0.03);
+  --bg-card: #151921;
   --text-main: #ffffff;
-  --text-muted: rgba(255, 255, 255, 0.5);
-  --border-subtle: rgba(255, 255, 255, 0.08);
-  --border-standard: rgba(255, 255, 255, 0.12);
+  --text-muted: #94a3b8;
+  --border-subtle: rgba(255, 255, 255, 0.06);
+  --border-standard: rgba(255, 255, 255, 0.1);
 
-  --glass-bg: rgba(15, 23, 42, 0.6);
+  --glass-bg: rgba(21, 25, 33, 0.8);
   --glass-border: rgba(255, 255, 255, 0.08);
   --glass-blur: blur(12px);
 
-  --shadow-xl: 0 20px 48px rgba(0, 0, 0, 0.5);
+  --shadow-xl: 0 20px 48px rgba(0, 0, 0, 0.4);
 
   --chart-income: #10b981;
-  --chart-income-light: rgba(16, 185, 129, 0.15);
+  --chart-income-light: rgba(16, 185, 129, 0.1);
   --chart-expense: #3b82f6;
-  --chart-expense-light: rgba(59, 130, 246, 0.15);
+  --chart-expense-light: rgba(59, 130, 246, 0.1);
   --success-light: rgba(16, 185, 129, 0.1);
   --error-light: rgba(244, 63, 94, 0.1);
 
   --chart-grid: rgba(255, 255, 255, 0.05);
-  --card-surface: rgba(255, 255, 255, 0.03);
+  --card-surface: #151921;
   --card-border: rgba(255, 255, 255, 0.08);
   --card-hover-border: rgba(59, 130, 246, 0.3);
-  --accent-glow: rgba(59, 130, 246, 0.08);
-  --active-bg: rgba(59, 130, 246, 0.12);
+  --accent-glow: rgba(59, 130, 246, 0.06);
+  --active-bg: rgba(59, 130, 246, 0.1);
 
   --modal-bg: #111827;
   --modal-overlay: rgba(0, 0, 0, 0.7);

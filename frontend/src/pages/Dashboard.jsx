@@ -10,6 +10,7 @@ import TransactionTable from '../components/dashboard/TransactionTable';
 import AddExpenseModal from '../components/AddExpenseModal';
 import FinancialScore from '../components/FinancialScore';
 import { useExpenses } from '../contexts/ExpenseContext';
+import { useInsights } from '../contexts/InsightsContext';
 import './Dashboard.css';
 
 const DEFAULT_FINANCIAL_HEALTH = {
@@ -19,29 +20,17 @@ const DEFAULT_FINANCIAL_HEALTH = {
   investmentGrowth: 0
 };
 
-const DEFAULT_SUGGESTIONS = [
-  {
-    title: "Track Your Expenses",
-    description: "Start by adding your daily expenses to get a better understanding of your spending habits.",
-    action: { text: "Add Expense", link: "/expenses" }
-  },
-  {
-    title: "Set Budget Goals",
-    description: "Create budget goals to help you save more and spend wisely.",
-    action: { text: "Set Goals", link: "/goals" }
-  }
-];
-
 const Dashboard = () => {
   const navigate = useNavigate();
   const { expenses, loading: expensesLoading } = useExpenses();
+  const { insights, loading: insightsLoading, refreshInsights } = useInsights();
   const [loading, setLoading] = useState(true);
   const [expenseData, setExpenseData] = useState([]);
   const [monthlyData, setMonthlyData] = useState([]);
   const [showAddExpense, setShowAddExpense] = useState(false);
   const [financialHealth, setFinancialHealth] = useState(DEFAULT_FINANCIAL_HEALTH);
-  const [smartSuggestions, setSmartSuggestions] = useState(DEFAULT_SUGGESTIONS);
   const [totalExpenses, setTotalExpenses] = useState(0);
+  const [totalIncome, setTotalIncome] = useState(0);
   const [goals, setGoals] = useState([]);
   const [incomes, setIncomes] = useState([]);
 
@@ -101,6 +90,13 @@ const Dashboard = () => {
           const incomesResponse = await api.get('/api/incomes');
           fetchedIncomes = incomesResponse.data;
           setIncomes(fetchedIncomes);
+
+          // Calculate total income for current month
+          const currentMonthIncomes = fetchedIncomes.filter(income => {
+            const d = new Date(income.date);
+            return d.getMonth() === currentMonth && d.getFullYear() === currentYear;
+          });
+          setTotalIncome(currentMonthIncomes.reduce((sum, i) => sum + i.amount, 0));
         } catch (err) {
           console.warn('Could not fetch incomes:', err);
         }
@@ -151,7 +147,6 @@ const Dashboard = () => {
           setFinancialHealth(DEFAULT_FINANCIAL_HEALTH);
         }
 
-        setSmartSuggestions(DEFAULT_SUGGESTIONS);
       } catch (err) {
         console.error('Error fetching dashboard data:', err);
       } finally {
@@ -162,22 +157,31 @@ const Dashboard = () => {
     fetchDashboardData();
   }, [expenses]);
 
-  // Derived data
-  const currentMonthData = monthlyData[monthlyData.length - 1] || { expenses: 0, income: 0 };
-  const previousMonthData = monthlyData[monthlyData.length - 2] || { expenses: 0, income: 0 };
+  // Derived data - Find actual current and previous month records
+  const now = new Date();
+  const curMonthKey = `${now.getFullYear()}-${now.getMonth() + 1}`;
+  const prevMonthDate = new Date(now.getFullYear(), now.getMonth() - 1, 1);
+  const prevMonthKey = `${prevMonthDate.getFullYear()}-${prevMonthDate.getMonth() + 1}`;
+
+  const currentMonthData = monthlyData.find(d => d.month === curMonthKey) || { expenses: totalExpenses, income: totalIncome };
+  const previousMonthData = monthlyData.find(d => d.month === prevMonthKey) || { expenses: 0, income: 0 };
 
   const calculateChange = (current, previous) => {
-    if (!previous || previous === 0) return 0;
+    if (!previous || previous === 0) return current > 0 ? 100 : 0;
     return ((current - previous) / previous) * 100;
   };
 
   const expenseChange = calculateChange(totalExpenses, previousMonthData.expenses);
-  const incomeChange = calculateChange(currentMonthData.income, previousMonthData.income);
+  const incomeChange = calculateChange(totalIncome, previousMonthData.income);
 
-  // Balance = total income - total expenses (current month)
-  const balance = (currentMonthData.income || 0) - totalExpenses;
-  const prevBalance = (previousMonthData.income || 0) - (previousMonthData.expenses || 0);
-  const balanceChange = calculateChange(balance, prevBalance);
+  // Balance = Overall cumulative balance (all-time)
+  const overallIncome = incomes.reduce((sum, i) => sum + i.amount, 0);
+  const overallExpenses = expenses.reduce((sum, e) => sum + e.amount, 0);
+  const balance = overallIncome - overallExpenses;
+
+  // Previous balance (balance at the end of last month)
+  const prevOverallBalance = balance - (totalIncome - totalExpenses);
+  const balanceChange = calculateChange(balance, prevOverallBalance);
 
   // Average metrics
   const avgIncome = monthlyData.length > 0
@@ -217,7 +221,7 @@ const Dashboard = () => {
         {/* Welcome Section */}
         <div className="dashboard-welcome animate-slide-up">
           <h1>{getGreeting()}</h1>
-          <p className="dashboard-subtitle">This is your finance report</p>
+          <p className="dashboard-subtitle">Here is your financial performance for the month.</p>
         </div>
 
         {/* Top Cards Row */}
@@ -232,7 +236,7 @@ const Dashboard = () => {
             <div className="dashboard-metrics-row">
               <MetricCard
                 title="Monthly income"
-                amount={currentMonthData.income || 0}
+                amount={totalIncome}
                 change={incomeChange}
                 type="income"
                 icon={<FaArrowTrendUp />}
@@ -274,7 +278,7 @@ const Dashboard = () => {
                 </span>
               </div>
             </div>
-            <LineChart data={monthlyData} height={280} />
+            <LineChart data={monthlyData} height={400} />
           </div>
         </div>
 
@@ -316,7 +320,9 @@ const Dashboard = () => {
         <FinancialScore
           healthScore={healthScore}
           financialHealth={financialHealth}
-          smartSuggestions={smartSuggestions}
+          smartSuggestions={insights}
+          insightsLoading={insightsLoading}
+          onRefreshInsights={refreshInsights}
         />
 
         {showAddExpense && (

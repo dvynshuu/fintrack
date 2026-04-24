@@ -1,5 +1,6 @@
 import React, { createContext, useContext, useState, useEffect } from 'react';
 import api from '../utils/api';
+import { useAuth } from './AuthContext';
 
 const ExpenseContext = createContext();
 
@@ -15,8 +16,14 @@ export const ExpenseProvider = ({ children }) => {
   const [expenses, setExpenses] = useState([]);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState(null);
+  const { user, loading: authLoading } = useAuth();
 
   const fetchExpenses = async () => {
+    if (authLoading || !user) {
+      setLoading(false);
+      return;
+    }
+
     try {
       setLoading(true);
       setError(null);
@@ -79,7 +86,7 @@ export const ExpenseProvider = ({ children }) => {
 
   useEffect(() => {
     fetchExpenses();
-  }, []);
+  }, [user, authLoading]);
 
   const value = {
     expenses,
@@ -96,4 +103,4 @@ export const ExpenseProvider = ({ children }) => {
       {children}
     </ExpenseContext.Provider>
   );
-}; 
+};

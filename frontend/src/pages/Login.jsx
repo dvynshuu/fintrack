@@ -72,10 +72,19 @@ const Login = () => {
 
   return (
     <div className="login-container">
+      {/* Background Decorative Elements */}
+      <div className="data-mesh"></div>
+      <div className="floating-elements">
+        <div className="float-icon coin-1"><i className="fas fa-coins"></i></div>
+        <div className="float-icon coin-2"><i className="fas fa-dollar-sign"></i></div>
+        <div className="float-icon chart-1"><i className="fas fa-chart-line"></i></div>
+        <div className="float-icon vault-1"><i className="fas fa-shield-halved"></i></div>
+      </div>
+
       <div className="login-card">
         <div className="login-header">
           <div className="brand-logo">
-            <i className="fas fa-wallet"></i>
+            <i className="fas fa-vault"></i>
           </div>
           <h1>Welcome Back</h1>
           <p>Securely sign in to your accounts</p>

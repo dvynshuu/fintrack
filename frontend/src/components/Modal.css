@@ -42,7 +42,7 @@
 .modal-header h2 {
     font-size: 1.25rem;
     font-weight: 800;
-    color: var(--primary);
+    color: var(--text-main);
     margin: 0;
     letter-spacing: -0.02em;
 }
@@ -96,7 +96,7 @@
     display: block;
     font-size: 0.75rem;
     font-weight: 800;
-    color: var(--primary);
+    color: var(--text-main);
     text-transform: uppercase;
     letter-spacing: 0.1em;
     margin-bottom: 0.75rem;
@@ -112,9 +112,15 @@
     border: 1.5px solid var(--border-standard);
     border-radius: var(--radius-md);
     font-size: 0.9375rem;
-    color: var(--primary);
+    color: var(--text-main);
     font-family: inherit;
     transition: all 0.2s cubic-bezier(0.4, 0, 0.2, 1);
+    color-scheme: inherit;
+}
+
+.form-group select option {
+    background-color: var(--modal-bg);
+    color: var(--text-main);
 }
 
 .form-group input:focus,

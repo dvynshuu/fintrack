@@ -81,7 +81,7 @@ const Profile = () => {
   return (
     <div className="profile-container">
       <div className="profile-header">
-        <h1>Profile Settings</h1>
+        <h1>Account Settings</h1>
         <p>Manage your account information and preferences</p>
       </div>
 
@@ -90,121 +90,143 @@ const Profile = () => {
         {success && <div className="success-message">{success}</div>}
 
         <div className="profile-avatar">
-          <FaUser size={64} />
+          <div className="profile-avatar-circle">
+            {profileData.name ? profileData.name[0].toUpperCase() : <FaUser />}
+          </div>
           <h2>{profileData.name || 'User'}</h2>
         </div>
 
         {!isEditing ? (
-          <div className="profile-actions">
-            <button
-              type="button"
-              className="btn-primary"
-              onClick={() => setIsEditing(true)}
-            >
-              <FaEdit /> Edit Profile
-            </button>
-          </div>
+          <>
+            <div className="profile-section">
+              <h3>Personal Information</h3>
+              <div className="profile-grid">
+                <div className="form-group">
+                  <label><FaUser /> Name</label>
+                  <input type="text" value={profileData.name} disabled />
+                </div>
+                <div className="form-group">
+                  <label><FaEnvelope /> Email</label>
+                  <input type="text" value={profileData.email} disabled />
+                </div>
+                <div className="form-group">
+                  <label><FaPhone /> Phone</label>
+                  <input type="text" value={profileData.phone || 'Not provided'} disabled />
+                </div>
+                <div className="form-group">
+                  <label><FaMapMarkerAlt /> Location</label>
+                  <input type="text" value={profileData.location || 'Not provided'} disabled />
+                </div>
+              </div>
+            </div>
+
+            <div className="profile-actions">
+              <button
+                type="button"
+                className="btn-primary"
+                onClick={() => setIsEditing(true)}
+              >
+                <FaEdit /> Edit Profile
+              </button>
+            </div>
+          </>
         ) : (
           <form onSubmit={handleSubmit}>
             <div className="profile-section">
               <h3>Personal Information</h3>
-              <div className="form-group">
-                <label htmlFor="name">
-                  <FaUser /> Name
-                </label>
-                <input
-                  type="text"
-                  id="name"
-                  name="name"
-                  value={profileData.name}
-                  onChange={handleChange}
-                  required
-                />
-              </div>
+              <div className="profile-grid">
+                <div className="form-group">
+                  <label htmlFor="name"><FaUser /> Name</label>
+                  <input
+                    type="text"
+                    id="name"
+                    name="name"
+                    value={profileData.name}
+                    onChange={handleChange}
+                    required
+                  />
+                </div>
 
-              <div className="form-group">
-                <label htmlFor="email">
-                  <FaEnvelope /> Email
-                </label>
-                <input
-                  type="email"
-                  id="email"
-                  name="email"
-                  value={profileData.email}
-                  onChange={handleChange}
-                  required
-                />
-              </div>
+                <div className="form-group">
+                  <label htmlFor="email"><FaEnvelope /> Email</label>
+                  <input
+                    type="email"
+                    id="email"
+                    name="email"
+                    value={profileData.email}
+                    onChange={handleChange}
+                    required
+                  />
+                </div>
 
-              <div className="form-group">
-                <label htmlFor="phone">
-                  <FaPhone /> Phone
-                </label>
-                <input
-                  type="tel"
-                  id="phone"
-                  name="phone"
-                  value={profileData.phone}
-                  onChange={handleChange}
-                />
-              </div>
+                <div className="form-group">
+                  <label htmlFor="phone"><FaPhone /> Phone</label>
+                  <input
+                    type="tel"
+                    id="phone"
+                    name="phone"
+                    value={profileData.phone}
+                    onChange={handleChange}
+                  />
+                </div>
 
-              <div className="form-group">
-                <label htmlFor="location">
-                  <FaMapMarkerAlt /> Location
-                </label>
-                <input
-                  type="text"
-                  id="location"
-                  name="location"
-                  value={profileData.location}
-                  onChange={handleChange}
-                />
+                <div className="form-group">
+                  <label htmlFor="location"><FaMapMarkerAlt /> Location</label>
+                  <input
+                    type="text"
+                    id="location"
+                    name="location"
+                    value={profileData.location}
+                    onChange={handleChange}
+                  />
+                </div>
               </div>
             </div>
 
             <div className="profile-section">
               <h3>Preferences</h3>
-              <div className="form-group">
-                <label htmlFor="currency">Currency</label>
-                <select
-                  id="currency"
-                  name="currency"
-                  value={profileData.currency}
-                  onChange={handleChange}
-                >
-                  <option value="INR">Indian Rupee (₹)</option>
-                  <option value="USD">US Dollar ($)</option>
-                  <option value="EUR">Euro (€)</option>
-                  <option value="GBP">British Pound (£)</option>
-                </select>
-              </div>
-
-              <div className="form-group">
-                <label htmlFor="language">Language</label>
-                <select
-                  id="language"
-                  name="language"
-                  value={profileData.language}
-                  onChange={handleChange}
-                >
-                  <option value="en">English</option>
-                  <option value="hi">Hindi</option>
-                  <option value="es">Spanish</option>
-                  <option value="fr">French</option>
-                </select>
-              </div>
-
-              <div className="form-group checkbox">
-                <label>
-                  <input
-                    type="checkbox"
-                    name="notifications"
-                    checked={profileData.notifications}
+              <div className="profile-grid">
+                <div className="form-group">
+                  <label htmlFor="currency">Currency</label>
+                  <select
+                    id="currency"
+                    name="currency"
+                    value={profileData.currency}
                     onChange={handleChange}
-                  />
-                  Enable email notifications
-                </label>
+                  >
+                    <option value="INR">Indian Rupee (₹)</option>
+                    <option value="USD">US Dollar ($)</option>
+                    <option value="EUR">Euro (€)</option>
+                    <option value="GBP">British Pound (£)</option>
+                  </select>
+                </div>
+
+                <div className="form-group">
+                  <label htmlFor="language">Language</label>
+                  <select
+                    id="language"
+                    name="language"
+                    value={profileData.language}
+                    onChange={handleChange}
+                  >
+                    <option value="en">English</option>
+                    <option value="hi">Hindi</option>
+                    <option value="es">Spanish</option>
+                    <option value="fr">French</option>
+                  </select>
+                </div>
+
+                <div className="form-group checkbox">
+                  <label>
+                    <input
+                      type="checkbox"
+                      name="notifications"
+                      checked={profileData.notifications}
+                      onChange={handleChange}
+                    />
+                    Enable email notifications
+                  </label>
+                </div>
               </div>
             </div>
 
