@@ -23,12 +23,11 @@ const DEFAULT_FINANCIAL_HEALTH = {
 const Dashboard = () => {
   const navigate = useNavigate();
   const { expenses, loading: expensesLoading } = useExpenses();
-  const { insights, loading: insightsLoading, refreshInsights } = useInsights();
+  const { aiData, loading: insightsLoading, refreshInsights } = useInsights();
   const [loading, setLoading] = useState(true);
   const [expenseData, setExpenseData] = useState([]);
   const [monthlyData, setMonthlyData] = useState([]);
   const [showAddExpense, setShowAddExpense] = useState(false);
-  const [financialHealth, setFinancialHealth] = useState(DEFAULT_FINANCIAL_HEALTH);
   const [totalExpenses, setTotalExpenses] = useState(0);
   const [totalIncome, setTotalIncome] = useState(0);
   const [goals, setGoals] = useState([]);
@@ -75,20 +74,17 @@ const Dashboard = () => {
         setTotalExpenses(total);
 
         // Fetch goals
-        let fetchedGoals = [];
         try {
           const goalsResponse = await api.get('/api/goals');
-          fetchedGoals = goalsResponse.data;
-          setGoals(fetchedGoals);
+          setGoals(goalsResponse.data);
         } catch (err) {
           console.warn('Could not fetch goals:', err);
         }
 
         // Fetch incomes
-        let fetchedIncomes = [];
         try {
           const incomesResponse = await api.get('/api/incomes');
-          fetchedIncomes = incomesResponse.data;
+          const fetchedIncomes = incomesResponse.data;
           setIncomes(fetchedIncomes);
 
           // Calculate total income for current month
@@ -102,49 +98,12 @@ const Dashboard = () => {
         }
 
         // Fetch monthly data
-        let monthlyDataFetched = [];
         try {
           const monthlyResponse = await api.get('/api/expenses/monthly');
-          monthlyDataFetched = monthlyResponse.data;
-          setMonthlyData(monthlyDataFetched);
+          setMonthlyData(monthlyResponse.data);
         } catch (err) {
           console.warn('Could not fetch monthly data:', err);
           setMonthlyData([]);
-        }
-
-        // Calculate financial health
-        if (monthlyDataFetched.length > 0) {
-          const cm = monthlyDataFetched[monthlyDataFetched.length - 1];
-          const totalIncome = cm.income || 0;
-          const totalExp = cm.expenses || 0;
-
-          const savingsRate = totalIncome > 0 ? Math.max(0, ((totalIncome - totalExp) / totalIncome) * 100) : 0;
-
-          const avgExpenses = monthlyDataFetched.reduce((acc, curr) => acc + curr.expenses, 0) / monthlyDataFetched.length;
-          const targetEmergencyFund = Math.max(avgExpenses * 6, 100000);
-          const currentEmergencySavings = fetchedGoals
-            .filter(g => g.title.toLowerCase().includes('emergency') || (g.category && g.category.toLowerCase() === 'house'))
-            .reduce((acc, curr) => acc + curr.currentAmount, 0);
-          const emergencyFund = Math.min(100, (currentEmergencySavings / targetEmergencyFund) * 100);
-
-          const investmentAmount = fetchedIncomes
-            .filter(i => i.category && i.category.toLowerCase() === 'investments')
-            .reduce((acc, curr) => acc + curr.amount, 0);
-          const investmentGrowth = totalIncome > 0 ? Math.min(100, (investmentAmount / totalIncome) * 100) : 0;
-
-          const debtAmount = processedExpenses
-            .filter(e => e.category && (e.category.toLowerCase().includes('loan') || e.category.toLowerCase().includes('debt')))
-            .reduce((acc, curr) => acc + curr.amount, 0);
-          const debtToIncome = totalIncome > 0 ? Math.min(100, (debtAmount / totalIncome) * 100) : 0;
-
-          setFinancialHealth({
-            savingsRate: Math.round(savingsRate),
-            emergencyFund: Math.round(emergencyFund),
-            debtToIncome: Math.round(debtToIncome),
-            investmentGrowth: Math.round(investmentGrowth)
-          });
-        } else {
-          setFinancialHealth(DEFAULT_FINANCIAL_HEALTH);
         }
 
       } catch (err) {
@@ -163,7 +122,6 @@ const Dashboard = () => {
   const prevMonthDate = new Date(now.getFullYear(), now.getMonth() - 1, 1);
   const prevMonthKey = `${prevMonthDate.getFullYear()}-${prevMonthDate.getMonth() + 1}`;
 
-  const currentMonthData = monthlyData.find(d => d.month === curMonthKey) || { expenses: totalExpenses, income: totalIncome };
   const previousMonthData = monthlyData.find(d => d.month === prevMonthKey) || { expenses: 0, income: 0 };
 
   const calculateChange = (current, previous) => {
@@ -198,14 +156,6 @@ const Dashboard = () => {
     if (hour < 17) return 'Good afternoon';
     return 'Good evening';
   };
-
-  // Health score
-  const healthScore = Math.round(
-    (financialHealth.savingsRate +
-      financialHealth.emergencyFund +
-      (100 - financialHealth.debtToIncome) +
-      financialHealth.investmentGrowth) / 4
-  );
 
   if (loading) {
     return (
@@ -318,9 +268,9 @@ const Dashboard = () => {
 
         {/* Financial Score */}
         <FinancialScore
-          healthScore={healthScore}
-          financialHealth={financialHealth}
-          smartSuggestions={insights}
+          healthScore={aiData.healthScore}
+          financialHealth={aiData.financialHealth}
+          smartSuggestions={aiData.smartSuggestions}
           insightsLoading={insightsLoading}
           onRefreshInsights={refreshInsights}
         />

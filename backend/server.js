@@ -631,90 +631,124 @@ app.post('/api/insights', auth, async (req, res) => {
     const apiKey = process.env.OPENROUTER_API_KEY?.trim();
 
     if (!apiKey || apiKey === 'your_openrouter_api_key_here' || !apiKey.startsWith('sk-or-')) {
-      return res.json([
-        {
-          "title": "AI Configuration Required",
-          "description": "Your OpenRouter API key is missing or invalid. Please check your .env file and restart the server.",
-          "type": "alert",
-          "impact": "high"
-        }
-      ]);
+      return res.json({
+        healthScore: 0,
+        financialHealth: { savingsRate: 0, emergencyFund: 0, debtToIncome: 0, investmentGrowth: 0 },
+        smartSuggestions: [
+          {
+            "title": "AI Configuration Required",
+            "description": "Your OpenRouter API key is missing or invalid. Please check your .env file and restart the server.",
+            "type": "alert",
+            "impact": "high"
+          }
+        ]
+      });
     }
 
-    // 1. Gather all relevant data
+    // 1. Gather comprehensive data
     const [expenses, incomes, goals] = await Promise.all([
-      Expense.find({ userId }).sort({ date: -1 }).limit(100),
-      Income.find({ userId }).sort({ date: -1 }).limit(50),
+      Expense.find({ userId }).sort({ date: -1 }).limit(200),
+      Income.find({ userId }).sort({ date: -1 }).limit(100),
       Goal.find({ userId })
     ]);
 
     // Handle case with no data yet
     if (expenses.length === 0 && incomes.length === 0) {
-      return res.json([
-        {
-          "title": "Awaiting Financial Data",
-          "description": "Add some expenses or income to get personalized AI-driven financial insights and strategies.",
-          "type": "milestone",
-          "impact": "low"
-        }
-      ]);
+      return res.json({
+        healthScore: 0,
+        financialHealth: { savingsRate: 0, emergencyFund: 0, debtToIncome: 0, investmentGrowth: 0 },
+        smartSuggestions: [
+          {
+            "title": "Awaiting Financial Data",
+            "description": "Add some expenses or income to get personalized AI-driven financial insights and strategies.",
+            "type": "milestone",
+            "impact": "low"
+          }
+        ]
+      });
     }
 
-    // 2. Aggregate data with trend analysis
+    // 2. Aggregate data for AI context
     const now = new Date();
     const currentMonth = now.getMonth();
     const currentYear = now.getFullYear();
     
-    const lastMonth = currentMonth === 0 ? 11 : currentMonth - 1;
-    const lastMonthYear = currentMonth === 0 ? currentYear - 1 : currentYear;
-
     const filterByMonth = (data, m, y) => data.filter(item => {
       const d = new Date(item.date);
       return d.getMonth() === m && d.getFullYear() === y;
     });
 
+    // Current Month Stats
     const cmExpenses = filterByMonth(expenses, currentMonth, currentYear);
-    const pmExpenses = filterByMonth(expenses, lastMonth, lastMonthYear);
-    
     const totalExp = cmExpenses.reduce((sum, e) => sum + e.amount, 0);
-    const prevTotalExp = pmExpenses.reduce((sum, e) => sum + e.amount, 0);
+    const totalInc = filterByMonth(incomes, currentMonth, currentYear).reduce((sum, i) => sum + i.amount, 0);
     
+    // Category Breakdown
     const categoryBreakdown = cmExpenses.reduce((acc, e) => {
       acc[e.category] = (acc[e.category] || 0) + e.amount;
       return acc;
     }, {});
 
-    const totalInc = filterByMonth(incomes, currentMonth, currentYear).reduce((sum, i) => sum + i.amount, 0);
-    const savingsRate = totalInc > 0 ? ((totalInc - totalExp) / totalInc) * 100 : 0;
+    // Last 3 Months Trend
+    const last3Months = [];
+    for (let i = 0; i < 3; i++) {
+      const d = new Date(now.getFullYear(), now.getMonth() - i, 1);
+      const m = d.getMonth();
+      const y = d.getFullYear();
+      const mExp = filterByMonth(expenses, m, y).reduce((sum, e) => sum + e.amount, 0);
+      const mInc = filterByMonth(incomes, m, y).reduce((sum, i) => sum + i.amount, 0);
+      last3Months.push({ month: d.toLocaleString('default', { month: 'short' }), expenses: mExp, income: mInc });
+    }
 
-    // 3. High-fidelity prompt
+    // 3. High-fidelity prompt for Max Level Thinking
     const prompt = `
-      You are FinTrack AI, a professional financial strategist.
-      Analyze this user's data and provide 3-4 professional insights in JSON format.
+      You are FinTrack AI, an elite financial strategist with expertise in personal wealth management and fiscal resilience.
       
-      DATA:
-      - Current Month: ${now.toLocaleString('default', { month: 'long' })} ${currentYear}
-      - Expenses: ₹${totalExp} (Previous Month: ₹${prevTotalExp})
-      - Income: ₹${totalInc}
-      - Savings Rate: ${savingsRate.toFixed(1)}%
-      - Top Categories: ${Object.entries(categoryBreakdown).slice(0, 3).map(([c, a]) => `${c}: ₹${a}`).join(', ') || 'None yet'}
-      - Goals: ${goals.slice(0, 3).map(g => `${g.title}: ${Math.round((g.currentAmount/g.targetAmount)*100)}%`).join(', ') || 'None set'}
+      USER DATA SUMMARY:
+      - Current Period: ${now.toLocaleString('default', { month: 'long' })} ${currentYear}
+      - Monthly Income: ₹${totalInc}
+      - Monthly Expenses: ₹${totalExp}
+      - Top Categories: ${Object.entries(categoryBreakdown).slice(0, 5).map(([c, a]) => `${c}: ₹${a}`).join(', ')}
+      - Historical Trend (Last 3 Months): ${last3Months.map(m => `${m.month}: In ₹${m.income}/Ex ₹${m.expenses}`).join(' | ')}
+      - Financial Goals: ${goals.map(g => `${g.title} (${g.type}): ₹${g.currentAmount}/₹${g.targetAmount}`).join(', ') || 'None set'}
+      
+      TASK:
+      Perform a deep-dive analysis of the user's financial health. Calculate a health score (0-100) and specific KPIs based on professional standards (e.g., 50/30/20 rule, 6-month emergency fund rule, etc.).
+      
+      REQUIRED OUTPUT (STRICT JSON ONLY):
+      {
+        "healthScore": <number 0-100>,
+        "financialHealth": {
+          "savingsRate": <percentage of income saved this month>,
+          "emergencyFund": <percentage of 6-month buffer goal reached>,
+          "debtToIncome": <percentage of income going to debt/loans>,
+          "investmentGrowth": <percentage of income invested/asset growth>
+        },
+        "smartSuggestions": [
+          {
+            "title": "...",
+            "description": "...",
+            "type": "saving|alert|growth|milestone",
+            "impact": "low|medium|high",
+            "action": { "text": "Take Action", "link": "/goals|/expenses|/income" } // optional
+          }
+        ]
+      }
 
-      INSTRUCTION:
-      Provide specific, actionable advice. If data is sparse, give general high-impact financial tips.
-      
-      OUTPUT FORMAT (JSON ARRAY ONLY):
-      [{"title": "...", "description": "...", "type": "saving|alert|growth|milestone", "impact": "low|medium|high"}]
+      INSTRUCTIONS:
+      1. Be critical but constructive.
+      2. If income is 0, the health score should reflect the risk.
+      3. The "emergencyFund" should consider goals marked as 'emergency' or 'savings'.
+      4. Ensure "smartSuggestions" are highly specific to the data provided.
     `;
 
-    // 4. Smart Model Rotation Strategy (to bypass rate limits and downtime)
+    // 4. Smart Model Rotation Strategy
     const models = [
-      'nousresearch/hermes-3-llama-3.1-405b:free',
-      'meta-llama/llama-3.3-70b-instruct:free',
-      'meta-llama/llama-3.2-3b-instruct:free',
+      'google/gemini-2.0-flash-001',
       'liquid/lfm-2.5-1.2b-instruct:free',
-      'tencent/hy3-preview:free',
-      'inclusionai/ling-2.6-flash:free'
+      'anthropic/claude-3.5-sonnet',
+      'meta-llama/llama-3.3-70b-instruct:free',
+      'deepseek/deepseek-chat'
     ];
 
     let lastError = null;
@@ -733,49 +767,51 @@ app.post('/api/insights', auth, async (req, res) => {
           data: {
             model: model,
             messages: [{ role: 'user', content: prompt }],
-            temperature: 0.5
+            response_format: { type: "json_object" },
+            temperature: 0.3
           },
-          timeout: 20000 
+          timeout: 25000 
         });
 
         const content = response.data.choices[0].message.content.trim();
-        const jsonMatch = content.match(/\[[\s\S]*\]/);
-        const insights = JSON.parse(jsonMatch ? jsonMatch[0] : content);
+        const aiResponse = JSON.parse(content);
         
-        return res.json(Array.isArray(insights) ? insights : [insights]);
+        // Validate structure
+        if (aiResponse.healthScore !== undefined && aiResponse.financialHealth) {
+          return res.json(aiResponse);
+        }
+        
+        throw new Error('Invalid AI response structure');
 
       } catch (apiError) {
         lastError = apiError.response?.data?.error?.message || apiError.message;
-        const statusCode = apiError.response?.status;
-        
-        console.warn(`Model ${model} failed (${statusCode}): ${lastError}`);
-        
-        // If it's a 429 (Rate Limit) or 404 (Not Found), try the next model
-        if (statusCode === 429 || statusCode === 404 || statusCode === 503) {
-          continue;
-        }
-        
-        // For other errors, break and use fallback
-        break;
+        console.warn(`Model ${model} failed: ${lastError}`);
+        continue;
       }
     }
 
-    // Ultimate Fallback if all models fail
-    console.error('All AI models failed. Using strategic fallback.');
-    return res.json([
-      {
-        "title": "Smart Savings Strategy",
-        "description": "Consider setting up an automated transfer to your savings account right after payday to maintain a healthy savings rate.",
-        "type": "saving",
-        "impact": "high"
+    // Fallback if AI fails
+    console.error('AI logic failed. Using deterministic fallback.');
+    const savingsRate = totalInc > 0 ? Math.max(0, ((totalInc - totalExp) / totalInc) * 100) : 0;
+    const score = Math.min(100, Math.round(savingsRate + 10)); // Simple fallback score
+
+    return res.json({
+      healthScore: score,
+      financialHealth: {
+        savingsRate: Math.round(savingsRate),
+        emergencyFund: 0,
+        debtToIncome: 0,
+        investmentGrowth: 0
       },
-      {
-        "title": "Expense Visibility",
-        "description": "Regularly reviewing your 'Other' category can help identify hidden spending patterns and optimize your budget.",
-        "type": "growth",
-        "impact": "medium"
-      }
-    ]);
+      smartSuggestions: [
+        {
+          "title": "Analysis Offline",
+          "description": "Our deep-analysis engine is temporarily unavailable. Displaying basic metrics based on your current month data.",
+          "type": "alert",
+          "impact": "medium"
+        }
+      ]
+    });
 
   } catch (error) {
     console.error('General AI Insights Error:', error);

@@ -4,6 +4,17 @@ import { useAuth } from './AuthContext';
 
 const InsightsContext = createContext();
 
+const DEFAULT_AI_DATA = {
+  healthScore: 0,
+  financialHealth: {
+    savingsRate: 0,
+    emergencyFund: 0,
+    debtToIncome: 0,
+    investmentGrowth: 0
+  },
+  smartSuggestions: []
+};
+
 export const useInsights = () => {
   const context = useContext(InsightsContext);
   if (!context) {
@@ -13,7 +24,7 @@ export const useInsights = () => {
 };
 
 export const InsightsProvider = ({ children }) => {
-  const [insights, setInsights] = useState([]);
+  const [aiData, setAiData] = useState(DEFAULT_AI_DATA);
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState(null);
   const { user, loading: authLoading } = useAuth();
@@ -25,7 +36,7 @@ export const InsightsProvider = ({ children }) => {
       setLoading(true);
       setError(null);
       const response = await api.post('/api/insights');
-      setInsights(response.data);
+      setAiData(response.data);
     } catch (err) {
       console.error('Error fetching AI insights:', err);
       setError('Failed to load AI insights. Please try again later.');
@@ -42,7 +53,7 @@ export const InsightsProvider = ({ children }) => {
   }, [user, authLoading, fetchInsights]);
 
   const value = {
-    insights,
+    aiData,
     loading,
     error,
     refreshInsights: fetchInsights

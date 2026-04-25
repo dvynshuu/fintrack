@@ -6,11 +6,13 @@ import './FinancialScore.css';
 const FinancialScore = ({ healthScore, financialHealth, smartSuggestions, insightsLoading, onRefreshInsights }) => {
     const navigate = useNavigate();
 
-    const getScoreStatus = (score) => {
-        if (score >= 80) return { label: 'Excellent', class: 'status-excellent', tip: 'You are in the top 5% of savers! Keep it up.' };
-        if (score >= 60) return { label: 'Good', class: 'status-good', tip: 'Doing well! A bit more effort on debt reduction could help.' };
-        if (score >= 40) return { label: 'Fair', class: 'status-fair', tip: 'You are on the right track, but there is room for growth.' };
-        return { label: 'Needs Attention', class: 'status-poor', tip: 'Let\'s focus on building your emergency fund first.' };
+    const getScoreStatus = (score, loading) => {
+        if (loading) return { label: 'Analyzing...', class: 'status-loading', tip: 'FinTrack AI is calculating your fiscal resilience...' };
+        if (score >= 80) return { label: 'Excellent', class: 'status-excellent', tip: 'You are in the top tier of financial health! Keep it up.' };
+        if (score >= 60) return { label: 'Good', class: 'status-good', tip: 'Doing well! Consistent habits will push you even higher.' };
+        if (score >= 40) return { label: 'Fair', class: 'status-fair', tip: 'You are on the right track, but there is significant room for growth.' };
+        if (score > 0) return { label: 'Needs Attention', class: 'status-poor', tip: 'Let\'s focus on stabilizing your core financials first.' };
+        return { label: 'Awaiting Data', class: 'status-none', tip: 'Add more transactions to unlock AI-driven health analysis.' };
     };
 
     const getInsightIcon = (type) => {
@@ -23,7 +25,7 @@ const FinancialScore = ({ healthScore, financialHealth, smartSuggestions, insigh
         }
     };
 
-    const status = getScoreStatus(healthScore);
+    const status = getScoreStatus(healthScore, insightsLoading);
 
     return (
         <div className="financial-score-container animate-slide-up">
@@ -34,7 +36,7 @@ const FinancialScore = ({ healthScore, financialHealth, smartSuggestions, insigh
                         <h2>Financial Health Score</h2>
                         <p className="subtitle">Real-time analysis of your fiscal resilience</p>
                     </div>
-                    <div className={`status-badge ${status.class}`}>
+                    <div className={`status-badge ${status.class} ${insightsLoading ? 'pulse' : ''}`}>
                         {status.label}
                     </div>
                 </div>
@@ -48,12 +50,13 @@ const FinancialScore = ({ healthScore, financialHealth, smartSuggestions, insigh
                                     className={`gauge-progress ${status.class}`}
                                     cx="50" cy="50" r="45"
                                     style={{
-                                        strokeDasharray: `${healthScore * 2.82} 282.6`
+                                        strokeDasharray: `${(healthScore || 0) * 2.82} 282.6`,
+                                        transition: 'stroke-dasharray 1s ease-in-out'
                                     }}
                                 />
                             </svg>
                             <div className="score-display">
-                                <span className="score-number">{healthScore}</span>
+                                <span className="score-number">{insightsLoading ? '--' : (healthScore || 0)}</span>
                                 <span className="score-label">/ 100</span>
                             </div>
                         </div>
@@ -71,14 +74,14 @@ const FinancialScore = ({ healthScore, financialHealth, smartSuggestions, insigh
                                 </div>
                                 <div className="metric-info">
                                     <span className="metric-name">Savings Velocity</span>
-                                    <span className="metric-percent">{financialHealth.savingsRate}%</span>
+                                    <span className="metric-percent">{insightsLoading ? '...' : `${financialHealth?.savingsRate || 0}%`}</span>
                                 </div>
                             </div>
                             <div className="metric-progress-wrapper">
                                 <div className="metric-progress-bg">
                                     <div
                                         className="metric-progress-fill success"
-                                        style={{ width: `${Math.min(financialHealth.savingsRate, 100)}%` }}
+                                        style={{ width: `${Math.min(financialHealth?.savingsRate || 0, 100)}%`, transition: 'width 1s ease' }}
                                     ></div>
                                 </div>
                             </div>
@@ -91,14 +94,14 @@ const FinancialScore = ({ healthScore, financialHealth, smartSuggestions, insigh
                                 </div>
                                 <div className="metric-info">
                                     <span className="metric-name">Safety Net</span>
-                                    <span className="metric-percent">{financialHealth.emergencyFund}%</span>
+                                    <span className="metric-percent">{insightsLoading ? '...' : `${financialHealth?.emergencyFund || 0}%`}</span>
                                 </div>
                             </div>
                             <div className="metric-progress-wrapper">
                                 <div className="metric-progress-bg">
                                     <div
                                         className="metric-progress-fill warning"
-                                        style={{ width: `${Math.min(financialHealth.emergencyFund, 100)}%` }}
+                                        style={{ width: `${Math.min(financialHealth?.emergencyFund || 0, 100)}%`, transition: 'width 1s ease' }}
                                     ></div>
                                 </div>
                             </div>
@@ -111,14 +114,14 @@ const FinancialScore = ({ healthScore, financialHealth, smartSuggestions, insigh
                                 </div>
                                 <div className="metric-info">
                                     <span className="metric-name">Asset Growth</span>
-                                    <span className="metric-percent">{financialHealth.investmentGrowth}%</span>
+                                    <span className="metric-percent">{insightsLoading ? '...' : `${financialHealth?.investmentGrowth || 0}%`}</span>
                                 </div>
                             </div>
                             <div className="metric-progress-wrapper">
                                 <div className="metric-progress-bg">
                                     <div
                                         className="metric-progress-fill primary"
-                                        style={{ width: `${Math.min(financialHealth.investmentGrowth, 100)}%` }}
+                                        style={{ width: `${Math.min(financialHealth?.investmentGrowth || 0, 100)}%`, transition: 'width 1s ease' }}
                                     ></div>
                                 </div>
                             </div>
