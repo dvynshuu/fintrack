@@ -72,7 +72,7 @@ const Register = () => {
               <Logo size={28} surface={true} />
             </div>
             <h1>Create Account</h1>
-            <p>Join the community to start tracking your finances</p>
+            <p>Start tracking your finances with clarity and confidence</p>
           </div>
 
           {submitError && (
@@ -93,7 +93,7 @@ const Register = () => {
                   className="field-input"
                   value={formData.name}
                   onChange={handleChange}
-                  placeholder="e.g. John Doe"
+                  placeholder="e.g. Alex Morgan"
                   required
                 />
               </div>
@@ -109,7 +109,7 @@ const Register = () => {
                   className="field-input"
                   value={formData.email}
                   onChange={handleChange}
-                  placeholder="e.g. name@company.com"
+                  placeholder="e.g. alex@example.com"
                   required
                   autoComplete="email"
                 />

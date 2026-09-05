@@ -1,0 +1,350 @@
+.scenario-lab-backdrop {
+  position: fixed;
+  inset: 0;
+  background-color: rgba(0, 0, 0, 0.72);
+  backdrop-filter: blur(4px);
+  z-index: 1050;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 16px;
+}
+
+.scenario-lab-dialog {
+  background: var(--bg-surface, #11161B);
+  border: 1px solid var(--border, rgba(255, 255, 255, 0.08));
+  border-radius: 12px;
+  width: 100%;
+  max-width: 960px;
+  max-height: 88vh;
+  display: flex;
+  flex-direction: column;
+  overflow: hidden;
+  box-shadow: 0 20px 48px rgba(0, 0, 0, 0.45);
+}
+
+.scenario-lab-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 20px 24px;
+  border-bottom: 1px solid var(--border, rgba(255, 255, 255, 0.08));
+  background: var(--bg-surface-alt, #171E25);
+}
+
+.scenario-lab-header .header-actions {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+}
+
+.scenario-lab-header h2 {
+  font-size: 1.15rem;
+  font-weight: 700;
+  margin: 0;
+  color: var(--text-primary, #F3F4F6);
+}
+
+.scenario-lab-header .subtitle {
+  font-size: 0.8125rem;
+  color: var(--text-secondary, #9CA3AF);
+  margin: 2px 0 0 0;
+}
+
+.scenario-lab-body {
+  display: grid;
+  grid-template-columns: 360px 1fr;
+  flex: 1;
+  overflow-y: auto;
+}
+
+/* Controls Column */
+.scenario-controls-panel {
+  padding: 20px 24px;
+  border-right: 1px solid var(--border, rgba(255, 255, 255, 0.08));
+  background: var(--bg-surface, #11161B);
+  display: flex;
+  flex-direction: column;
+  gap: 16px;
+}
+
+.section-label {
+  font-size: 0.75rem;
+  text-transform: uppercase;
+  letter-spacing: 0.05em;
+  font-weight: 700;
+  color: var(--text-secondary, #9CA3AF);
+  margin: 0 0 4px 0;
+}
+
+.control-card {
+  background: var(--bg-app, #0A0E12);
+  border: 1px solid var(--border, rgba(255, 255, 255, 0.08));
+  border-radius: 8px;
+  padding: 14px 16px;
+}
+
+.control-label-row {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 12px;
+}
+
+.control-name {
+  font-size: 0.8125rem;
+  font-weight: 600;
+  color: var(--text-primary, #F3F4F6);
+}
+
+.control-value-badge {
+  font-size: 0.8125rem;
+  font-weight: 700;
+  padding: 2px 8px;
+  border-radius: 4px;
+}
+
+.control-value-badge.positive {
+  background: rgba(16, 185, 129, 0.15);
+  color: var(--accent, #10B981);
+}
+
+.control-value-badge.negative {
+  background: rgba(244, 63, 94, 0.15);
+  color: #F43F5E;
+}
+
+.control-value-badge.accent {
+  background: rgba(56, 189, 248, 0.15);
+  color: #38BDF8;
+}
+
+.range-slider {
+  width: 100%;
+  height: 6px;
+  background: var(--border, rgba(255, 255, 255, 0.15));
+  border-radius: 3px;
+  outline: none;
+  cursor: pointer;
+  accent-color: var(--accent, #10B981);
+}
+
+.control-range-bounds {
+  display: flex;
+  justify-content: space-between;
+  font-size: 0.6875rem;
+  color: var(--text-muted, #6B7280);
+  margin-top: 6px;
+}
+
+/* Results Column */
+.scenario-results-panel {
+  padding: 20px 24px;
+  background: var(--bg-surface-alt, #171E25);
+  overflow-y: auto;
+  display: flex;
+  flex-direction: column;
+  gap: 18px;
+}
+
+.impact-hero-banner {
+  display: grid;
+  grid-template-columns: repeat(2, 1fr);
+  gap: 14px;
+  background: var(--bg-surface, #11161B);
+  border: 1px solid var(--border-strong, rgba(255, 255, 255, 0.16));
+  border-radius: 8px;
+  padding: 16px 20px;
+}
+
+.impact-stat-item {
+  display: flex;
+  flex-direction: column;
+}
+
+.stat-label {
+  font-size: 0.75rem;
+  font-weight: 600;
+  text-transform: uppercase;
+  letter-spacing: 0.04em;
+  color: var(--text-secondary, #9CA3AF);
+  margin-bottom: 4px;
+}
+
+.stat-val-row {
+  display: flex;
+  align-items: baseline;
+  gap: 6px;
+}
+
+.stat-number {
+  font-size: 1.6rem;
+  font-weight: 700;
+  color: var(--text-primary, #F3F4F6);
+}
+
+.stat-unit {
+  font-size: 0.8125rem;
+  color: var(--text-muted, #6B7280);
+}
+
+.delta-tag {
+  font-size: 0.75rem;
+  font-weight: 700;
+  padding: 2px 6px;
+  border-radius: 4px;
+}
+
+.delta-tag.positive {
+  background: rgba(16, 185, 129, 0.15);
+  color: var(--accent, #10B981);
+}
+
+.delta-tag.negative {
+  background: rgba(244, 63, 94, 0.15);
+  color: #F43F5E;
+}
+
+.stat-subtext {
+  font-size: 0.725rem;
+  color: var(--text-muted, #6B7280);
+  margin-top: 4px;
+}
+
+/* Goals Trajectory */
+.goals-trajectory-section {
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+}
+
+.section-subhead {
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  font-size: 0.8125rem;
+  font-weight: 600;
+  color: var(--text-secondary, #9CA3AF);
+}
+
+.goals-trajectory-empty {
+  font-size: 0.8125rem;
+  color: var(--text-muted, #6B7280);
+  padding: 24px;
+  background: var(--bg-surface, #11161B);
+  border: 1px dashed var(--border, rgba(255, 255, 255, 0.08));
+  border-radius: 8px;
+  text-align: center;
+}
+
+.goals-trajectory-list {
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+}
+
+.goal-trajectory-card {
+  background: var(--bg-surface, #11161B);
+  border: 1px solid var(--border, rgba(255, 255, 255, 0.08));
+  border-radius: 8px;
+  padding: 14px 16px;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 12px;
+}
+
+.goal-card-main {
+  flex: 1;
+}
+
+.goal-header-row {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 8px;
+}
+
+.goal-title {
+  font-size: 0.875rem;
+  font-weight: 600;
+  color: var(--text-primary, #F3F4F6);
+}
+
+.goal-amounts {
+  font-size: 0.8125rem;
+  color: var(--text-secondary, #9CA3AF);
+}
+
+.dates-comparison-row {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  font-size: 0.75rem;
+}
+
+.date-block {
+  display: flex;
+  gap: 4px;
+}
+
+.date-label {
+  color: var(--text-muted, #6B7280);
+}
+
+.date-value {
+  color: var(--text-secondary, #9CA3AF);
+  font-weight: 500;
+}
+
+.date-block.projected .date-value {
+  color: var(--accent, #10B981);
+  font-weight: 600;
+}
+
+.date-arrow {
+  color: var(--text-muted, #6B7280);
+}
+
+.goal-acceleration-pill {
+  display: flex;
+  align-items: center;
+  gap: 4px;
+  font-size: 0.75rem;
+  font-weight: 700;
+  color: var(--accent, #10B981);
+  background: rgba(16, 185, 129, 0.12);
+  border: 1px solid rgba(16, 185, 129, 0.25);
+  padding: 4px 10px;
+  border-radius: 6px;
+  white-space: nowrap;
+}
+
+/* Footer */
+.scenario-lab-footer {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 16px 24px;
+  border-top: 1px solid var(--border, rgba(255, 255, 255, 0.08));
+  background: var(--bg-surface, #11161B);
+}
+
+.audit-note {
+  font-size: 0.75rem;
+  color: var(--text-muted, #6B7280);
+  max-width: 580px;
+}
+
+@media (max-width: 800px) {
+  .scenario-lab-body {
+    grid-template-columns: 1fr;
+  }
+  .scenario-controls-panel {
+    border-right: none;
+    border-bottom: 1px solid var(--border, rgba(255, 255, 255, 0.08));
+  }
+  .impact-hero-banner {
+    grid-template-columns: 1fr;
+  }
+}

@@ -1,0 +1,155 @@
+.transfer-modal-backdrop {
+  position: fixed;
+  inset: 0;
+  background: rgba(0, 0, 0, 0.75);
+  backdrop-filter: blur(4px);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  z-index: 9999;
+  padding: 16px;
+}
+
+.transfer-modal-card {
+  width: 100%;
+  max-width: 540px;
+  background: var(--bg-surface);
+  border: 1px solid var(--border-strong);
+  border-radius: var(--radius-lg, 10px);
+  padding: 24px;
+  box-shadow: 0 20px 40px -10px rgba(0, 0, 0, 0.6);
+}
+
+.transfer-modal-header {
+  display: flex;
+  align-items: flex-start;
+  justify-content: space-between;
+  margin-bottom: 20px;
+}
+
+.transfer-modal-header h3 {
+  font-size: var(--text-lg, 1.125rem);
+  font-weight: 700;
+  color: var(--text-primary);
+  margin-bottom: 4px;
+}
+
+.transfer-modal-header .subtitle {
+  font-size: var(--text-xs, 0.6875rem);
+  color: var(--text-muted);
+}
+
+.transfer-modal-close {
+  background: transparent;
+  border: none;
+  color: var(--text-muted);
+  cursor: pointer;
+  padding: 4px;
+  border-radius: 4px;
+}
+
+.transfer-modal-close:hover {
+  color: var(--text-primary);
+}
+
+.transfer-modal-alert {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  padding: 10px 14px;
+  background: rgba(244, 63, 94, 0.12);
+  border: 1px solid var(--negative);
+  border-radius: var(--radius-sm, 6px);
+  color: var(--negative);
+  font-size: var(--text-xs, 0.6875rem);
+  margin-bottom: 16px;
+}
+
+.transfer-modal-form {
+  display: flex;
+  flex-direction: column;
+  gap: 16px;
+}
+
+.transfer-accounts-grid {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+}
+
+.transfer-arrow-icon {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  color: var(--accent);
+  padding-top: 20px;
+}
+
+.transfer-field {
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+  gap: 6px;
+}
+
+.transfer-field label {
+  font-size: var(--text-xs, 0.6875rem);
+  font-weight: 600;
+  color: var(--text-secondary);
+}
+
+.transfer-field input,
+.transfer-field select {
+  height: 42px;
+  background: var(--bg-surface-alt);
+  border: 1px solid var(--border);
+  border-radius: var(--radius-sm, 6px);
+  padding: 0 12px;
+  font-size: var(--text-sm, 0.8125rem);
+  color: var(--text-primary);
+  outline: none;
+  transition: border-color 0.15s ease;
+}
+
+.transfer-field input:focus,
+.transfer-field select:focus {
+  border-color: var(--accent);
+  box-shadow: 0 0 0 3px var(--accent-soft);
+}
+
+.transfer-preview-box {
+  background: var(--bg-surface-alt);
+  border: 1px dashed var(--border-strong);
+  border-radius: var(--radius-sm, 6px);
+  padding: 14px;
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+  font-size: var(--text-xs, 0.6875rem);
+}
+
+.transfer-preview-row {
+  display: flex;
+  justify-content: space-between;
+  color: var(--text-secondary);
+}
+
+.transfer-preview-row strong {
+  color: var(--text-primary);
+}
+
+.transfer-preview-badge {
+  text-align: center;
+  font-weight: 600;
+  color: var(--accent);
+  margin-top: 4px;
+  padding-top: 6px;
+  border-top: 1px solid var(--border);
+}
+
+.transfer-modal-actions {
+  display: flex;
+  justify-content: flex-end;
+  gap: 12px;
+  margin-top: 8px;
+}

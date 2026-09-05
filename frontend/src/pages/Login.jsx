@@ -85,7 +85,7 @@ const Login = () => {
               <Logo size={28} surface={true} />
             </div>
             <h1>Welcome Back</h1>
-            <p>Securely sign in to your accounts</p>
+            <p>Sign in to manage your money with confidence</p>
           </div>
 
           {submitError && (
@@ -106,7 +106,7 @@ const Login = () => {
                   className="field-input"
                   value={formData.email}
                   onChange={handleChange}
-                  placeholder="e.g. name@company.com"
+                  placeholder="e.g. alex@example.com"
                   required
                   autoComplete="email"
                 />
@@ -147,7 +147,7 @@ const Login = () => {
                 <span>Remember me</span>
               </label>
               <Link to="/forgot-password" className="forgot-link">
-                Forgot security code?
+                Forgot password?
               </Link>
             </div>
 
@@ -159,7 +159,7 @@ const Login = () => {
               {isLoading ? (
                 <>
                   <span className="btn-spinner"></span>
-                  Authenticating...
+                  Signing in...
                 </>
               ) : (
                 'Sign In'
@@ -184,7 +184,7 @@ const Login = () => {
           </div>
 
           <div className="login-card-footer">
-            Don't have an account? <Link to="/register">Join the community</Link>
+            Don't have an account? <Link to="/register">Create a free account</Link>
           </div>
         </div>
       </div>

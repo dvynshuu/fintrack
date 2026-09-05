@@ -1,0 +1,128 @@
+.net-worth-backdrop {
+  position: fixed;
+  inset: 0;
+  background-color: rgba(0, 0, 0, 0.72);
+  backdrop-filter: blur(4px);
+  z-index: 1050;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 16px;
+}
+
+.net-worth-dialog {
+  background: var(--bg-surface, #11161B);
+  border: 1px solid var(--border, rgba(255, 255, 255, 0.08));
+  border-radius: 12px;
+  width: 100%;
+  max-width: 920px;
+  max-height: 88vh;
+  display: flex;
+  flex-direction: column;
+  overflow: hidden;
+  box-shadow: 0 20px 48px rgba(0, 0, 0, 0.45);
+}
+
+.net-worth-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 20px 24px;
+  border-bottom: 1px solid var(--border, rgba(255, 255, 255, 0.08));
+  background: var(--bg-surface-alt, #171E25);
+}
+
+.net-worth-header h2 {
+  font-size: 1.15rem;
+  font-weight: 700;
+  margin: 0;
+  color: var(--text-primary, #F3F4F6);
+}
+
+.net-worth-header .subtitle {
+  font-size: 0.8125rem;
+  color: var(--text-secondary, #9CA3AF);
+  margin: 2px 0 0 0;
+}
+
+/* Waterfall Summary Row */
+.waterfall-summary-row {
+  display: grid;
+  grid-template-columns: repeat(4, 1fr);
+  gap: 12px;
+  padding: 16px 24px;
+  background: var(--bg-app, #0A0E12);
+  border-bottom: 1px solid var(--border, rgba(255, 255, 255, 0.08));
+}
+
+.wf-summary-card {
+  background: var(--bg-surface, #11161B);
+  border: 1px solid var(--border, rgba(255, 255, 255, 0.08));
+  border-radius: 8px;
+  padding: 12px 14px;
+  display: flex;
+  flex-direction: column;
+}
+
+.wf-summary-card.flagship {
+  border-color: rgba(16, 185, 129, 0.3);
+  background: rgba(16, 185, 129, 0.04);
+}
+
+.wf-card-label {
+  font-size: 0.6875rem;
+  text-transform: uppercase;
+  letter-spacing: 0.04em;
+  font-weight: 600;
+  color: var(--text-secondary, #9CA3AF);
+  margin-bottom: 4px;
+}
+
+.wf-card-val {
+  font-size: 1.25rem;
+  font-weight: 700;
+  color: var(--text-primary, #F3F4F6);
+}
+
+/* Net worth body */
+.net-worth-body {
+  padding: 24px;
+  overflow-y: auto;
+  flex: 1;
+}
+
+.nw-loading-state,
+.nw-error-state {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  padding: 48px;
+  gap: 12px;
+  color: var(--text-secondary, #9CA3AF);
+}
+
+.waterfall-chart-wrap {
+  width: 100%;
+}
+
+/* Footer */
+.net-worth-footer {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 16px 24px;
+  border-top: 1px solid var(--border, rgba(255, 255, 255, 0.08));
+  background: var(--bg-surface-alt, #171E25);
+}
+
+.nw-audit-note {
+  font-size: 0.75rem;
+  color: var(--text-muted, #6B7280);
+}
+
+@media (max-width: 768px) {
+  .waterfall-summary-row {
+    grid-template-columns: repeat(2, 1fr);
+  }
+}

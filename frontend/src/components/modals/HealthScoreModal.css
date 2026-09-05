@@ -1,0 +1,197 @@
+.health-modal-backdrop {
+  position: fixed;
+  inset: 0;
+  background: rgba(0, 0, 0, 0.75);
+  backdrop-filter: blur(4px);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  z-index: 9999;
+  padding: 16px;
+}
+
+.health-modal-card {
+  width: 100%;
+  max-width: 640px;
+  background: var(--bg-surface);
+  border: 1px solid var(--border-strong);
+  border-radius: var(--radius-lg, 10px);
+  padding: 24px;
+  box-shadow: 0 20px 40px -10px rgba(0, 0, 0, 0.6);
+  max-height: 90vh;
+  display: flex;
+  flex-direction: column;
+}
+
+.health-modal-header {
+  display: flex;
+  align-items: flex-start;
+  justify-content: space-between;
+  margin-bottom: 20px;
+}
+
+.health-modal-title-group {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+}
+
+.health-modal-icon {
+  color: var(--accent);
+}
+
+.health-modal-header h3 {
+  font-size: var(--text-lg, 1.125rem);
+  font-weight: 700;
+  color: var(--text-primary);
+  margin-bottom: 4px;
+}
+
+.health-modal-header .subtitle {
+  font-size: var(--text-xs, 0.6875rem);
+  color: var(--text-muted);
+}
+
+.health-modal-close {
+  background: transparent;
+  border: none;
+  color: var(--text-muted);
+  cursor: pointer;
+  padding: 4px;
+}
+
+.health-modal-score-banner {
+  display: flex;
+  align-items: center;
+  gap: 20px;
+  padding: 16px;
+  border-radius: var(--radius-md, 8px);
+  background: var(--bg-surface-alt);
+  border: 1px solid var(--border);
+  margin-bottom: 20px;
+}
+
+.banner-score {
+  display: flex;
+  align-items: baseline;
+  gap: 4px;
+}
+
+.score-num {
+  font-size: var(--text-3xl, 2.25rem);
+  font-weight: 800;
+  color: var(--accent);
+  font-variant-numeric: tabular-nums;
+}
+
+.score-denom {
+  font-size: var(--text-sm, 0.8125rem);
+  color: var(--text-muted);
+}
+
+.banner-details {
+  flex: 1;
+}
+
+.banner-status-tag {
+  display: inline-block;
+  font-size: var(--text-xs, 0.6875rem);
+  font-weight: 700;
+  color: var(--accent);
+  text-transform: uppercase;
+  letter-spacing: 0.5px;
+  margin-bottom: 4px;
+}
+
+.banner-details p {
+  font-size: var(--text-xs, 0.6875rem);
+  color: var(--text-muted);
+  line-height: 1.4;
+}
+
+.health-dimensions-list {
+  flex: 1;
+  overflow-y: auto;
+  display: flex;
+  flex-direction: column;
+  gap: 14px;
+  padding-right: 4px;
+  margin-bottom: 20px;
+}
+
+.health-dimensions-list h4 {
+  font-size: var(--text-xs, 0.6875rem);
+  font-weight: 700;
+  color: var(--text-secondary);
+  text-transform: uppercase;
+  letter-spacing: 0.5px;
+  margin-bottom: 4px;
+}
+
+.health-dim-item {
+  display: flex;
+  flex-direction: column;
+  gap: 6px;
+  padding: 12px;
+  border-radius: var(--radius-sm, 6px);
+  background: var(--bg-surface-alt);
+  border: 1px solid var(--border);
+}
+
+.dim-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+
+.dim-name {
+  font-size: var(--text-sm, 0.8125rem);
+  font-weight: 600;
+  color: var(--text-primary);
+}
+
+.dim-weight {
+  font-size: var(--text-xs, 0.6875rem);
+  color: var(--text-muted);
+}
+
+.dim-score {
+  font-size: var(--text-xs, 0.6875rem);
+  font-weight: 700;
+  color: var(--accent);
+}
+
+.dim-progress-bg {
+  width: 100%;
+  height: 6px;
+  background: var(--bg-app);
+  border-radius: 3px;
+  overflow: hidden;
+}
+
+.dim-progress-fill {
+  height: 100%;
+  background: var(--accent);
+  border-radius: 3px;
+}
+
+.dim-evidence {
+  font-size: var(--text-xs, 0.6875rem);
+  color: var(--text-secondary);
+  display: flex;
+  flex-direction: column;
+  gap: 2px;
+  margin-top: 4px;
+}
+
+.evidence-text {
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  color: var(--text-muted);
+}
+
+.health-modal-footer {
+  display: flex;
+  justify-content: flex-end;
+}

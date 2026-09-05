@@ -476,3 +476,69 @@
     align-items: center;
   }
 }
+
+.nav-search-btn {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  background: var(--bg-surface-alt);
+  border: 1px solid var(--border);
+  border-radius: var(--radius-sm, 6px);
+  padding: 6px 12px;
+  color: var(--text-muted);
+  font-size: var(--text-xs, 0.6875rem);
+  cursor: pointer;
+  transition: all 0.15s ease;
+}
+
+.nav-search-btn:hover {
+  border-color: var(--accent);
+  color: var(--text-primary);
+}
+
+.search-hint-text {
+  font-weight: 500;
+}
+
+.search-kbd-shortcut {
+  background: var(--bg-surface);
+  border: 1px solid var(--border);
+  border-radius: 3px;
+  padding: 1px 4px;
+  font-size: 10px;
+  color: var(--text-muted);
+}
+
+.nav-ask-btn {
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  background: rgba(16, 185, 129, 0.1);
+  border: 1px solid rgba(16, 185, 129, 0.25);
+  border-radius: var(--radius-sm, 6px);
+  padding: 5px 10px;
+  font-size: var(--text-xs, 0.75rem);
+  font-weight: 600;
+  color: var(--accent, #10B981);
+  cursor: pointer;
+  transition: all 0.15s ease;
+}
+
+.nav-ask-btn:hover {
+  background: rgba(16, 185, 129, 0.18);
+  border-color: var(--accent, #10B981);
+  transform: translateY(-1px);
+}
+
+.nav-ask-btn .sparkle-icon {
+  color: var(--accent, #10B981);
+}
+
+@media (max-width: 640px) {
+  .nav-ask-btn .ask-btn-text {
+    display: none;
+  }
+  .nav-ask-btn {
+    padding: 6px;
+  }
+}

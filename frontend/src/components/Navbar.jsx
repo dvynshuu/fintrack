@@ -13,20 +13,18 @@ import {
   FaSignOutAlt,
   FaSun,
   FaMoon,
-  FaBell,
-  FaCheckCircle,
-  FaInfoCircle,
+  FaSearch,
   FaChevronDown,
   FaBars,
   FaTimes
 } from 'react-icons/fa';
 
+import { Sparkles } from 'lucide-react';
 import Logo from './Logo';
 
-const Navbar = () => {
+const Navbar = ({ onOpenCommandPalette, onOpenAskFinTrack }) => {
   const [isMobileMenuOpen, setIsMobileMenuOpen] = useState(false);
   const [isUserMenuOpen, setIsUserMenuOpen] = useState(false);
-  const [isNotificationsOpen, setIsNotificationsOpen] = useState(false);
   const { user, logout } = useAuth();
   const { theme, toggleTheme } = useTheme();
   const location = useLocation();
@@ -35,7 +33,6 @@ const Navbar = () => {
   useEffect(() => {
     setIsMobileMenuOpen(false);
     setIsUserMenuOpen(false);
-    setIsNotificationsOpen(false);
   }, [location]);
 
   useEffect(() => {
@@ -43,13 +40,10 @@ const Navbar = () => {
       if (isUserMenuOpen && !event.target.closest('.user-menu')) {
         setIsUserMenuOpen(false);
       }
-      if (isNotificationsOpen && !event.target.closest('.nav-notifications')) {
-        setIsNotificationsOpen(false);
-      }
     };
     document.addEventListener('mousedown', handleClickOutside);
     return () => document.removeEventListener('mousedown', handleClickOutside);
-  }, [isUserMenuOpen, isNotificationsOpen]);
+  }, [isUserMenuOpen]);
 
   const handleLogout = async () => {
     try {
@@ -95,7 +89,7 @@ const Navbar = () => {
                 <FaMoneyBillWave /> <span>Income</span>
               </Link>
               <Link to="/goals" className={`nav-link ${location.pathname === '/goals' ? 'active' : ''}`}>
-                <FaBullseye /> <span>Goals</span>
+                <FaBullseye /> <span>Savings Goals</span>
               </Link>
             </>
           )}
@@ -103,102 +97,78 @@ const Navbar = () => {
 
         {/* Right Actions */}
         <div className="navbar-actions">
+          {/* Ask FinTrack Quick Trigger */}
+          {user && (
+            <button
+              type="button"
+              className="nav-ask-btn"
+              onClick={onOpenAskFinTrack}
+              title="Ask your friendly money assistant"
+              aria-label="Open financial assistant drawer"
+            >
+              <Sparkles size={13} className="sparkle-icon" />
+              <span className="ask-btn-text">Ask FinTrack</span>
+            </button>
+          )}
+
+          {/* Global Search / Command Palette Shortcut */}
+          {user && (
+            <button
+              type="button"
+              className="nav-search-btn"
+              onClick={onOpenCommandPalette}
+              title="Search or jump to command (Ctrl+K)"
+              aria-label="Open command palette"
+            >
+              <FaSearch size={12} />
+              <span className="search-hint-text">Search...</span>
+              <kbd className="search-kbd-shortcut">⌘K</kbd>
+            </button>
+          )}
+
           {/* Live Theme Toggle */}
           <button
             className="theme-toggle"
             onClick={handleToggleTheme}
-            title={`Switch to ${theme === 'dark' ? 'light' : 'dark'} mode`}
+            title={`Switch to ${theme === 'dark' ? 'paper light' : 'obsidian dark'} mode`}
             aria-label="Toggle visual theme"
           >
             {theme === 'dark' ? <FaSun /> : <FaMoon />}
           </button>
 
           {user ? (
-            <>
-              {/* Notification Popover */}
-              <div className="nav-notifications">
-                <button
-                  className="nav-notification-btn"
-                  onClick={() => setIsNotificationsOpen(!isNotificationsOpen)}
-                  aria-label="Notifications"
-                  title="Notifications"
-                >
-                  <FaBell />
-                  <span className="nav-notification-badge" />
-                </button>
+            /* User Menu */
+            <div className="user-menu">
+              <button
+                className="user-menu-trigger"
+                onClick={() => setIsUserMenuOpen(!isUserMenuOpen)}
+                aria-label="User profile menu"
+              >
+                <span className="user-avatar-initial">{getInitial(user.name)}</span>
+                <span className="user-name-label">{user.name || 'User'}</span>
+                <FaChevronDown className={`user-menu-caret ${isUserMenuOpen ? 'rotated' : ''}`} />
+              </button>
 
-                {isNotificationsOpen && (
-                  <div className="notifications-dropdown animate-scale-in">
-                    <div className="notifications-header">
-                      <span>Notifications</span>
-                      <span className="notifications-count">3 new</span>
-                    </div>
-                    <div className="notifications-list">
-                      <div className="notification-item unread">
-                        <div className="notification-icon success">
-                          <FaCheckCircle />
-                        </div>
-                        <div className="notification-body">
-                          <p className="notification-text">Salary deposit received and logged.</p>
-                          <span className="notification-time">10m ago</span>
-                        </div>
-                      </div>
-                      <div className="notification-item unread">
-                        <div className="notification-icon info">
-                          <FaInfoCircle />
-                        </div>
-                        <div className="notification-body">
-                          <p className="notification-text">Savings rate increased by 4.2% this month.</p>
-                          <span className="notification-time">2h ago</span>
-                        </div>
-                      </div>
-                      <div className="notification-item">
-                        <div className="notification-icon info">
-                          <FaInfoCircle />
-                        </div>
-                        <div className="notification-body">
-                          <p className="notification-text">All transactions synchronized to ledger.</p>
-                          <span className="notification-time">1d ago</span>
-                        </div>
-                      </div>
-                    </div>
+              {isUserMenuOpen && (
+                <div className="user-dropdown animate-scale-in">
+                  <div className="user-dropdown-header">
+                    <span className="user-dropdown-name">{user.name}</span>
+                    <span className="user-dropdown-email">{user.email}</span>
                   </div>
-                )}
-              </div>
-
-              {/* User Menu */}
-              <div className="user-menu">
-                <button
-                  className="user-menu-trigger"
-                  onClick={() => setIsUserMenuOpen(!isUserMenuOpen)}
-                  aria-label="User profile menu"
-                >
-                  <span className="user-avatar-initial">{getInitial(user.name)}</span>
-                  <span className="user-name-label">{user.name || 'User'}</span>
-                  <FaChevronDown className={`user-menu-caret ${isUserMenuOpen ? 'rotated' : ''}`} />
-                </button>
-
-                {isUserMenuOpen && (
-                  <div className="user-dropdown animate-scale-in">
-                    <div className="user-dropdown-header">
-                      <span className="user-dropdown-name">{user.name}</span>
-                      <span className="user-dropdown-email">{user.email}</span>
-                    </div>
-                    <div className="dropdown-divider" />
-                    <Link to="/profile" className="dropdown-item">
-                      <FaUser /> Profile
-                    </Link>
-                    <Link to="/settings" className="dropdown-item">
-                      <FaCog /> Settings
-                    </Link>
-                    <div className="dropdown-divider" />
-                    <button className="dropdown-item logout" onClick={handleLogout}>
-                      <FaSignOutAlt /> Sign Out
-                    </button>
-                  </div>
-                )}
-              </div>
-            </>
+                  <div className="dropdown-divider" />
+                  <Link to="/profile" className="dropdown-item">
+                    <FaUser /> Profile
+                  </Link>
+                  <Link to="/settings" className="dropdown-item">
+                    <FaCog /> Settings
+                  </Link>
+                  <div className="dropdown-divider" />
+                  <button className="dropdown-item logout" onClick={handleLogout}>
+                    <FaSignOutAlt /> Sign Out
+                  </button>
+                </div>
+              )}
+            </div>
           ) : (
             <div className="auth-buttons">
               <Link to="/login" className="btn-sign-in">

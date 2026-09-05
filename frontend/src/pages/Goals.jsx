@@ -26,12 +26,12 @@ import {
 import './Goals.css';
 
 const CATEGORIES = [
-  { id: 'house', name: 'Real Estate & Housing', icon: <FaHome />, color: '#10B981' },
-  { id: 'car', name: 'Vehicle & Transport', icon: <FaCar />, color: '#38BDF8' },
-  { id: 'education', name: 'Education & Tuition', icon: <FaGraduationCap />, color: '#F59E0B' },
-  { id: 'travel', name: 'Travel & Expedition', icon: <FaPlane />, color: '#EC4899' },
-  { id: 'wedding', name: 'Life Milestones', icon: <FaHeart />, color: '#6366F1' },
-  { id: 'other', name: 'Capital Reserves', icon: <FaGift />, color: '#64748B' }
+  { id: 'house', name: 'Home & Housing', icon: <FaHome />, color: '#10B981' },
+  { id: 'car', name: 'Car & Transport', icon: <FaCar />, color: '#38BDF8' },
+  { id: 'education', name: 'Education & Learning', icon: <FaGraduationCap />, color: '#F59E0B' },
+  { id: 'travel', name: 'Travel & Vacation', icon: <FaPlane />, color: '#EC4899' },
+  { id: 'wedding', name: 'Weddings & Milestones', icon: <FaHeart />, color: '#6366F1' },
+  { id: 'other', name: 'Emergency & Savings', icon: <FaGift />, color: '#64748B' }
 ];
 
 const Goals = () => {
@@ -154,11 +154,11 @@ const Goals = () => {
       {/* Header */}
       <div className="goals-header">
         <div>
-          <h1>Capital Targets & Goals</h1>
-          <p>Multi-horizon savings trajectories, capital accumulation, and target milestones</p>
+          <h1>Savings Goals</h1>
+          <p>Track what you're saving for, celebrate milestones, and reach your goals faster</p>
         </div>
         <button className="add-goal-btn" onClick={() => { setSelectedGoal(null); setShowAddModal(true); }}>
-          <FaPlus /> Define New Target
+          <FaPlus /> + New Goal
         </button>
       </div>
 
@@ -166,29 +166,29 @@ const Goals = () => {
       <div className="goals-metrics-strip">
         <div className="goals-metric-card">
           <div className="goals-metric-header">
-            <span className="goals-metric-label">Accumulated Capital</span>
+            <span className="goals-metric-label">Total Saved</span>
             <FaPiggyBank className="goals-metric-icon" />
           </div>
           <div className="goals-metric-value">{formatCurrency(portfolioMetrics.totalCurrent)}</div>
-          <span className="goals-metric-sub">Dedicated to targets</span>
+          <span className="goals-metric-sub">Across your active goals</span>
         </div>
 
         <div className="goals-metric-card">
           <div className="goals-metric-header">
-            <span className="goals-metric-label">Target Capital Pool</span>
+            <span className="goals-metric-label">Total Goal Target</span>
             <FaBullseye className="goals-metric-icon" />
           </div>
           <div className="goals-metric-value">{formatCurrency(portfolioMetrics.totalTarget)}</div>
-          <span className="goals-metric-sub">Across {portfolioMetrics.totalCount} strategic goals</span>
+          <span className="goals-metric-sub">Needed for all {portfolioMetrics.totalCount} goals</span>
         </div>
 
         <div className="goals-metric-card">
           <div className="goals-metric-header">
-            <span className="goals-metric-label">Portfolio Completion</span>
+            <span className="goals-metric-label">Overall Progress</span>
             <FaCoins className="goals-metric-icon" />
           </div>
           <div className="goals-metric-value">{portfolioMetrics.overallPct}%</div>
-          <span className="goals-metric-sub">{portfolioMetrics.completedCount} targets achieved</span>
+          <span className="goals-metric-sub">{portfolioMetrics.completedCount} of {portfolioMetrics.totalCount} goals completed</span>
         </div>
       </div>
 
@@ -229,7 +229,7 @@ const Goals = () => {
                   <div className="goal-actions">
                     <button
                       className="goal-action-btn edit"
-                      title="Edit Target"
+                      title="Edit Goal"
                       onClick={() => {
                         setSelectedGoal(goal);
                         setShowEditModal(true);
@@ -239,7 +239,7 @@ const Goals = () => {
                     </button>
                     <button
                       className="goal-action-btn delete"
-                      title="Delete Target"
+                      title="Delete Goal"
                       onClick={() => {
                         setSelectedGoal(goal);
                         setShowDeleteModal(true);
@@ -256,7 +256,7 @@ const Goals = () => {
                     <span className="progress-percentage-label">{progress}% Funded</span>
                     {isAchieved ? (
                       <span className="milestone-badge achieved">
-                        <FaCheckCircle /> Goal Reached
+                        <FaCheckCircle /> Goal Reached!
                       </span>
                     ) : (
                       <span className="milestone-badge in-progress">
@@ -299,7 +299,7 @@ const Goals = () => {
                     className="btn-contribute"
                     onClick={() => setDepositGoal(goal)}
                   >
-                    <FaCoins /> Record Contribution
+                    <FaCoins /> Add Money
                   </button>
                 </div>
               </div>
@@ -308,8 +308,8 @@ const Goals = () => {
         ) : (
           <div className="goals-empty-state">
             <FaBullseye className="empty-icon" />
-            <h3>No Financial Goals Defined</h3>
-            <p>Define a new target to establish multi-month savings velocity and progress tracking.</p>
+            <h3>No savings goals yet</h3>
+            <p>Set a goal to save for a home, vacation, emergency fund, or dream purchase!</p>
             <button
               className="btn-create-first"
               onClick={() => {
@@ -317,7 +317,7 @@ const Goals = () => {
                 setShowAddModal(true);
               }}
             >
-              <FaPlus /> Create Your First Goal
+              <FaPlus /> + Create Your First Goal
             </button>
           </div>
         )}
@@ -328,7 +328,7 @@ const Goals = () => {
         <div className="modal-overlay">
           <div className="modal-container">
             <div className="modal-header">
-              <h2>Deposit to "{depositGoal.title}"</h2>
+              <h2>Add Money to "{depositGoal.title}"</h2>
               <button className="close-btn" onClick={() => setDepositGoal(null)}>
                 ×
               </button>
@@ -340,7 +340,7 @@ const Goals = () => {
                   <strong>{formatCurrency(depositGoal.targetAmount)}</strong>
                 </p>
                 <div className="form-group" style={{ marginTop: '16px' }}>
-                  <label htmlFor="depositAmount">Contribution Amount (₹)</label>
+                  <label htmlFor="depositAmount">Amount to Add (₹)</label>
                   <input
                     type="number"
                     id="depositAmount"
@@ -367,7 +367,7 @@ const Goals = () => {
                   className="btn btn-primary"
                   disabled={isDepositing || !depositAmount}
                 >
-                  {isDepositing ? 'Recording...' : 'Confirm Contribution'}
+                  {isDepositing ? 'Adding...' : 'Add to Goal'}
                 </button>
               </div>
             </form>
@@ -396,8 +396,8 @@ const Goals = () => {
             setSelectedGoal(null);
           }}
           onDelete={() => handleDelete(selectedGoal._id)}
-          title="Delete Financial Goal"
-          message="Are you sure you want to permanently delete this goal?"
+          title="Delete Goal"
+          message="Are you sure you want to delete this goal?"
           itemName={selectedGoal.title}
         />
       )}

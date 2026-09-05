@@ -147,11 +147,11 @@ const Income = () => {
       {/* Header */}
       <div className="income-header">
         <div>
-          <h1>Inflow Ledger</h1>
-          <p>Verified capital deposits, revenue streams, and incoming liquidity</p>
+          <h1>Income & Earnings</h1>
+          <p>Track your salary, freelance earnings, investments, and other money coming in</p>
         </div>
         <button className="add-income-btn" onClick={handleAdd}>
-          <FaPlus /> Record Inflow
+          <FaPlus /> + Add Income
         </button>
       </div>
 
@@ -159,29 +159,29 @@ const Income = () => {
       <div className="ledger-metrics-strip">
         <div className="ledger-metric-card">
           <div className="ledger-metric-header">
-            <span className="ledger-metric-label">Total Inflow</span>
+            <span className="ledger-metric-label">Total Earned</span>
             <FaArrowUp className="ledger-metric-icon" />
           </div>
           <div className="ledger-metric-value">{formatCurrency(metrics.total)}</div>
-          <span className="ledger-metric-sub">{metrics.count} settled receipts</span>
+          <span className="ledger-metric-sub">{metrics.count} deposits</span>
         </div>
 
         <div className="ledger-metric-card">
           <div className="ledger-metric-header">
-            <span className="ledger-metric-label">Average Inflow</span>
+            <span className="ledger-metric-label">Average Income</span>
             <FaWallet className="ledger-metric-icon" />
           </div>
           <div className="ledger-metric-value">{formatCurrency(metrics.avg)}</div>
-          <span className="ledger-metric-sub">Per receipt entry</span>
+          <span className="ledger-metric-sub">Per deposit</span>
         </div>
 
         <div className="ledger-metric-card">
           <div className="ledger-metric-header">
-            <span className="ledger-metric-label">Peak Receipt</span>
+            <span className="ledger-metric-label">Top Income Source</span>
             <FaTag className="ledger-metric-icon" />
           </div>
           <div className="ledger-metric-value">{formatCurrency(metrics.max)}</div>
-          <span className="ledger-metric-sub">Largest single stream</span>
+          <span className="ledger-metric-sub">Largest single deposit</span>
         </div>
       </div>
 
@@ -191,7 +191,7 @@ const Income = () => {
           <FaSearch className="search-icon" />
           <input
             type="text"
-            placeholder="Search inflow sources, payors, descriptions..."
+            placeholder="Search by source, company, or note..."
             value={searchQuery}
             onChange={(e) => setSearchQuery(e.target.value)}
           />
@@ -307,11 +307,11 @@ const Income = () => {
         ) : (
           <div className="ledger-empty-state">
             <FaMoneyBillWave className="empty-state-icon" />
-            <h3>No Inflow Records Found</h3>
+            <h3>No Income Recorded Yet</h3>
             <p>
               {searchQuery || selectedCategory !== 'all'
-                ? 'No transactions matched your active filter criteria.'
-                : 'Your inflow ledger is currently empty. Record your first income receipt to track capital growth.'}
+                ? 'No income records matched your search or category filter.'
+                : 'You haven\'t recorded any income yet. Tap "+ Add Income" above to log your salary, freelancing, or other deposits!'}
             </p>
             {(searchQuery || selectedCategory !== 'all') && (
               <button

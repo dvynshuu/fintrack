@@ -1,0 +1,70 @@
+.mobile-bottom-nav {
+  display: none;
+}
+
+@media (max-width: 768px) {
+  .mobile-bottom-nav {
+    display: flex;
+    position: fixed;
+    bottom: 0;
+    left: 0;
+    right: 0;
+    height: 60px;
+    background: var(--bg-surface, #11161B);
+    border-top: 1px solid var(--border, rgba(255, 255, 255, 0.08));
+    z-index: 1000;
+    align-items: center;
+    justify-content: space-around;
+    padding-bottom: env(safe-area-inset-bottom, 0px);
+    box-shadow: 0 -4px 16px rgba(0, 0, 0, 0.3);
+  }
+
+  .mobile-nav-item {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    gap: 3px;
+    background: transparent;
+    border: none;
+    color: var(--text-muted, #6B7280);
+    text-decoration: none;
+    font-size: 0.6875rem;
+    font-weight: 500;
+    padding: 6px 12px;
+    cursor: pointer;
+    transition: all 0.15s ease;
+    flex: 1;
+  }
+
+  .mobile-nav-item.active {
+    color: var(--accent, #10B981);
+    font-weight: 700;
+  }
+
+  .mobile-nav-item:hover {
+    color: var(--text-primary, #F3F4F6);
+  }
+
+  .mobile-nav-item.ask-trigger {
+    position: relative;
+    top: -6px;
+  }
+
+  .ask-sparkle-icon {
+    width: 36px;
+    height: 36px;
+    border-radius: 50%;
+    background: var(--accent, #10B981);
+    color: #FFFFFF;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    box-shadow: 0 4px 12px rgba(16, 185, 129, 0.35);
+  }
+
+  /* Add margin to layout so content does not get covered by bottom nav */
+  .layout-connected .main-content:not(.is-auth) {
+    padding-bottom: 70px;
+  }
+}

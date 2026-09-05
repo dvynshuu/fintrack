@@ -16,7 +16,7 @@ const Footer = () => {
             <span className="footer-wordmark">FinTrack</span>
           </div>
           <p>
-            The benchmark for personal financial control. Track, analyze, and optimize your wealth with institutional-grade clarity.
+            Smart, simple personal finance for everyone. Track spending, save more, and reach your financial goals with total peace of mind.
           </p>
           <div className="social-links">
             <a href="https://github.com" target="_blank" rel="noopener noreferrer" aria-label="GitHub"><FaGithub /></a>
@@ -28,31 +28,31 @@ const Footer = () => {
         </div>
 
         <div className="footer-section">
-          <h3>Platform</h3>
+          <h3>Explore</h3>
           <ul>
             <li><Link to="/">Dashboard</Link></li>
             <li><Link to="/expenses">Expenses</Link></li>
             <li><Link to="/income">Income</Link></li>
-            <li><Link to="/goals">Goals</Link></li>
+            <li><Link to="/goals">Savings Goals</Link></li>
             <li><Link to="/profile">Profile</Link></li>
           </ul>
         </div>
 
         <div className="footer-section">
-          <h3>Knowledge Base</h3>
+          <h3>Help & FAQs</h3>
           <div className="faq-item">
-            <h4>How secure is my data?</h4>
-            <p>Bank-level encryption ensures your financial footprint remains private and protected.</p>
+            <h4>Is my data private and secure?</h4>
+            <p>Yes. Bank-grade encryption ensures only you have access to your finances.</p>
           </div>
           <div className="faq-item">
-            <h4>Can I export reports?</h4>
-            <p>Yes — export to CSV or PDF at any time with full data portability.</p>
+            <h4>Can I export my data?</h4>
+            <p>Yes — export your transactions to CSV at any time with one click.</p>
           </div>
         </div>
 
         <div className="footer-section">
           <h3>Contact</h3>
-          <p>Expert support is only a message away.</p>
+          <p>We're here to help whenever you need a hand.</p>
           <ul>
             <li>support@fintrack.com</li>
             <li>+1 (555) 123-4567</li>
@@ -62,7 +62,7 @@ const Footer = () => {
       </div>
 
       <div className="footer-bottom">
-        <p>&copy; {new Date().getFullYear()} FinTrack. Engineered for financial clarity.</p>
+        <p>&copy; {new Date().getFullYear()} FinTrack. Built for everyday financial freedom.</p>
         <div className="footer-bottom-links">
           <Link to="/privacy">Privacy</Link>
           <Link to="/terms">Terms</Link>

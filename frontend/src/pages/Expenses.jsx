@@ -146,11 +146,11 @@ const Expenses = () => {
       {/* Page Header */}
       <div className="expenses-header">
         <div>
-          <h1>Expenditure Ledger</h1>
-          <p>Real-time transaction classification, audit trail, and spending analytics</p>
+          <h1>Expenses & Purchases</h1>
+          <p>Track what you spend, organize categories, and review your purchase history</p>
         </div>
         <button className="add-expense-btn" onClick={handleAdd}>
-          <FaPlus /> Record Expense
+          <FaPlus /> + Add Expense
         </button>
       </div>
 
@@ -158,29 +158,29 @@ const Expenses = () => {
       <div className="ledger-metrics-strip">
         <div className="ledger-metric-card">
           <div className="ledger-metric-header">
-            <span className="ledger-metric-label">Total Outflow</span>
+            <span className="ledger-metric-label">Total Spent</span>
             <FaReceipt className="ledger-metric-icon" />
           </div>
           <div className="ledger-metric-value">{formatCurrency(metrics.total)}</div>
-          <span className="ledger-metric-sub">{metrics.count} settled records</span>
+          <span className="ledger-metric-sub">{metrics.count} expenses</span>
         </div>
 
         <div className="ledger-metric-card">
           <div className="ledger-metric-header">
-            <span className="ledger-metric-label">Average Ticket</span>
+            <span className="ledger-metric-label">Average Expense</span>
             <FaWallet className="ledger-metric-icon" />
           </div>
           <div className="ledger-metric-value">{formatCurrency(metrics.avg)}</div>
-          <span className="ledger-metric-sub">Per transaction</span>
+          <span className="ledger-metric-sub">Per purchase</span>
         </div>
 
         <div className="ledger-metric-card">
           <div className="ledger-metric-header">
-            <span className="ledger-metric-label">Largest Entry</span>
+            <span className="ledger-metric-label">Largest Purchase</span>
             <FaTag className="ledger-metric-icon" />
           </div>
           <div className="ledger-metric-value">{formatCurrency(metrics.max)}</div>
-          <span className="ledger-metric-sub">Peak single expenditure</span>
+          <span className="ledger-metric-sub">Single highest expense</span>
         </div>
       </div>
 
@@ -303,11 +303,11 @@ const Expenses = () => {
         ) : (
           <div className="ledger-empty-state">
             <FaReceipt className="empty-state-icon" />
-            <h3>No Ledger Records Found</h3>
+            <h3>No Expenses Found</h3>
             <p>
               {searchQuery || selectedCategory !== 'all'
-                ? 'No transactions matched your active filter criteria.'
-                : 'Your expenditure ledger is currently empty. Record your first expense to begin tracking.'}
+                ? 'No expenses matched your search or category filter.'
+                : 'You haven\'t recorded any expenses yet. Tap "+ Add Expense" above to add your first purchase!'}
             </p>
             {(searchQuery || selectedCategory !== 'all') && (
               <button
