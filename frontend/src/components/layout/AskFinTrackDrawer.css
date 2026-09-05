@@ -238,3 +238,49 @@
 .animate-slide-left {
   animation: slideLeft 0.22s cubic-bezier(0.16, 1, 0.3, 1) forwards;
 }
+
+@media (max-width: 480px) {
+  .ask-fintrack-drawer {
+    max-width: 100%;
+    width: 100vw;
+    border-left: none;
+  }
+
+  .ask-drawer-header {
+    padding: 14px 16px;
+  }
+
+  .suggested-chips-container {
+    padding: 10px 14px;
+  }
+
+  .chips-scroll {
+    flex-direction: row;
+    overflow-x: auto;
+    -webkit-overflow-scrolling: touch;
+    padding-bottom: 4px;
+  }
+
+  .query-chip {
+    white-space: nowrap;
+    flex-shrink: 0;
+  }
+
+  .ask-messages-body {
+    padding: 14px;
+  }
+
+  .message-content-wrap {
+    max-width: 90%;
+  }
+
+  .ask-input-form {
+    padding: 12px 14px;
+    padding-bottom: calc(12px + env(safe-area-inset-bottom, 0px));
+  }
+
+  .btn-send {
+    width: 44px;
+    height: 44px;
+  }
+}

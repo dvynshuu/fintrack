@@ -535,9 +535,55 @@
 }
 
 @media (max-width: 640px) {
+  .navbar-container {
+    padding-inline: 12px;
+  }
+  .search-hint-text,
+  .search-kbd-shortcut {
+    display: none;
+  }
+  .nav-search-btn {
+    padding: 7px 8px;
+  }
   .nav-ask-btn .ask-btn-text {
     display: none;
   }
+  .nav-ask-btn {
+    padding: 6px 8px;
+  }
+  .navbar-actions {
+    gap: 8px;
+  }
+}
+
+@media (max-width: 480px) {
+  .user-name-label {
+    display: none;
+  }
+  .user-menu-caret {
+    display: none;
+  }
+  .user-menu-trigger {
+    padding: 2px;
+    gap: 0;
+  }
+  .navbar-wordmark {
+    font-size: 1.05rem;
+  }
+  .navbar-actions {
+    gap: 6px;
+  }
+}
+
+@media (max-width: 360px) {
+  .navbar-container {
+    padding-inline: 8px;
+  }
+  .navbar-wordmark {
+    font-size: 0.95rem;
+  }
+  .theme-toggle,
+  .nav-search-btn,
   .nav-ask-btn {
     padding: 6px;
   }

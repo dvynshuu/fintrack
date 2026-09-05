@@ -13,7 +13,7 @@ const ExpenseSummary = () => {
     const fetchExpenses = async () => {
       try {
         setLoading(true);
-        const response = await api.get(`/expenses/summary?timeRange=${timeRange}`);
+        const response = await api.get(`/api/expenses/summary?timeRange=${timeRange}`);
         setExpenses(response.data);
       } catch (err) {
         console.error('Error fetching expenses', err);

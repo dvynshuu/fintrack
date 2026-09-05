@@ -35,7 +35,12 @@ const createTransferSchema = z.object({
 // ── GET ALL TRANSACTIONS (Unified Ledger) ──
 transactionsRouter.get('/', requireAuth, (req: AuthenticatedRequest, res: Response): void => {
   const userId = req.user!.id;
-  const { limit = '100', offset = '0' } = req.query;
+  const { limit = '100', offset = '0', type } = req.query;
+
+  const conditions = [eq(transactions.userId, userId)];
+  if (type) {
+    conditions.push(eq(transactions.type, String(type)));
+  }
 
   const rows = db.select({
     id: transactions.id,
@@ -56,7 +61,7 @@ transactionsRouter.get('/', requireAuth, (req: AuthenticatedRequest, res: Respon
   .from(transactions)
   .leftJoin(accounts, eq(transactions.accountId, accounts.id))
   .leftJoin(categories, eq(transactions.categoryId, categories.id))
-  .where(eq(transactions.userId, userId))
+  .where(and(...conditions))
   .orderBy(desc(transactions.date))
   .limit(Number(limit))
   .offset(Number(offset))

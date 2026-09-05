@@ -9,12 +9,13 @@
     bottom: 0;
     left: 0;
     right: 0;
-    height: 60px;
+    height: calc(60px + env(safe-area-inset-bottom, 0px));
     background: var(--bg-surface, #11161B);
     border-top: 1px solid var(--border, rgba(255, 255, 255, 0.08));
     z-index: 1000;
-    align-items: center;
+    align-items: flex-start;
     justify-content: space-around;
+    padding-top: 6px;
     padding-bottom: env(safe-area-inset-bottom, 0px);
     box-shadow: 0 -4px 16px rgba(0, 0, 0, 0.3);
   }
@@ -31,10 +32,11 @@
     text-decoration: none;
     font-size: 0.6875rem;
     font-weight: 500;
-    padding: 6px 12px;
+    padding: 4px 8px;
     cursor: pointer;
     transition: all 0.15s ease;
     flex: 1;
+    min-height: 44px;
   }
 
   .mobile-nav-item.active {
@@ -48,12 +50,12 @@
 
   .mobile-nav-item.ask-trigger {
     position: relative;
-    top: -6px;
+    top: -4px;
   }
 
   .ask-sparkle-icon {
-    width: 36px;
-    height: 36px;
+    width: 38px;
+    height: 38px;
     border-radius: 50%;
     background: var(--accent, #10B981);
     color: #FFFFFF;
@@ -63,8 +65,23 @@
     box-shadow: 0 4px 12px rgba(16, 185, 129, 0.35);
   }
 
-  /* Add margin to layout so content does not get covered by bottom nav */
+  /* Add margin to layout so content and footer do not get covered by bottom nav */
   .layout-connected .main-content:not(.is-auth) {
-    padding-bottom: 70px;
+    padding-bottom: calc(76px + env(safe-area-inset-bottom, 0px));
+  }
+
+  .layout-connected .footer {
+    padding-bottom: calc(76px + env(safe-area-inset-bottom, 0px));
+  }
+}
+
+@media (max-width: 360px) {
+  .mobile-nav-item {
+    padding: 4px 2px;
+    font-size: 0.625rem;
+  }
+  .ask-sparkle-icon {
+    width: 32px;
+    height: 32px;
   }
 }

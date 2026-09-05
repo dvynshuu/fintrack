@@ -158,7 +158,7 @@ const Goals = () => {
           <p>Track what you're saving for, celebrate milestones, and reach your goals faster</p>
         </div>
         <button className="add-goal-btn" onClick={() => { setSelectedGoal(null); setShowAddModal(true); }}>
-          <FaPlus /> + New Goal
+          <FaPlus /> New Goal
         </button>
       </div>
 
@@ -317,7 +317,7 @@ const Goals = () => {
                 setShowAddModal(true);
               }}
             >
-              <FaPlus /> + Create Your First Goal
+              <FaPlus /> Create Your First Goal
             </button>
           </div>
         )}

@@ -93,7 +93,7 @@ const Dashboard = ({
       <p>Add your first expense or upload a bank statement to see your monthly income and spending trends!</p>
       <div className="empty-actions-row">
         <button className="btn btn-primary btn-sm" onClick={() => setShowAddExpense(true)}>
-          <Plus size={14} /> + Add Expense
+          <Plus size={14} /> Add Expense
         </button>
         <button className="btn btn-secondary btn-sm" onClick={() => setShowImportModal(true)}>
           <Upload size={14} /> Upload Statement
@@ -274,7 +274,7 @@ const Dashboard = ({
             onClick={() => setShowAddExpense(true)}
             title="Record a new expense or purchase"
           >
-            <Plus size={16} /> + Add Expense
+            <Plus size={16} /> Add Expense
           </button>
         </div>
       </div>
@@ -463,10 +463,10 @@ const Dashboard = ({
             <table className="ledger-table">
               <thead>
                 <tr>
-                  <th>Date</th>
-                  <th>Description</th>
-                  <th>Category</th>
-                  <th style={{ textAlign: 'right' }}>Amount</th>
+                  <th className="th-date">Date</th>
+                  <th className="th-desc">Description</th>
+                  <th className="th-cat">Category</th>
+                  <th className="th-amount" style={{ textAlign: 'right' }}>Amount</th>
                 </tr>
               </thead>
               <tbody>
@@ -480,7 +480,10 @@ const Dashboard = ({
                   recentTransactions.map((tx) => (
                     <tr key={tx.id || tx._id}>
                       <td className="tx-date-cell">{tx.date.substring(0, 10)}</td>
-                      <td className="tx-desc-cell">{tx.description || tx.title}</td>
+                      <td className="tx-desc-cell">
+                        <span className="tx-desc-title">{tx.description || tx.title}</span>
+                        <span className="category-pill mobile-cat-badge">{tx.category}</span>
+                      </td>
                       <td className="tx-cat-cell">
                         <span className="category-pill">{tx.category}</span>
                       </td>

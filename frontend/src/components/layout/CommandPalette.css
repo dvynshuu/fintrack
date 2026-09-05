@@ -142,3 +142,24 @@
   font-size: 10px;
   color: var(--text-primary);
 }
+
+@media (max-width: 640px) {
+  .command-palette-backdrop {
+    padding: 12px;
+    padding-top: 12px;
+    align-items: flex-start;
+  }
+
+  .command-palette-modal {
+    max-width: 100%;
+    border-radius: 12px;
+  }
+
+  .command-palette-results {
+    max-height: calc(65vh - 60px);
+  }
+
+  .command-palette-footer {
+    display: none;
+  }
+}

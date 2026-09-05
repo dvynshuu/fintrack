@@ -166,6 +166,8 @@
   flex: 1;
   max-height: 280px;
   overflow-y: auto;
+  overflow-x: auto;
+  -webkit-overflow-scrolling: touch;
   border: 1px solid var(--border);
   border-radius: var(--radius-sm, 6px);
   margin-bottom: 16px;
@@ -173,6 +175,7 @@
 
 .import-preview-table {
   width: 100%;
+  min-width: 440px;
   border-collapse: collapse;
   font-size: var(--text-xs, 0.6875rem);
 }
@@ -241,4 +244,41 @@
   display: flex;
   justify-content: flex-end;
   gap: 12px;
+}
+
+@media (max-width: 640px) {
+  .import-modal-backdrop {
+    padding: 0;
+    align-items: flex-end;
+  }
+
+  .import-modal-card {
+    width: 100%;
+    max-width: 100%;
+    max-height: 94vh;
+    border-radius: 16px 16px 0 0;
+    padding: 16px;
+    border-bottom: none;
+  }
+
+  .import-metrics-bar {
+    grid-template-columns: repeat(2, 1fr);
+    gap: 8px;
+  }
+
+  .import-modal-actions {
+    flex-direction: column-reverse;
+    gap: 8px;
+  }
+
+  .import-modal-actions button {
+    width: 100%;
+    min-height: 42px;
+  }
+}
+
+@media (max-width: 360px) {
+  .import-metrics-bar {
+    grid-template-columns: 1fr;
+  }
 }

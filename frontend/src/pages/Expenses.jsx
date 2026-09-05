@@ -150,7 +150,7 @@ const Expenses = () => {
           <p>Track what you spend, organize categories, and review your purchase history</p>
         </div>
         <button className="add-expense-btn" onClick={handleAdd}>
-          <FaPlus /> + Add Expense
+          <FaPlus /> Add Expense
         </button>
       </div>
 

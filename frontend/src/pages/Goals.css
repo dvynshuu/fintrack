@@ -439,11 +439,52 @@
 }
 
 @media (max-width: 900px) {
+  .goals-container {
+    padding: var(--space-4) 14px;
+  }
+
   .goals-grid {
     grid-template-columns: 1fr;
+    gap: 14px;
+  }
+
+  .goals-metrics-strip {
+    grid-template-columns: repeat(2, 1fr);
+    gap: 10px;
+  }
+
+  .goals-metric-card {
+    padding: 12px 14px;
+  }
+
+  .goals-metric-value {
+    font-size: clamp(1.1rem, 4vw, 1.35rem);
+  }
+}
+
+@media (max-width: 480px) {
+  .goals-header {
+    flex-direction: column;
+    align-items: stretch;
+    gap: 12px;
+  }
+
+  .add-goal-btn {
+    width: 100%;
+    justify-content: center;
+    height: 40px;
   }
 
   .goals-metrics-strip {
     grid-template-columns: 1fr;
+    gap: 8px;
+  }
+
+  .goal-card {
+    padding: 14px;
+  }
+
+  .goal-amounts-grid {
+    gap: 8px;
   }
 }

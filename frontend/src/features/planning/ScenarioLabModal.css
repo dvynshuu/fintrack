@@ -343,8 +343,68 @@
   .scenario-controls-panel {
     border-right: none;
     border-bottom: 1px solid var(--border, rgba(255, 255, 255, 0.08));
+    padding: 16px;
+  }
+  .scenario-results-panel {
+    padding: 16px;
   }
   .impact-hero-banner {
     grid-template-columns: 1fr;
+  }
+}
+
+@media (max-width: 600px) {
+  .scenario-lab-backdrop {
+    padding: 0;
+    align-items: flex-end;
+  }
+
+  .scenario-lab-dialog {
+    width: 100%;
+    max-width: 100%;
+    height: 94vh;
+    max-height: 94vh;
+    border-radius: 16px 16px 0 0;
+    border-bottom: none;
+  }
+
+  .scenario-lab-header {
+    padding: 14px 16px;
+  }
+
+  .scenario-lab-header h2 {
+    font-size: 1.05rem;
+  }
+
+  .range-slider {
+    height: 8px;
+    margin: 8px 0;
+  }
+
+  .goal-trajectory-card {
+    flex-direction: column;
+    align-items: flex-start;
+    gap: 8px;
+  }
+
+  .goal-acceleration-pill {
+    align-self: flex-start;
+  }
+
+  .scenario-lab-footer {
+    padding: 12px 16px;
+    flex-direction: column-reverse;
+    gap: 10px;
+    align-items: stretch;
+  }
+
+  .scenario-lab-footer button {
+    width: 100%;
+    min-height: 42px;
+    justify-content: center;
+  }
+
+  .audit-note {
+    text-align: center;
   }
 }

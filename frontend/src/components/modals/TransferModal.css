@@ -153,3 +153,32 @@
   gap: 12px;
   margin-top: 8px;
 }
+
+@media (max-width: 500px) {
+  .transfer-modal-card {
+    padding: 18px 16px;
+    max-height: 94vh;
+    overflow-y: auto;
+  }
+
+  .transfer-accounts-grid {
+    flex-direction: column;
+    align-items: stretch;
+    gap: 8px;
+  }
+
+  .transfer-arrow-icon {
+    padding: 4px 0;
+    transform: rotate(90deg);
+  }
+
+  .transfer-modal-actions {
+    flex-direction: column-reverse;
+    gap: 8px;
+  }
+
+  .transfer-modal-actions button {
+    width: 100%;
+    height: 42px;
+  }
+}

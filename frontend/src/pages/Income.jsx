@@ -151,7 +151,7 @@ const Income = () => {
           <p>Track your salary, freelance earnings, investments, and other money coming in</p>
         </div>
         <button className="add-income-btn" onClick={handleAdd}>
-          <FaPlus /> + Add Income
+          <FaPlus /> Add Income
         </button>
       </div>
 

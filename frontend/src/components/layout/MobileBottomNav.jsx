@@ -23,7 +23,7 @@ const MobileBottomNav = ({ onOpenAskFinTrack, onOpenCommandPalette }) => {
         end
       >
         <LayoutDashboard size={19} />
-        <span>Center</span>
+        <span>Dashboard</span>
       </NavLink>
 
       <NavLink
@@ -31,7 +31,7 @@ const MobileBottomNav = ({ onOpenAskFinTrack, onOpenCommandPalette }) => {
         className={({ isActive }) => `mobile-nav-item ${isActive ? 'active' : ''}`}
       >
         <Receipt size={19} />
-        <span>Ledger</span>
+        <span>Expenses</span>
       </NavLink>
 
       <button

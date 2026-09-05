@@ -479,14 +479,68 @@
 
 @media (max-width: 768px) {
   .income-container {
-    padding: var(--space-4) 16px;
+    padding: var(--space-4) 14px;
   }
 
   .income-container .ledger-metrics-strip {
-    grid-template-columns: 1fr;
+    grid-template-columns: repeat(2, 1fr);
+    gap: 10px;
+  }
+
+  .income-container .ledger-metric-card {
+    padding: 12px 14px;
+  }
+
+  .income-container .ledger-metric-value {
+    font-size: clamp(1.1rem, 4vw, 1.35rem);
+  }
+
+  .income-container .ledger-controls-row {
+    flex-direction: column;
+    align-items: stretch;
+    gap: 10px;
+  }
+
+  .income-container .ledger-search-box,
+  .income-container .ledger-sort-box {
+    width: 100%;
+  }
+
+  .income-container .ledger-sort-box select {
+    width: 100%;
   }
 
   .income-container .ledger-table-container {
     overflow-x: auto;
+    -webkit-overflow-scrolling: touch;
+    border-radius: var(--radius-md);
+  }
+
+  .income-container .ledger-table {
+    min-width: 520px;
+  }
+
+  .income-container .ledger-action-btn {
+    width: 36px;
+    height: 36px;
+  }
+}
+
+@media (max-width: 480px) {
+  .income-header {
+    flex-direction: column;
+    align-items: stretch;
+    gap: 12px;
+  }
+
+  .add-income-btn {
+    width: 100%;
+    justify-content: center;
+    height: 40px;
+  }
+
+  .income-container .ledger-metrics-strip {
+    grid-template-columns: 1fr;
+    gap: 8px;
   }
 }

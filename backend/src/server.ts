@@ -76,34 +76,22 @@ app.use('/api/users', usersRouter);
 
 // Backward Compatibility Direct Aliases
 // Expenses
-app.get('/api/expenses', (req, res, next) => {
-  req.query.type = 'expense';
-  transactionsRouter(req, res, next);
-});
-app.post('/api/expenses', (req, res, next) => {
-  req.body.type = 'expense';
-  transactionsRouter(req, res, next);
-});
-app.put('/api/expenses/:id', (req, res, next) => {
-  transactionsRouter(req, res, next);
-});
-app.delete('/api/expenses/:id', (req, res, next) => {
+app.use('/api/expenses', (req, res, next) => {
+  if (req.method === 'GET') {
+    req.query.type = 'expense';
+  } else if (req.method === 'POST') {
+    if (req.body && !req.body.type) req.body.type = 'expense';
+  }
   transactionsRouter(req, res, next);
 });
 
 // Incomes
-app.get('/api/incomes', (req, res, next) => {
-  req.query.type = 'income';
-  transactionsRouter(req, res, next);
-});
-app.post('/api/incomes', (req, res, next) => {
-  req.body.type = 'income';
-  transactionsRouter(req, res, next);
-});
-app.put('/api/incomes/:id', (req, res, next) => {
-  transactionsRouter(req, res, next);
-});
-app.delete('/api/incomes/:id', (req, res, next) => {
+app.use('/api/incomes', (req, res, next) => {
+  if (req.method === 'GET') {
+    req.query.type = 'income';
+  } else if (req.method === 'POST') {
+    if (req.body && !req.body.type) req.body.type = 'income';
+  }
   transactionsRouter(req, res, next);
 });
 

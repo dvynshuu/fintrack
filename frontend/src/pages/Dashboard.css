@@ -280,6 +280,8 @@
   display: grid;
   grid-template-columns: 1fr 2fr;
   gap: 16px;
+  min-width: 0;
+  width: 100%;
 }
 
 .overview-panel {
@@ -289,6 +291,9 @@
   padding: 20px;
   display: flex;
   flex-direction: column;
+  min-width: 0;
+  max-width: 100%;
+  box-sizing: border-box;
 }
 
 .panel-header {
@@ -296,12 +301,14 @@
   justify-content: space-between;
   align-items: center;
   margin-bottom: 16px;
+  gap: 8px;
 }
 
 .panel-header h3 {
   font-size: var(--text-md, 0.9375rem);
   font-weight: 700;
   color: var(--text-primary);
+  white-space: nowrap;
 }
 
 /* Accounts List */
@@ -319,6 +326,8 @@
   background: var(--bg-surface-alt);
   border: 1px solid var(--border);
   border-radius: var(--radius-sm, 6px);
+  min-width: 0;
+  box-sizing: border-box;
 }
 
 .account-icon-box {
@@ -338,35 +347,51 @@
   flex: 1;
   display: flex;
   flex-direction: column;
+  min-width: 0;
 }
 
 .acc-name {
   font-size: var(--text-xs, 0.6875rem);
   font-weight: 600;
   color: var(--text-primary);
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
 }
 
 .acc-inst {
   font-size: 10px;
   color: var(--text-muted);
   text-transform: capitalize;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
 }
 
 .account-balance-cell {
   font-size: var(--text-sm, 0.8125rem);
   font-weight: 700;
   color: var(--text-primary);
+  flex-shrink: 0;
+  margin-left: auto;
 }
 
 /* Ledger Table */
 .ledger-table-wrap {
+  width: 100%;
+  max-width: 100%;
   overflow-x: auto;
+  min-width: 0;
 }
 
 .ledger-table {
   width: 100%;
   border-collapse: collapse;
   font-size: var(--text-xs, 0.6875rem);
+}
+
+.mobile-cat-badge {
+  display: none;
 }
 
 .ledger-table th,
@@ -481,17 +506,132 @@
 
 @media (max-width: 640px) {
   .command-center-container {
-    padding: 16px;
+    padding: 16px 12px;
+    gap: 16px;
   }
-  .position-metrics-grid {
-    grid-template-columns: 1fr;
+  .command-center-header {
+    gap: 12px;
+  }
+  .header-title-group h1 {
+    font-size: 1.35rem;
   }
   .header-actions {
     width: 100%;
-    flex-direction: column;
+    display: flex;
+    flex-wrap: nowrap;
+    overflow-x: auto;
+    padding-bottom: 6px;
+    gap: 8px;
+    -webkit-overflow-scrolling: touch;
+    scrollbar-width: none;
+  }
+  .header-actions::-webkit-scrollbar {
+    display: none;
   }
   .header-actions button {
+    flex-shrink: 0;
+    font-size: 0.75rem;
+    height: 36px;
+    padding: 0 12px;
+  }
+  .header-actions button.btn-primary {
+    order: -1;
+  }
+  .position-metrics-grid {
+    grid-template-columns: repeat(2, 1fr);
+    gap: 10px;
+  }
+  .metric-panel {
+    padding: 12px 14px;
+    min-height: 118px;
+  }
+  .metric-value-row {
+    margin: 8px 0;
+  }
+  .metric-number {
+    font-size: clamp(1.1rem, 4.5vw, 1.45rem);
+  }
+  .visualizer-row {
+    grid-template-columns: 1fr;
+    gap: 12px;
+  }
+  .visualizer-card {
+    padding: 14px;
+  }
+  .visualizer-card-header {
+    flex-direction: column;
+    gap: 8px;
+  }
+  .ledger-table-wrap {
+    overflow-x: hidden;
     width: 100%;
+    min-width: 0;
+  }
+  .ledger-table {
+    width: 100%;
+    min-width: 100%;
+    table-layout: fixed;
+  }
+  .ledger-table th,
+  .ledger-table td {
+    padding: 8px 4px;
+    font-size: 0.75rem;
+  }
+  .th-cat,
+  .tx-cat-cell {
+    display: none;
+  }
+  .mobile-cat-badge {
+    display: inline-block;
+    font-size: 9px;
+    padding: 1px 5px;
+    margin-top: 2px;
+  }
+  .th-date {
+    width: 70px;
+  }
+  .tx-date-cell {
+    width: 70px;
+    white-space: nowrap;
+    font-size: 0.725rem;
+  }
+  .th-amount {
+    width: 80px;
+    text-align: right;
+  }
+  .tx-amount-cell {
+    width: 80px;
+    text-align: right;
+    white-space: nowrap;
+    font-size: 0.775rem;
+  }
+  .tx-desc-cell {
+    overflow: hidden;
+    text-overflow: ellipsis;
+    min-width: 0;
+  }
+  .tx-desc-title {
+    display: block;
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    font-size: 0.775rem;
+  }
+  .ledger-empty-row {
+    padding: 24px 8px !important;
+    font-size: 0.775rem;
+    white-space: normal !important;
+    line-height: 1.45;
+  }
+}
+
+@media (max-width: 360px) {
+  .command-center-container {
+    padding: 12px 8px;
+  }
+  .position-metrics-grid {
+    grid-template-columns: 1fr;
+    gap: 8px;
   }
 }
 
