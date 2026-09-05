@@ -1,6 +1,8 @@
 import React, { useState, useEffect } from 'react';
 import { Link, useNavigate } from 'react-router-dom';
 import { useAuth } from '../contexts/AuthContext';
+import { FaExclamationCircle, FaGoogle } from 'react-icons/fa';
+import Logo from '../components/Logo';
 import "./Register.css";
 
 const Register = () => {
@@ -63,101 +65,114 @@ const Register = () => {
 
   return (
     <div className="register-container">
-      <div className="register-card">
-        <div className="register-header">
-          <div className="brand-logo">
-            <i className="fas fa-user-plus"></i>
-          </div>
-          <h1>Create Account</h1>
-          <p>Join the community to start tracking your finances</p>
-        </div>
-
-        {submitError && (
-          <div className="error-message">
-            <i className="fas fa-circle-exclamation"></i>
-            <span>{submitError}</span>
-          </div>
-        )}
-
-        <form onSubmit={handleSubmit} className="register-form">
-          <div className="form-group">
-            <label className="form-label" htmlFor="name">Full Name</label>
-            <input
-              type="text"
-              id="name"
-              name="name"
-              className="form-input"
-              value={formData.name}
-              onChange={handleChange}
-              placeholder="e.g. John Doe"
-              required
-            />
+      <div className="register-card-wrapper">
+        <div className="register-card">
+          <div className="login-card-header">
+            <div className="brand-logo">
+              <Logo size={28} surface={true} />
+            </div>
+            <h1>Create Account</h1>
+            <p>Join the community to start tracking your finances</p>
           </div>
 
-          <div className="form-group">
-            <label className="form-label" htmlFor="email">Email Address</label>
-            <input
-              type="email"
-              id="email"
-              name="email"
-              className="form-input"
-              value={formData.email}
-              onChange={handleChange}
-              placeholder="e.g. name@company.com"
-              required
-            />
+          {submitError && (
+            <div className="login-alert">
+              <FaExclamationCircle />
+              <span>{submitError}</span>
+            </div>
+          )}
+
+          <form onSubmit={handleSubmit} className="login-form">
+            <div className="form-field">
+              <label className="field-label" htmlFor="name">Full Name</label>
+              <div className="field-input-wrapper">
+                <input
+                  type="text"
+                  id="name"
+                  name="name"
+                  className="field-input"
+                  value={formData.name}
+                  onChange={handleChange}
+                  placeholder="e.g. John Doe"
+                  required
+                />
+              </div>
+            </div>
+
+            <div className="form-field">
+              <label className="field-label" htmlFor="email">Email Address</label>
+              <div className="field-input-wrapper">
+                <input
+                  type="email"
+                  id="email"
+                  name="email"
+                  className="field-input"
+                  value={formData.email}
+                  onChange={handleChange}
+                  placeholder="e.g. name@company.com"
+                  required
+                  autoComplete="email"
+                />
+              </div>
+            </div>
+
+            <div className="form-field">
+              <label className="field-label" htmlFor="password">Password</label>
+              <div className="field-input-wrapper">
+                <input
+                  type="password"
+                  id="password"
+                  name="password"
+                  className="field-input"
+                  value={formData.password}
+                  onChange={handleChange}
+                  placeholder="Create a secure password"
+                  required
+                  autoComplete="new-password"
+                />
+              </div>
+            </div>
+
+            <div className="form-field">
+              <label className="field-label" htmlFor="confirmPassword">Confirm Password</label>
+              <div className="field-input-wrapper">
+                <input
+                  type="password"
+                  id="confirmPassword"
+                  name="confirmPassword"
+                  className="field-input"
+                  value={formData.confirmPassword}
+                  onChange={handleChange}
+                  placeholder="Repeat your password"
+                  required
+                  autoComplete="new-password"
+                />
+              </div>
+            </div>
+
+            <button type="submit" className="btn-submit">
+              Create Account
+            </button>
+          </form>
+
+          <div className="login-divider">
+            <span>OR CONTINUE WITH</span>
           </div>
 
-          <div className="form-group">
-            <label className="form-label" htmlFor="password">Password</label>
-            <input
-              type="password"
-              id="password"
-              name="password"
-              className="form-input"
-              value={formData.password}
-              onChange={handleChange}
-              placeholder="Create a secure password"
-              required
-            />
+          <div className="social-buttons">
+            <button
+              className="btn-social"
+              type="button"
+              onClick={() => {/* Google register logic */ }}
+            >
+              <FaGoogle />
+              <span>Google</span>
+            </button>
           </div>
 
-          <div className="form-group">
-            <label className="form-label" htmlFor="confirmPassword">Confirm Password</label>
-            <input
-              type="password"
-              id="confirmPassword"
-              name="confirmPassword"
-              className="form-input"
-              value={formData.confirmPassword}
-              onChange={handleChange}
-              placeholder="Repeat your password"
-              required
-            />
+          <div className="login-card-footer">
+            Already have an account? <Link to="/login">Sign In</Link>
           </div>
-
-          <button type="submit" className="register-button">
-            Create Account
-          </button>
-        </form>
-
-        <div className="divider">
-          <span>OR CONTINUE WITH</span>
-        </div>
-
-        <div className="social-login">
-          <button
-            className="social-button"
-            type="button"
-            onClick={() => {/* Google register logic */ }}
-          >
-            <i className="fab fa-google"></i>
-            <span>Google</span>
-          </button>
-        </div>
-
-        <div className="login-link">
-          Already have an account? <Link to="/login">Sign In</Link>
         </div>
       </div>
     </div>

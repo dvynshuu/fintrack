@@ -1,77 +1,108 @@
+/* ══════════════════════════════════════════════════════════════
+   MetricCard — FinTrack Design System v3.0
+   Clean analytical indicators, tabular numbers, calm surfaces
+   ══════════════════════════════════════════════════════════════ */
+
 .metric-card {
-    position: relative;
-    background: var(--bg-card);
-    border: 1px solid var(--border-standard);
-    border-radius: var(--radius-xl);
-    padding: 1rem 1.25rem;
-    transition: all 0.3s ease;
-    animation: cardFadeIn 0.6s ease-out both;
+  position: relative;
+  background: var(--bg-surface);
+  border: 1px solid var(--border);
+  border-radius: var(--radius-lg);
+  padding: var(--space-5);
+  transition: border-color var(--duration-fast) var(--ease-default);
+  display: flex;
+  flex-direction: column;
 }
 
 .metric-card:hover {
-    border-color: var(--primary-accent);
-    transform: translateY(-2px);
+  border-color: var(--border-strong);
 }
 
 .metric-card__icon-box {
-    width: 36px;
-    height: 36px;
-    border-radius: 10px;
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    font-size: 0.9rem;
-    margin-bottom: 1.25rem;
+  width: 36px;
+  height: 36px;
+  border-radius: var(--radius-md);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 0.9375rem;
+  margin-bottom: var(--space-3);
+  background: var(--bg-surface-alt);
+  color: var(--text-secondary);
+  border: 1px solid var(--border);
 }
 
 .metric-card--income .metric-card__icon-box {
-    background: var(--chart-income-light);
-    color: var(--chart-income);
+  background: var(--positive-soft);
+  color: var(--positive);
+  border-color: rgba(16, 185, 129, 0.2);
 }
 
 .metric-card--expense .metric-card__icon-box {
-    background: var(--chart-expense-light);
-    color: var(--chart-expense);
+  background: var(--negative-soft);
+  color: var(--negative);
+  border-color: rgba(244, 63, 94, 0.2);
 }
 
 .metric-card__label {
-    font-size: 0.875rem;
-    font-weight: 500;
-    color: var(--text-muted);
-    margin-bottom: 0.5rem;
+  font-family: var(--font-ui);
+  font-size: var(--text-xs);
+  font-weight: 600;
+  text-transform: uppercase;
+  letter-spacing: 0.05em;
+  color: var(--text-muted);
+  margin-bottom: var(--space-2);
 }
 
 .metric-card__value {
-    font-size: 1.75rem;
-    font-weight: 700;
-    color: var(--text-main);
-    letter-spacing: -0.02em;
-    margin-bottom: 0.75rem;
+  font-family: var(--font-ui);
+  font-size: 1.5rem;
+  font-weight: 700;
+  color: var(--text-primary);
+  letter-spacing: -0.02em;
+  margin-bottom: var(--space-3);
+  font-variant-numeric: tabular-nums;
+  font-feature-settings: "tnum" 1;
+  display: flex;
+  align-items: baseline;
+  gap: 2px;
+}
+
+.metric-card__currency {
+  font-size: 1.125rem;
+  font-weight: 600;
+  color: var(--text-secondary);
 }
 
 .metric-card__change {
-    display: inline-flex;
-    align-items: center;
-    gap: 0.3rem;
-    font-size: 0.8rem;
-    font-weight: 600;
-    padding: 0.2rem 0.6rem;
-    border-radius: 100px;
+  display: inline-flex;
+  align-items: center;
+  gap: 4px;
+  font-family: var(--font-ui);
+  font-size: var(--text-xs);
+  font-weight: 600;
+  padding: 3px 8px;
+  border-radius: var(--radius-sm);
+  width: fit-content;
+  font-variant-numeric: tabular-nums;
+  font-feature-settings: "tnum" 1;
 }
 
 .metric-card__change.positive {
-    background: rgba(16, 185, 129, 0.1);
-    color: #10b981;
+  background: var(--positive-soft);
+  color: var(--positive);
+  border: 1px solid rgba(16, 185, 129, 0.2);
 }
 
 .metric-card__change.negative {
-    background: rgba(244, 63, 94, 0.1);
-    color: #f43f5e;
+  background: var(--negative-soft);
+  color: var(--negative);
+  border: 1px solid rgba(244, 63, 94, 0.2);
 }
 
 .metric-card__change-label {
-    font-size: 0.75rem;
-    font-weight: 500;
-    opacity: 0.6;
-    margin-left: 0.2rem;
+  font-size: var(--text-xs);
+  font-weight: 400;
+  color: var(--text-muted);
+  margin-left: 2px;
 }

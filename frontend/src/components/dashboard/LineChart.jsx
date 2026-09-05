@@ -139,17 +139,12 @@ const LineChart = ({ data = [], height: initialHeight = 350 }) => {
                     onMouseLeave={() => setTooltip(null)}
                 >
                     <defs>
-                        <filter id="glow" x="-20%" y="-20%" width="140%" height="140%">
-                            <feGaussianBlur stdDeviation="3" result="blur" />
-                            <feComposite in="SourceGraphic" in2="blur" operator="over" />
-                        </filter>
-                        
                         <linearGradient id="incomeGrad" x1="0" y1="0" x2="0" y2="1">
-                            <stop offset="0%" stopColor="var(--chart-income)" stopOpacity="0.25" />
+                            <stop offset="0%" stopColor="var(--chart-income)" stopOpacity="0.08" />
                             <stop offset="100%" stopColor="var(--chart-income)" stopOpacity="0" />
                         </linearGradient>
                         <linearGradient id="expenseGrad" x1="0" y1="0" x2="0" y2="1">
-                            <stop offset="0%" stopColor="var(--chart-expense)" stopOpacity="0.2" />
+                            <stop offset="0%" stopColor="var(--chart-expense)" stopOpacity="0.08" />
                             <stop offset="100%" stopColor="var(--chart-expense)" stopOpacity="0" />
                         </linearGradient>
                     </defs>
@@ -164,8 +159,8 @@ const LineChart = ({ data = [], height: initialHeight = 350 }) => {
                                 y2={line.y}
                                 stroke="var(--chart-grid)"
                                 strokeWidth="1"
-                                strokeDasharray={i === 0 ? "0" : "4 4"}
-                                opacity={i === 0 ? 1 : 0.5}
+                                strokeDasharray={i === 0 ? "0" : "3 3"}
+                                opacity={i === 0 ? 1 : 0.4}
                             />
                             <text
                                 x={padding.left - 15}
@@ -173,7 +168,7 @@ const LineChart = ({ data = [], height: initialHeight = 350 }) => {
                                 textAnchor="end"
                                 fill="var(--text-muted)"
                                 fontSize="11"
-                                fontWeight="600"
+                                fontWeight="500"
                                 className="line-chart__axis-label"
                             >
                                 {line.label}
@@ -188,10 +183,10 @@ const LineChart = ({ data = [], height: initialHeight = 350 }) => {
                             x={xScale(i)}
                             y={height - 15}
                             textAnchor="middle"
-                            fill={tooltip && tooltip.index === i ? 'var(--text-main)' : 'var(--text-muted)'}
-                            fontSize="12"
-                            fontWeight={tooltip && tooltip.index === i ? '700' : '500'}
-                            style={{ transition: 'fill 0.2s, font-weight 0.2s' }}
+                            fill={tooltip && tooltip.index === i ? 'var(--text-primary)' : 'var(--text-muted)'}
+                            fontSize="11"
+                            fontWeight={tooltip && tooltip.index === i ? '600' : '500'}
+                            style={{ transition: 'fill 0.15s ease' }}
                         >
                             {d.label}
                         </text>
@@ -209,7 +204,7 @@ const LineChart = ({ data = [], height: initialHeight = 350 }) => {
                                 d={`${expensePath} L ${xScale(processedData.length - 1)} ${padding.top + chartH} L ${xScale(0)} ${padding.top + chartH} Z`}
                                 fill="url(#expenseGrad)"
                                 className="line-chart__area"
-                                style={{ animationDelay: '0.2s' }}
+                                style={{ animationDelay: '0.15s' }}
                             />
                         </>
                     )}
@@ -219,11 +214,10 @@ const LineChart = ({ data = [], height: initialHeight = 350 }) => {
                         d={incomePath}
                         fill="none"
                         stroke="var(--chart-income)"
-                        strokeWidth="3.5"
+                        strokeWidth="2"
                         strokeLinecap="round"
                         strokeLinejoin="round"
                         className={`line-chart__line ${animated ? 'animate' : ''}`}
-                        filter="url(#glow)"
                     />
 
                     {/* Expense line */}
@@ -231,11 +225,10 @@ const LineChart = ({ data = [], height: initialHeight = 350 }) => {
                         d={expensePath}
                         fill="none"
                         stroke="var(--chart-expense)"
-                        strokeWidth="3.5"
+                        strokeWidth="2"
                         strokeLinecap="round"
                         strokeLinejoin="round"
                         className={`line-chart__line line-chart__line--expense ${animated ? 'animate' : ''}`}
-                        filter="url(#glow)"
                     />
 
                     {/* Data points */}

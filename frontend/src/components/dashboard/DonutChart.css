@@ -1,81 +1,118 @@
+/* ══════════════════════════════════════════════════════════════
+   DonutChart — FinTrack Design System v3.0
+   Restrained categorical breakdown, tabular numerals
+   ══════════════════════════════════════════════════════════════ */
+
 .donut-chart {
-    display: flex;
-    flex-direction: column;
-    align-items: center;
-    gap: 1.25rem;
-    width: 100%;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: var(--space-4);
+  width: 100%;
 }
 
 .donut-chart__visual {
-    position: relative;
-    width: 100%;
-    max-width: 180px;
+  position: relative;
+  width: 100%;
+  max-width: 180px;
 }
 
 .donut-chart__svg {
-    width: 100%;
-    height: auto;
-    display: block;
+  width: 100%;
+  height: auto;
+  display: block;
+}
+
+.donut-chart__segment {
+  cursor: pointer;
+  transition: opacity var(--duration-fast) var(--ease-default);
 }
 
 .donut-chart__center {
-    position: absolute;
-    top: 50%;
-    left: 50%;
-    transform: translate(-50%, -50%);
-    text-align: center;
-    pointer-events: none;
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  text-align: center;
+  pointer-events: none;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
 }
 
 .donut-chart__center-label {
-    font-size: 0.7rem;
-    font-weight: 600;
-    color: var(--text-muted);
-    text-transform: uppercase;
-    letter-spacing: 0.05em;
+  font-family: var(--font-ui);
+  font-size: var(--text-xs);
+  font-weight: 600;
+  color: var(--text-muted);
+  text-transform: uppercase;
+  letter-spacing: 0.05em;
+  max-width: 90px;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
 }
 
 .donut-chart__center-value {
-    font-size: 1.125rem;
-    font-weight: 800;
-    color: var(--text-main);
+  font-family: var(--font-ui);
+  font-size: var(--text-lg);
+  font-weight: 700;
+  color: var(--text-primary);
+  letter-spacing: -0.02em;
+  font-variant-numeric: tabular-nums;
+  font-feature-settings: "tnum" 1;
 }
 
 .donut-chart__legend {
-    width: 100%;
-    display: flex;
-    flex-direction: column;
-    gap: 0.25rem;
+  width: 100%;
+  display: flex;
+  flex-direction: column;
+  gap: 2px;
 }
 
 .donut-chart__legend-item {
-    display: flex;
-    align-items: center;
-    gap: 0.75rem;
-    padding: 0.5rem;
-    border-radius: 8px;
-    transition: background 0.2s ease;
+  display: flex;
+  align-items: center;
+  gap: var(--space-2);
+  padding: 6px 8px;
+  border-radius: var(--radius-sm);
+  cursor: pointer;
+  transition: background var(--duration-fast) var(--ease-default);
 }
 
-.donut-chart__legend-item:hover {
-    background: rgba(255, 255, 255, 0.03);
+.donut-chart__legend-item:hover,
+.donut-chart__legend-item.active {
+  background: var(--accent-soft);
 }
 
 .donut-chart__legend-dot {
-    width: 8px;
-    height: 8px;
-    border-radius: 50%;
+  width: 8px;
+  height: 8px;
+  border-radius: 50%;
+  flex-shrink: 0;
 }
 
 .donut-chart__legend-name {
-    flex: 1;
-    font-size: 0.8125rem;
-    font-weight: 500;
-    color: var(--text-main);
+  flex: 1;
+  font-family: var(--font-ui);
+  font-size: var(--text-xs);
+  font-weight: 500;
+  color: var(--text-secondary);
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+
+.donut-chart__legend-item.active .donut-chart__legend-name {
+  color: var(--text-primary);
+  font-weight: 600;
 }
 
 .donut-chart__legend-pct {
-    font-size: 0.8125rem;
-    font-weight: 700;
-    color: var(--text-muted);
+  font-family: var(--font-ui);
+  font-size: var(--text-xs);
+  font-weight: 600;
+  color: var(--text-muted);
+  font-variant-numeric: tabular-nums;
+  font-feature-settings: "tnum" 1;
 }

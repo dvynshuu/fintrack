@@ -1,5 +1,4 @@
-import React from 'react';
-import { FaChartLine, FaPiggyBank, FaLightbulb, FaExclamationTriangle, FaInfoCircle } from 'react-icons/fa';
+import { FaChartLine, FaPiggyBank, FaLightbulb, FaExclamationTriangle, FaInfoCircle, FaSyncAlt } from 'react-icons/fa';
 import { useNavigate } from 'react-router-dom';
 import './FinancialScore.css';
 
@@ -141,7 +140,7 @@ const FinancialScore = ({ healthScore, financialHealth, smartSuggestions, insigh
                         onClick={onRefreshInsights}
                         disabled={insightsLoading}
                     >
-                        <i className="fas fa-sync-alt"></i>
+                        <FaSyncAlt className={insightsLoading ? 'loading-spinner-inline' : ''} style={{ fontSize: 11 }} />
                         {insightsLoading ? ' Analyzing...' : ' Refresh AI'}
                     </button>
                 </div>

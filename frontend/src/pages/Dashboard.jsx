@@ -216,42 +216,22 @@ const Dashboard = () => {
         <div className="dashboard-stats-row">
           <div className="dashboard-card dashboard-card--chart">
             <div className="dashboard-card__header">
-              <h3 className="dashboard-card__title">Statistics</h3>
+              <div>
+                <h3 className="dashboard-card__title">Cashflow Dynamics</h3>
+                <p className="dashboard-card__subtitle">Monthly analytical tracking of inflows and capital outflows</p>
+              </div>
               <div className="dashboard-chart-legend">
                 <span className="dashboard-chart-legend__item">
                   <span className="dashboard-chart-legend__dot" style={{ background: 'var(--chart-income)' }} />
-                  Total income
+                  Inflow (Avg ₹{Math.round(avgIncome).toLocaleString('en-IN')})
                 </span>
                 <span className="dashboard-chart-legend__item">
                   <span className="dashboard-chart-legend__dot" style={{ background: 'var(--chart-expense)' }} />
-                  Total expenses
+                  Outflow (Avg ₹{Math.round(avgExpenses).toLocaleString('en-IN')})
                 </span>
               </div>
             </div>
-            <LineChart data={monthlyData} height={400} />
-          </div>
-        </div>
-
-
-        {/* Average Metrics */}
-        <div className="dashboard-averages">
-          <div className="dashboard-card dashboard-avg-card">
-            <span className="dashboard-avg-label">Average income</span>
-            <span className="dashboard-avg-value">
-              ₹{avgIncome.toLocaleString('en-IN', { minimumFractionDigits: 2, maximumFractionDigits: 2 })}
-            </span>
-            <span className={`dashboard-avg-change ${incomeChange >= 0 ? 'positive' : 'negative'}`}>
-              {incomeChange >= 0 ? '+' : ''}{incomeChange.toFixed(1)}% compare to last month
-            </span>
-          </div>
-          <div className="dashboard-card dashboard-avg-card">
-            <span className="dashboard-avg-label">Average expenses</span>
-            <span className="dashboard-avg-value">
-              ₹{avgExpenses.toLocaleString('en-IN', { minimumFractionDigits: 2, maximumFractionDigits: 2 })}
-            </span>
-            <span className={`dashboard-avg-change ${expenseChange >= 0 ? 'positive' : 'negative'}`}>
-              {expenseChange >= 0 ? '+' : ''}{expenseChange.toFixed(1)}% compare to last month
-            </span>
+            <LineChart data={monthlyData} height={360} />
           </div>
         </div>
 

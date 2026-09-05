@@ -1,108 +1,172 @@
+/* ══════════════════════════════════════════════════════════════
+   Dashboard — Obsidian & Emerald Terminal Layout (v3.0)
+   ══════════════════════════════════════════════════════════════ */
+
 .dashboard-container {
-    min-height: 100vh;
-    background: var(--bg-app);
+  max-width: var(--page-max);
+  margin: 0 auto;
+  padding: 24px 32px 48px;
 }
 
 .dashboard {
-    flex: 1;
-    padding: 1.5rem 2rem 3rem;
-    max-width: 1300px;
-    margin: 0 auto;
-    width: 100%;
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-6);
 }
 
+/* ── Welcome Header ── */
 .dashboard-welcome {
-    margin-bottom: 2.5rem;
+  display: flex;
+  justify-content: space-between;
+  align-items: baseline;
+  padding-bottom: var(--space-4);
+  border-bottom: 1px solid var(--border);
 }
 
 .dashboard-welcome h1 {
-    font-size: 2.25rem;
-    font-weight: 800;
-    color: var(--text-main);
-    letter-spacing: -0.03em;
-    margin-bottom: 0.25rem;
+  font-family: var(--font-display);
+  font-size: var(--text-2xl);
+  font-weight: 700;
+  color: var(--text-primary);
+  letter-spacing: -0.02em;
 }
 
 .dashboard-subtitle {
-    font-size: 1rem;
-    color: var(--text-muted);
-    font-weight: 500;
+  font-family: var(--font-ui);
+  font-size: var(--text-sm);
+  color: var(--text-muted);
 }
 
+/* ── Top Row: Balance Hero + Metrics + Category Breakdown ── */
 .dashboard-top-row {
-    display: grid;
-    grid-template-columns: 1fr 320px;
-    gap: 1.25rem;
-    margin-bottom: 1.25rem;
+  display: grid;
+  grid-template-columns: 1.55fr 1fr;
+  gap: var(--space-5);
+  align-items: stretch;
 }
 
 .dashboard-top-left {
-    display: flex;
-    flex-direction: column;
-    gap: 1.25rem;
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-4);
 }
 
 .dashboard-metrics-row {
-    display: grid;
-    grid-template-columns: 1fr 1fr;
-    gap: 1.25rem;
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: var(--space-4);
 }
 
 .dashboard-donut-panel {
-    background: var(--bg-card);
-    border: 1px solid var(--border-standard);
-    border-radius: var(--radius-xl);
-    padding: 1.25rem 1.5rem;
-    display: flex;
-    flex-direction: column;
+  display: flex;
+}
+
+.dashboard-donut-panel .dashboard-card {
+  width: 100%;
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+}
+
+/* ── Information Containers (Cards) ── */
+.dashboard-card {
+  background: var(--bg-surface);
+  border: 1px solid var(--border);
+  border-radius: var(--radius-lg);
+  padding: 22px;
+  box-shadow: var(--shadow-sm);
+  transition: border-color var(--duration-fast);
+}
+
+.dashboard-card:hover {
+  border-color: var(--border-strong);
 }
 
 .dashboard-card--chart {
-    background: var(--bg-card);
-    border: 1px solid var(--border-standard);
-    border-radius: var(--radius-xl);
-    padding: 1.5rem;
-    margin-bottom: 1.25rem;
+  padding: 24px;
+}
+
+.dashboard-card__header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: var(--space-4);
+  flex-wrap: wrap;
+  gap: var(--space-2);
 }
 
 .dashboard-card__title {
-    font-size: 1.125rem;
-    font-weight: 700;
-    color: var(--text-main);
-    margin-bottom: 0.25rem;
+  font-family: var(--font-display);
+  font-size: var(--text-md);
+  font-weight: 600;
+  color: var(--text-primary);
+  margin-bottom: 0;
 }
 
 .dashboard-card__subtitle {
-    font-size: 0.875rem;
-    color: var(--text-muted);
-    margin-bottom: 1.5rem;
+  font-size: var(--text-xs);
+  color: var(--text-muted);
+  margin-top: 2px;
 }
 
+/* ── Chart Legend ── */
 .dashboard-chart-legend {
-    display: flex;
-    gap: 1.5rem;
-    align-items: center;
+  display: flex;
+  gap: var(--space-4);
+  align-items: center;
+  flex-wrap: wrap;
 }
 
 .dashboard-chart-legend__item {
-    display: flex;
-    align-items: center;
-    gap: 0.5rem;
-    font-size: 0.8125rem;
-    font-weight: 600;
-    color: var(--text-muted);
+  display: flex;
+  align-items: center;
+  gap: var(--space-2);
+  font-size: var(--text-xs);
+  font-weight: 500;
+  color: var(--text-secondary);
+  font-variant-numeric: tabular-nums;
 }
 
+.dashboard-chart-legend__dot {
+  width: 8px;
+  height: 8px;
+  border-radius: 2px;
+  flex-shrink: 0;
+}
+
+/* ── Stats Row ── */
+.dashboard-stats-row {
+  width: 100%;
+}
+
+/* ── Transactions Container ── */
 .dashboard-card--transactions {
-    background: var(--bg-card);
-    border: 1px solid var(--border-standard);
-    border-radius: var(--radius-xl);
-    padding: 2rem;
-    margin-bottom: 2rem;
+  padding: 24px;
 }
 
+/* ── Responsive Layout ── */
 @media (max-width: 1024px) {
-    .dashboard-top-row {
-        grid-template-columns: 1fr;
-    }
+  .dashboard-top-row {
+    grid-template-columns: 1fr;
+  }
+}
+
+@media (max-width: 768px) {
+  .dashboard-container {
+    padding: 16px 16px 32px;
+  }
+
+  .dashboard-welcome {
+    flex-direction: column;
+    gap: 4px;
+  }
+
+  .dashboard-metrics-row {
+    grid-template-columns: 1fr;
+  }
+
+  .dashboard-card__header {
+    flex-direction: column;
+    align-items: flex-start;
+  }
 }

@@ -8,6 +8,8 @@ const COLORS = [
     'var(--donut-4)',
     'var(--donut-5)',
     'var(--donut-6)',
+    'var(--donut-7)',
+    'var(--donut-8)',
 ];
 
 const DonutChart = ({ data = [], size = 200 }) => {

@@ -25,7 +25,7 @@ const DeleteConfirmModal = ({ onClose, onDelete, title, message, itemName }) => 
                             border: '1px solid var(--border-subtle)',
                             marginBottom: '1rem'
                         }}>
-                            <strong style={{ color: 'var(--primary)' }}>{itemName}</strong>
+                            <strong style={{ color: 'var(--accent)' }}>{itemName}</strong>
                         </div>
                     )}
                 </div>
