@@ -53,25 +53,30 @@ const AddIncomeModal = ({ onClose, onAddIncome, income }) => {
       }
 
       // Send API request
-      if (income) {
+      const payload = {
+        ...formData,
+        description: formData.title,
+        amount: parseFloat(formData.amount)
+      };
+
+      if (income && (income._id || income.id)) {
         // Update existing income
-        await api.put(`/api/incomes/${income._id}`, {
-          ...formData,
-          amount: parseFloat(formData.amount)
-        });
+        await api.put(`/api/incomes/${income._id || income.id}`, payload);
       } else {
         // Create new income
-        await api.post('/api/incomes', {
-          ...formData,
-          amount: parseFloat(formData.amount)
-        });
+        await api.post('/api/incomes', payload);
       }
 
       // Close modal and refresh data
       onAddIncome();
       onClose();
     } catch (err) {
-      setError(err.message || 'Failed to save income');
+      const msg = err.response?.data?.error?.message ||
+                  err.response?.data?.error?.details?.[0]?.message ||
+                  err.response?.data?.message ||
+                  err.message ||
+                  'Failed to save income';
+      setError(msg);
     } finally {
       setLoading(false);
     }

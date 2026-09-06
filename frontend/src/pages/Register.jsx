@@ -13,7 +13,8 @@ const Register = () => {
     confirmPassword: ''
   });
   const [submitError, setSubmitError] = useState('');
-  const { register, user } = useAuth();
+  const [isLoading, setIsLoading] = useState(false);
+  const { register, user, loginWithGoogle } = useAuth();
   const navigate = useNavigate();
 
   // Redirect if already authenticated
@@ -55,11 +56,27 @@ const Register = () => {
       return;
     }
 
+    setIsLoading(true);
     try {
       await register({ name, email, password });
       navigate('/');
     } catch (error) {
       setSubmitError(error.message || 'Registration failed. Please try again.');
+    } finally {
+      setIsLoading(false);
+    }
+  };
+
+  const handleGoogleLogin = async () => {
+    setIsLoading(true);
+    setSubmitError('');
+    try {
+      await loginWithGoogle();
+      navigate('/');
+    } catch (error) {
+      setSubmitError(error.message || 'Google registration failed. Please try again.');
+    } finally {
+      setIsLoading(false);
     }
   };
 
@@ -95,6 +112,7 @@ const Register = () => {
                   onChange={handleChange}
                   placeholder="e.g. Alex Morgan"
                   required
+                  autoComplete="name"
                 />
               </div>
             </div>
@@ -120,16 +138,24 @@ const Register = () => {
               <label className="field-label" htmlFor="password">Password</label>
               <div className="field-input-wrapper">
                 <input
-                  type="password"
+                  type={showPassword ? "text" : "password"}
                   id="password"
                   name="password"
-                  className="field-input"
+                  className="field-input password-input"
                   value={formData.password}
                   onChange={handleChange}
-                  placeholder="Create a secure password"
+                  placeholder="At least 6 characters"
                   required
                   autoComplete="new-password"
                 />
+                <button
+                  type="button"
+                  className="password-toggle"
+                  onClick={togglePasswordVisibility}
+                  aria-label={showPassword ? "Hide password" : "Show password"}
+                >
+                  {showPassword ? <FaEyeSlash /> : <FaEye />}
+                </button>
               </div>
             </div>
 
@@ -150,8 +176,8 @@ const Register = () => {
               </div>
             </div>
 
-            <button type="submit" className="btn-submit">
-              Create Account
+            <button type="submit" className="btn-submit" disabled={isLoading}>
+              {isLoading ? 'Creating Account...' : 'Create Account'}
             </button>
           </form>
 
@@ -163,7 +189,8 @@ const Register = () => {
             <button
               className="btn-social"
               type="button"
-              onClick={() => {/* Google register logic */ }}
+              onClick={handleGoogleLogin}
+              disabled={isLoading}
             >
               <FaGoogle />
               <span>Google</span>

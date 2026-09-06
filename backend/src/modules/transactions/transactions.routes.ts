@@ -16,11 +16,15 @@ const createTransactionSchema = z.object({
   amount: z.number().positive('Amount must be positive'),
   currency: z.string().default('INR'),
   date: z.string().optional(),
-  description: z.string().min(1, 'Description is required'),
+  description: z.string().optional(),
+  title: z.string().optional(),
   category: z.string().optional(),
   categoryId: z.string().optional(),
   merchant: z.string().optional(),
   notes: z.string().optional()
+}).refine(data => !!(data.description || data.title), {
+  message: 'Description or title is required',
+  path: ['description']
 });
 
 const createTransferSchema = z.object({
@@ -92,13 +96,26 @@ transactionsRouter.get('/', requireAuth, (req: AuthenticatedRequest, res: Respon
 // ── CREATE TRANSACTION (Double-Entry Ledger) ──
 transactionsRouter.post('/', requireAuth, validateBody(createTransactionSchema), (req: AuthenticatedRequest, res: Response): void => {
   const userId = req.user!.id;
-  let { accountId, type, amount, currency, date, description, category, categoryId, notes } = req.body;
+  let { accountId, type, amount, currency, date, description, title, category, categoryId, notes } = req.body;
+  const txDesc = description || title || 'Expense';
 
   if (!accountId) {
-    const userAcc = db.select().from(accounts).where(and(eq(accounts.userId, userId), eq(accounts.isArchived, false))).get();
+    let userAcc = db.select().from(accounts).where(and(eq(accounts.userId, userId), eq(accounts.isArchived, false))).get();
     if (!userAcc) {
-      res.status(400).json({ error: { code: 'NO_ACCOUNT', message: 'Please create an account first.' } });
-      return;
+      const defaultAccId = uuidv4();
+      db.insert(accounts).values({
+        id: defaultAccId,
+        userId,
+        name: 'Primary Bank Account',
+        type: 'checking',
+        institution: 'Primary Bank',
+        currency: currency || 'INR',
+        openingBalanceMinor: 0,
+        currentBalanceMinor: 0,
+        availableBalanceMinor: 0,
+        color: '#10B981'
+      }).run();
+      userAcc = db.select().from(accounts).where(eq(accounts.id, defaultAccId)).get()!;
     }
     accountId = userAcc.id;
   }
@@ -109,7 +126,12 @@ transactionsRouter.post('/', requireAuth, validateBody(createTransactionSchema),
 
   let matchedCategoryId = categoryId;
   if (!matchedCategoryId && category) {
-    const foundCat = db.select().from(categories).where(eq(categories.name, category)).get();
+    const allCats = db.select().from(categories).all();
+    const foundCat = allCats.find(c =>
+      c.name.toLowerCase() === category.toLowerCase() ||
+      c.name.toLowerCase().startsWith(category.toLowerCase()) ||
+      category.toLowerCase().startsWith(c.name.toLowerCase())
+    );
     if (foundCat) matchedCategoryId = foundCat.id;
   }
 
@@ -121,7 +143,7 @@ transactionsRouter.post('/', requireAuth, validateBody(createTransactionSchema),
     amountMinor,
     currency: currency || 'INR',
     date: txDate,
-    description,
+    description: txDesc,
     categoryId: matchedCategoryId,
     notes
   }).run();
@@ -285,7 +307,7 @@ transactionsRouter.post('/transfer', requireAuth, validateBody(createTransferSch
 transactionsRouter.put('/:id', requireAuth, (req: AuthenticatedRequest, res: Response): void => {
   const userId = req.user!.id;
   const id = String(req.params.id);
-  const { description, amount, date, category } = req.body;
+  const { description, title, amount, date, category } = req.body;
 
   const existing = db.select().from(transactions).where(and(eq(transactions.id, id), eq(transactions.userId, userId))).get();
   if (!existing) {
@@ -294,8 +316,19 @@ transactionsRouter.put('/:id', requireAuth, (req: AuthenticatedRequest, res: Res
   }
 
   const updates: any = { updatedAt: new Date().toISOString() };
-  if (description) updates.description = description;
+  const txDesc = description || title;
+  if (txDesc) updates.description = txDesc;
   if (date) updates.date = date;
+
+  if (category) {
+    const allCats = db.select().from(categories).all();
+    const foundCat = allCats.find(c =>
+      c.name.toLowerCase() === category.toLowerCase() ||
+      c.name.toLowerCase().startsWith(category.toLowerCase()) ||
+      category.toLowerCase().startsWith(c.name.toLowerCase())
+    );
+    if (foundCat) updates.categoryId = foundCat.id;
+  }
 
   if (amount !== undefined && amount > 0) {
     const newMinor = toMinorUnits(amount);

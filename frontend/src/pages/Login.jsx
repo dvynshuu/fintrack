@@ -66,6 +66,7 @@ const Login = () => {
 
   const handleGoogleLogin = async () => {
     setIsLoading(true);
+    setSubmitError('');
     try {
       await loginWithGoogle();
       navigate('/');

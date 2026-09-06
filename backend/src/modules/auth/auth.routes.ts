@@ -165,8 +165,8 @@ authRouter.post('/google', validateBody(googleAuthSchema), async (req, res: Resp
     let name = req.body.name;
     let picture = req.body.picture;
 
-    // If client provided a verifiable Google token, verify it
-    if (rawToken && process.env.GOOGLE_CLIENT_ID) {
+    // If client provided a verifiable Google JWT ID token, verify it
+    if (rawToken && rawToken.split('.').length === 3 && process.env.GOOGLE_CLIENT_ID) {
       try {
         const verified = await verifyGoogleToken(rawToken);
         email = verified.email;

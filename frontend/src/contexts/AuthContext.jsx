@@ -46,90 +46,96 @@ export const AuthProvider = ({ children }) => {
     }
   };
 
-  const loginWithGoogle = async () => {
-    try {
-      // Load the Google API client
-      await new Promise((resolve, reject) => {
-        const script = document.createElement('script');
-        script.src = 'https://accounts.google.com/gsi/client';
-        script.async = true;
-        script.defer = true;
-        script.onload = resolve;
-        script.onerror = reject;
-        document.body.appendChild(script);
-      });
-
-      // Initialize Google Sign-In
-      const client = google.accounts.oauth2.initTokenClient({
-        client_id: import.meta.env.VITE_GOOGLE_CLIENT_ID,
-        scope: 'email profile',
-        callback: async (response) => {
-          if (response.error) {
-            console.error('Google OAuth error:', response.error);
-            throw new Error(response.error);
-          }
-          
-          console.log('Google OAuth response:', response);
-          
-          try {
-            // Get user info using the access token
-            const userInfoResponse = await fetch('https://www.googleapis.com/oauth2/v3/userinfo', {
-              headers: {
-                'Authorization': `Bearer ${response.access_token}`
-              }
-            });
-            
-            if (!userInfoResponse.ok) {
-              throw new Error('Failed to get user info from Google');
+  const loginWithGoogle = () => {
+    return new Promise(async (resolve, reject) => {
+      try {
+        // Load the Google Identity Services client script if not already present
+        if (!window.google?.accounts?.oauth2) {
+          await new Promise((res, rej) => {
+            const existing = document.getElementById('google-gsi-client');
+            if (existing) {
+              existing.addEventListener('load', () => res());
+              existing.addEventListener('error', rej);
+              return;
             }
-            
-            const userData = await userInfoResponse.json();
-            console.log('Google user info:', userData);
-            
+            const script = document.createElement('script');
+            script.id = 'google-gsi-client';
+            script.src = 'https://accounts.google.com/gsi/client';
+            script.async = true;
+            script.defer = true;
+            script.onload = () => res();
+            script.onerror = () => rej(new Error('Failed to load Google Identity Services library'));
+            document.body.appendChild(script);
+          });
+        }
+
+        const clientId = import.meta.env.VITE_GOOGLE_CLIENT_ID;
+        if (!clientId) {
+          throw new Error('Google Client ID is not configured (VITE_GOOGLE_CLIENT_ID).');
+        }
+
+        // Initialize Google Sign-In token client
+        const client = window.google.accounts.oauth2.initTokenClient({
+          client_id: clientId,
+          scope: 'email profile',
+          callback: async (response) => {
+            if (response.error) {
+              console.error('Google OAuth error:', response.error);
+              return reject(new Error(response.error_description || response.error));
+            }
+
             try {
-              // Send the ID token to our backend using the configured API utility
+              // Retrieve user profile using the access token
+              const userInfoResponse = await fetch('https://www.googleapis.com/oauth2/v3/userinfo', {
+                headers: {
+                  'Authorization': `Bearer ${response.access_token}`
+                }
+              });
+
+              if (!userInfoResponse.ok) {
+                throw new Error('Failed to retrieve user profile from Google');
+              }
+
+              const userData = await userInfoResponse.json();
+
+              // Send credentials to backend authentication gateway
               const result = await api.post('/api/auth/google', {
                 token: userData.sub,
                 email: userData.email,
                 name: userData.name,
                 picture: userData.picture
               });
-              
+
               const { token, user: authUser } = result.data;
               localStorage.setItem('token', token);
               setUser(authUser);
-              return authUser;
+              resolve(authUser);
             } catch (error) {
               console.error('Error processing Google login:', error);
-              if (error.response) {
-                // The request was made and the server responded with a status code
-                // that falls out of the range of 2xx
-                console.error('Response data:', error.response.data);
-                console.error('Response status:', error.response.status);
-                throw new Error(error.response.data.message || 'Failed to authenticate with Google');
+              if (error.response?.data?.error?.message) {
+                reject(new Error(error.response.data.error.message));
+              } else if (error.response?.data?.message) {
+                reject(new Error(error.response.data.message));
               } else if (error.request) {
-                // The request was made but no response was received
-                console.error('No response received:', error.request);
-                throw new Error('No response received from server');
+                reject(new Error('Unable to connect to FinTrack server. Please ensure the backend is running on port 5005.'));
               } else {
-                // Something happened in setting up the request that triggered an Error
-                console.error('Error setting up request:', error.message);
-                throw error;
+                reject(new Error(error.message || 'Failed to authenticate with Google'));
               }
             }
-          } catch (error) {
-            console.error('Error processing Google login:', error);
-            throw error;
+          },
+          error_callback: (nonOAuthErr) => {
+            console.error('Google token client error:', nonOAuthErr);
+            reject(new Error(nonOAuthErr?.message || 'Google Sign-In popup was closed or blocked.'));
           }
-        }
-      });
+        });
 
-      // Trigger the Google Sign-In flow
-      client.requestAccessToken();
-    } catch (error) {
-      console.error('Google login error:', error);
-      throw new Error(error.message || 'Google login failed');
-    }
+        // Trigger the Google Sign-In flow
+        client.requestAccessToken();
+      } catch (error) {
+        console.error('Google login initialization error:', error);
+        reject(error);
+      }
+    });
   };
 
   const register = async (userData) => {

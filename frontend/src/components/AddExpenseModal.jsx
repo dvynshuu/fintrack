@@ -48,11 +48,12 @@ const AddExpenseModal = ({ onClose, onAddExpense, expense }) => {
 
       const payload = {
         ...formData,
+        description: formData.title,
         amount: parseFloat(formData.amount)
       };
 
-      if (expense && expense._id) {
-        await api.put(`/api/expenses/${expense._id}`, payload);
+      if (expense && (expense._id || expense.id)) {
+        await api.put(`/api/expenses/${expense._id || expense.id}`, payload);
       } else {
         await api.post('/api/expenses', payload);
       }
@@ -60,7 +61,12 @@ const AddExpenseModal = ({ onClose, onAddExpense, expense }) => {
       onAddExpense();
       onClose();
     } catch (err) {
-      setError(err.message || 'Failed to save expense');
+      const msg = err.response?.data?.error?.message ||
+                  err.response?.data?.error?.details?.[0]?.message ||
+                  err.response?.data?.message ||
+                  err.message ||
+                  'Failed to save expense';
+      setError(msg);
     } finally {
       setLoading(false);
     }

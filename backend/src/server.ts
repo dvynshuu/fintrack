@@ -79,8 +79,11 @@ app.use('/api/users', usersRouter);
 app.use('/api/expenses', (req, res, next) => {
   if (req.method === 'GET') {
     req.query.type = 'expense';
-  } else if (req.method === 'POST') {
-    if (req.body && !req.body.type) req.body.type = 'expense';
+  } else if (req.method === 'POST' || req.method === 'PUT') {
+    if (req.body) {
+      if (!req.body.type) req.body.type = 'expense';
+      if (req.body.title && !req.body.description) req.body.description = req.body.title;
+    }
   }
   transactionsRouter(req, res, next);
 });
@@ -89,8 +92,11 @@ app.use('/api/expenses', (req, res, next) => {
 app.use('/api/incomes', (req, res, next) => {
   if (req.method === 'GET') {
     req.query.type = 'income';
-  } else if (req.method === 'POST') {
-    if (req.body && !req.body.type) req.body.type = 'income';
+  } else if (req.method === 'POST' || req.method === 'PUT') {
+    if (req.body) {
+      if (!req.body.type) req.body.type = 'income';
+      if (req.body.title && !req.body.description) req.body.description = req.body.title;
+    }
   }
   transactionsRouter(req, res, next);
 });
