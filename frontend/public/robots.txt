@@ -1,0 +1,6 @@
+User-agent: *
+Allow: /
+Disallow: /api/
+
+# Sitemap location for BudgetRoot personal finance
+Sitemap: https://budgetroot.vercel.app/sitemap.xml

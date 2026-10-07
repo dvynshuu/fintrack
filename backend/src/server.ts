@@ -51,7 +51,7 @@ app.get('/health', (req: Request, res: Response) => {
     timestamp: new Date().toISOString(),
     uptimeSeconds: process.uptime(),
     memoryUsage: process.memoryUsage(),
-    engine: 'FinTrack Modular Monolith v3.0'
+    engine: 'BudgetRoot Modular Monolith v3.0'
   });
 });
 
@@ -116,7 +116,7 @@ app.use((err: any, req: Request, res: Response, next: NextFunction) => {
 
 const PORT = process.env.PORT || 5005;
 const server = app.listen(PORT, () => {
-  console.log(`[FinTrack Production Engine] Server active on port ${PORT}`);
+  console.log(`[BudgetRoot Production Engine] Server active on port ${PORT}`);
   console.log(`[Health] http://localhost:${PORT}/health`);
   console.log(`[Ready]  http://localhost:${PORT}/ready`);
 });

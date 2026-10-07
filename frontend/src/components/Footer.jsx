@@ -13,10 +13,10 @@ const Footer = () => {
         <div className="footer-section footer-about">
           <div className="footer-brand">
             <Logo size={24} />
-            <span className="footer-wordmark">FinTrack</span>
+            <span className="footer-wordmark">BudgetRoot</span>
           </div>
           <p>
-            Smart, simple personal finance for everyone. Track spending, save more, and reach your financial goals with total peace of mind.
+            Root your wealth with BudgetRoot. Institutional-grade zero-based budgeting, net worth tracking, and intelligent cash flow analytics built for everyday financial freedom.
           </p>
           <div className="social-links">
             <a href="https://github.com" target="_blank" rel="noopener noreferrer" aria-label="GitHub"><FaGithub /></a>
@@ -28,45 +28,58 @@ const Footer = () => {
         </div>
 
         <div className="footer-section">
-          <h3>Explore</h3>
+          <h3>Tools & Methodology</h3>
           <ul>
-            <li><Link to="/">Dashboard</Link></li>
-            <li><Link to="/expenses">Expenses</Link></li>
-            <li><Link to="/income">Income</Link></li>
-            <li><Link to="/goals">Savings Goals</Link></li>
-            <li><Link to="/profile">Profile</Link></li>
+            <li><Link to="/calculator">Free Budget Calculator</Link></li>
+            <li><Link to="/compare/ynab-alternative">YNAB Alternative ($0)</Link></li>
+            <li><Link to="/methodology/zero-based-budgeting">Zero-Based Budget System</Link></li>
+            <li><Link to="/security">Security & Data Sovereignty</Link></li>
+            <li><Link to="/expenses">Expense Tracking</Link></li>
           </ul>
         </div>
 
         <div className="footer-section">
-          <h3>Help & FAQs</h3>
+          <h3>Allied Ecosystem</h3>
+          <p style={{ fontSize: '0.8125rem', color: 'var(--text-secondary, #9CA3AF)', marginBottom: '0.5rem' }}>
+            Privacy-first partners for intentional, aligned living:
+          </p>
+          <ul className="footer-ecosystem-list">
+            <li>
+              <a
+                href="https://getrealign.in"
+                target="_blank"
+                rel="noopener"
+                className="footer-partner-anchor"
+              >
+                ReAlign (getrealign.in) ↗
+              </a>
+              <span className="footer-partner-caption">
+                Private emotional wellness & mood journaling to reframe impulse spending.
+              </span>
+            </li>
+          </ul>
+        </div>
+
+        <div className="footer-section">
+          <h3>Integrity & Trust</h3>
           <div className="faq-item">
             <h4>Is my data private and secure?</h4>
-            <p>Yes. Bank-grade encryption ensures only you have access to your finances.</p>
+            <p>Yes. Bank-grade tokenization and zero data monetization. <Link to="/security" style={{ color: 'var(--accent, #10B981)', textDecoration: 'underline' }}>Read Security</Link></p>
           </div>
           <div className="faq-item">
-            <h4>Can I export my data?</h4>
-            <p>Yes — export your transactions to CSV at any time with one click.</p>
+            <h4>Data Portability & Support</h4>
+            <p>1-click CSV export anytime. Inquiries: support@budgetroot.com</p>
           </div>
-        </div>
-
-        <div className="footer-section">
-          <h3>Contact</h3>
-          <p>We're here to help whenever you need a hand.</p>
-          <ul>
-            <li>support@fintrack.com</li>
-            <li>+1 (555) 123-4567</li>
-            <li>123 Finance Street, MC 12345</li>
-          </ul>
         </div>
       </div>
 
       <div className="footer-bottom">
-        <p>&copy; {new Date().getFullYear()} FinTrack. Built for everyday financial freedom.</p>
+        <p>&copy; {new Date().getFullYear()} BudgetRoot. Built for everyday financial sovereignty.</p>
         <div className="footer-bottom-links">
+          <Link to="/security">Security</Link>
           <Link to="/privacy">Privacy</Link>
-          <Link to="/terms">Terms</Link>
-          <Link to="/cookies">Cookies</Link>
+          <Link to="/methodology/zero-based-budgeting">Methodology</Link>
+          <Link to="/compare/ynab-alternative">Comparison</Link>
         </div>
       </div>
     </footer>

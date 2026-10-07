@@ -84,7 +84,7 @@ const Logo = ({
 
   return (
     <span
-      className={`fintrack-logo-with-wordmark ${className}`}
+      className={`fintrack-logo-with-wordmark budgetroot-logo-with-wordmark ${className}`}
       style={{
         display: 'inline-flex',
         alignItems: 'center',
@@ -95,7 +95,7 @@ const Logo = ({
     >
       {containerContent}
       <span
-        className="fintrack-wordmark-text"
+        className="fintrack-wordmark-text budgetroot-wordmark-text"
         style={{
           fontFamily: "var(--font-display, 'Plus Jakarta Sans', sans-serif)",
           fontSize: `${fontSize}px`,
@@ -105,7 +105,7 @@ const Logo = ({
           lineHeight: 1
         }}
       >
-        FinTrack
+        BudgetRoot
       </span>
     </span>
   );

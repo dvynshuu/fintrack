@@ -117,7 +117,7 @@ export const AuthProvider = ({ children }) => {
               } else if (error.response?.data?.message) {
                 reject(new Error(error.response.data.message));
               } else if (error.request) {
-                reject(new Error('Unable to connect to FinTrack server. Please ensure the backend is running on port 5005.'));
+                reject(new Error('Unable to connect to BudgetRoot server. Please ensure the backend is running on port 5005.'));
               } else {
                 reject(new Error(error.message || 'Failed to authenticate with Google'));
               }

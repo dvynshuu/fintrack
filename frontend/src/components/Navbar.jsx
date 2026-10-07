@@ -72,12 +72,12 @@ const Navbar = ({ onOpenCommandPalette, onOpenAskFinTrack }) => {
         {/* Brand */}
         <Link to="/" className="navbar-brand">
           <Logo size={24} />
-          <span className="navbar-wordmark">FinTrack</span>
+          <span className="navbar-wordmark">BudgetRoot</span>
         </Link>
 
         {/* Navigation Links */}
         <div className={`nav-links ${isMobileMenuOpen ? 'active' : ''}`}>
-          {user && (
+          {user ? (
             <>
               <Link to="/" className={`nav-link ${location.pathname === '/' ? 'active' : ''}`}>
                 <FaHome /> <span>Dashboard</span>
@@ -92,22 +92,37 @@ const Navbar = ({ onOpenCommandPalette, onOpenAskFinTrack }) => {
                 <FaBullseye /> <span>Savings Goals</span>
               </Link>
             </>
+          ) : (
+            <>
+              <Link to="/calculator" className={`nav-link ${location.pathname === '/calculator' ? 'active' : ''}`}>
+                <span>Calculator</span>
+              </Link>
+              <Link to="/compare/ynab-alternative" className={`nav-link ${location.pathname.startsWith('/compare') ? 'active' : ''}`}>
+                <span>Compare vs YNAB</span>
+              </Link>
+              <Link to="/methodology/zero-based-budgeting" className={`nav-link ${location.pathname.startsWith('/methodology') ? 'active' : ''}`}>
+                <span>Zero-Based Budget</span>
+              </Link>
+              <Link to="/security" className={`nav-link ${location.pathname === '/security' ? 'active' : ''}`}>
+                <span>Security</span>
+              </Link>
+            </>
           )}
         </div>
 
         {/* Right Actions */}
         <div className="navbar-actions">
-          {/* Ask FinTrack Quick Trigger */}
+          {/* Ask BudgetRoot Quick Trigger */}
           {user && (
             <button
               type="button"
               className="nav-ask-btn"
               onClick={onOpenAskFinTrack}
-              title="Ask your friendly money assistant"
+              title="Ask BudgetRoot AI financial assistant"
               aria-label="Open financial assistant drawer"
             >
               <Sparkles size={13} className="sparkle-icon" />
-              <span className="ask-btn-text">Ask FinTrack</span>
+              <span className="ask-btn-text">Ask BudgetRoot</span>
             </button>
           )}
 
@@ -181,15 +196,13 @@ const Navbar = ({ onOpenCommandPalette, onOpenAskFinTrack }) => {
           )}
 
           {/* Mobile Hamburger Button */}
-          {user && (
-            <button
-              className={`navbar-toggle ${isMobileMenuOpen ? 'is-open' : ''}`}
-              onClick={() => setIsMobileMenuOpen(!isMobileMenuOpen)}
-              aria-label="Toggle navigation menu"
-            >
-              {isMobileMenuOpen ? <FaTimes /> : <FaBars />}
-            </button>
-          )}
+          <button
+            className={`navbar-toggle ${isMobileMenuOpen ? 'is-open' : ''}`}
+            onClick={() => setIsMobileMenuOpen(!isMobileMenuOpen)}
+            aria-label="Toggle navigation menu"
+          >
+            {isMobileMenuOpen ? <FaTimes /> : <FaBars />}
+          </button>
         </div>
       </div>
     </nav>

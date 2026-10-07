@@ -17,12 +17,18 @@ import AskFinTrackDrawer from './components/layout/AskFinTrackDrawer';
 import MobileBottomNav from './components/layout/MobileBottomNav';
 import Login from './pages/Login';
 import Register from './pages/Register';
+import Landing from './pages/Landing';
+import BudgetCalculator from './pages/BudgetCalculator';
+import CompareYnab from './pages/CompareYnab';
+import ZeroBasedBudgeting from './pages/ZeroBasedBudgeting';
+import SecurityPrivacy from './pages/SecurityPrivacy';
 import Dashboard from './pages/Dashboard';
 import Expenses from './pages/Expenses';
 import Income from './pages/Income';
 import Goals from './pages/Goals';
 import Settings from './pages/Settings';
 import Profile from './pages/Profile';
+import { useAuth } from './contexts/AuthContext';
 import { ExpenseProvider } from './contexts/ExpenseContext';
 import { InsightsProvider } from './contexts/InsightsContext';
 import './App.css';
@@ -46,6 +52,7 @@ const App = () => {
 };
 
 const AppContent = () => {
+  const { user } = useAuth();
   const { pathname } = useLocation();
   const isAuthPage = pathname === '/login' || pathname === '/register';
   const showFooter = !isAuthPage && pathname !== '/profile';
@@ -83,16 +90,27 @@ const AppContent = () => {
           <Route
             path="/"
             element={
-              <ProtectedRoute>
-                <Dashboard
-                  onOpenSubscriptions={() => setIsSubscriptionsOpen(true)}
-                  onOpenScenarioLab={() => setIsScenarioLabOpen(true)}
-                  onOpenWhatChanged={() => setIsWhatChangedOpen(true)}
-                  onOpenNetWorth={() => setIsNetWorthOpen(true)}
-                />
-              </ProtectedRoute>
+              user ? (
+                <ProtectedRoute>
+                  <Dashboard
+                    onOpenSubscriptions={() => setIsSubscriptionsOpen(true)}
+                    onOpenScenarioLab={() => setIsScenarioLabOpen(true)}
+                    onOpenWhatChanged={() => setIsWhatChangedOpen(true)}
+                    onOpenNetWorth={() => setIsNetWorthOpen(true)}
+                  />
+                </ProtectedRoute>
+              ) : (
+                <Landing />
+              )
             }
           />
+          <Route path="/calculator" element={<BudgetCalculator />} />
+          <Route path="/compare" element={<CompareYnab />} />
+          <Route path="/compare/ynab-alternative" element={<CompareYnab />} />
+          <Route path="/methodology" element={<ZeroBasedBudgeting />} />
+          <Route path="/methodology/zero-based-budgeting" element={<ZeroBasedBudgeting />} />
+          <Route path="/security" element={<SecurityPrivacy />} />
+          <Route path="/privacy" element={<SecurityPrivacy />} />
           <Route path="/expenses" element={<ProtectedRoute><Expenses /></ProtectedRoute>} />
           <Route path="/income" element={<ProtectedRoute><Income /></ProtectedRoute>} />
           <Route path="/goals" element={<ProtectedRoute><Goals /></ProtectedRoute>} />

@@ -68,6 +68,34 @@
   color: var(--text-primary);
 }
 
+.footer-ecosystem-list {
+  list-style: none;
+  padding: 0;
+  margin: 0;
+}
+
+.footer-partner-anchor {
+  font-family: var(--font-ui, sans-serif);
+  font-size: var(--text-sm, 0.875rem);
+  font-weight: 600;
+  color: var(--text-primary, #F3F4F6) !important;
+  text-decoration: none;
+  transition: color var(--duration-fast, 0.15s);
+  display: inline-block;
+}
+
+.footer-partner-anchor:hover {
+  color: var(--accent, #10B981) !important;
+}
+
+.footer-partner-caption {
+  display: block;
+  font-size: 0.75rem;
+  color: var(--text-muted, #6B7280);
+  line-height: 1.45;
+  margin-top: 4px;
+}
+
 .faq-item {
   margin-bottom: 1rem;
 }

@@ -26,7 +26,7 @@ const AskFinTrackDrawer = ({ isOpen, onClose }) => {
     {
       id: 'welcome',
       role: 'assistant',
-      content: "Hi! I'm your FinTrack money assistant. Ask me anything about your spending, savings, or bank balances, and I'll give you clear, simple answers based on your actual accounts.",
+      content: "Hi! I'm your BudgetRoot money assistant. Ask me anything about your spending, savings, or bank balances, and I'll give you clear, simple answers based on your actual accounts.",
       evidence: null
     }
   ]);
@@ -95,7 +95,7 @@ const AskFinTrackDrawer = ({ isOpen, onClose }) => {
               <Sparkles size={18} />
             </div>
             <div>
-              <h3>Ask FinTrack</h3>
+              <h3>Ask BudgetRoot</h3>
               <span className="ask-badge">Personal Money Assistant</span>
             </div>
           </div>

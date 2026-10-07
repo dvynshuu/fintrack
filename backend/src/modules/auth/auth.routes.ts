@@ -86,13 +86,14 @@ authRouter.post('/login', validateBody(loginSchema), async (req, res: Response):
 
     if (!user) {
       // Seed default institutional demo user if requested
-      if (email.toLowerCase().trim() === 'demo@fintrack.com' && password === 'password') {
+      const normalizedEmail = email.toLowerCase().trim();
+      if ((normalizedEmail === 'demo@budgetroot.com' || normalizedEmail === 'demo@fintrack.com') && password === 'password') {
         const demoId = 'usr_institutional_demo';
         const pwHash = await bcrypt.hash('password', 10);
         db.insert(users).values({
           id: demoId,
           name: 'Institutional Demo User',
-          email: 'demo@fintrack.com',
+          email: normalizedEmail,
           passwordHash: pwHash,
           currency: 'INR'
         }).onConflictDoNothing().run();
@@ -131,7 +132,7 @@ authRouter.post('/login', validateBody(loginSchema), async (req, res: Response):
         const token = signAccessToken(demoId);
         res.json({
           token,
-          user: { id: demoId, name: 'Institutional Demo User', email: 'demo@fintrack.com', currency: 'INR' }
+          user: { id: demoId, name: 'Institutional Demo User', email: normalizedEmail, currency: 'INR' }
         });
         return;
       }

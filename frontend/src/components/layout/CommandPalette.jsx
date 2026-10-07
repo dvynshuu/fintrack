@@ -37,8 +37,8 @@ const CommandPalette = ({
 
   const actions = [
     {
-      id: 'ask-fintrack',
-      title: 'Ask FinTrack Assistant',
+      id: 'ask-budgetroot',
+      title: 'Ask BudgetRoot Assistant',
       subtitle: 'Ask questions about your money, spending, or savings in plain English',
       icon: <TrendingUp size={16} />,
       handler: () => {

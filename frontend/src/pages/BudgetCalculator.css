@@ -1,0 +1,306 @@
+/* ══ Budget Calculator Styling — Tactile Utility ══ */
+
+.calc-page {
+  min-height: 100vh;
+  background-color: var(--bg-app, #0A0E12);
+  color: var(--text-primary, #F3F4F6);
+  padding-bottom: 80px;
+}
+
+.calc-container {
+  max-width: 1140px;
+  margin: 0 auto;
+  padding: 0 24px;
+}
+
+/* ── Header ── */
+.calc-header {
+  padding: 60px 0 40px;
+  text-align: center;
+  border-bottom: 1px solid var(--border, rgba(255, 255, 255, 0.08));
+}
+
+.calc-eyebrow {
+  font-family: var(--font-mono, monospace);
+  font-size: 0.75rem;
+  letter-spacing: 0.08em;
+  color: var(--accent, #10B981);
+  margin-bottom: 16px;
+}
+
+.calc-title {
+  font-family: var(--font-display, 'Plus Jakarta Sans', sans-serif);
+  font-size: clamp(2rem, 4.5vw, 3.2rem);
+  font-weight: 800;
+  line-height: 1.15;
+  letter-spacing: -0.03em;
+  margin-bottom: 16px;
+  color: var(--text-primary, #F3F4F6);
+}
+
+.calc-subtitle {
+  max-width: 680px;
+  margin: 0 auto;
+  font-size: 1rem;
+  line-height: 1.6;
+  color: var(--text-secondary, #9CA3AF);
+}
+
+/* ── Main Section ── */
+.calc-main-section {
+  padding: 50px 0;
+}
+
+.calc-grid {
+  display: grid;
+  grid-template-columns: 1fr 1.15fr;
+  gap: 32px;
+  align-items: start;
+}
+
+@media (max-width: 900px) {
+  .calc-grid {
+    grid-template-columns: 1fr;
+  }
+}
+
+.calc-card {
+  background-color: var(--bg-surface, #11161B);
+  border: 1px solid var(--border-strong, rgba(255, 255, 255, 0.14));
+  border-radius: 12px;
+  padding: 28px;
+}
+
+.card-header {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  padding-bottom: 18px;
+  margin-bottom: 22px;
+  border-bottom: 1px solid var(--border, rgba(255, 255, 255, 0.08));
+}
+
+.card-header .header-icon {
+  color: var(--accent, #10B981);
+}
+
+.card-header h3 {
+  font-size: 1.0625rem;
+  font-weight: 700;
+  color: var(--text-primary, #F3F4F6);
+}
+
+/* ── Inputs ── */
+.input-group {
+  margin-bottom: 22px;
+}
+
+.input-label-row {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 8px;
+  font-size: 0.8125rem;
+}
+
+.input-label-row label {
+  color: var(--text-secondary, #9CA3AF);
+  font-weight: 500;
+}
+
+.input-readout {
+  font-weight: 700;
+  color: var(--text-primary, #F3F4F6);
+  font-variant-numeric: tabular-nums;
+  font-family: var(--font-mono, monospace);
+  font-size: 0.875rem;
+}
+
+.input-group input[type="range"] {
+  width: 100%;
+  accent-color: var(--accent, #10B981);
+  height: 5px;
+  cursor: pointer;
+}
+
+/* ── Results ── */
+.results-metrics-row {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 16px;
+  margin-bottom: 28px;
+}
+
+.result-metric {
+  background-color: var(--bg-surface-alt, #171E25);
+  border: 1px solid var(--border, rgba(255, 255, 255, 0.08));
+  border-radius: 8px;
+  padding: 18px;
+  display: flex;
+  flex-direction: column;
+}
+
+.metric-label {
+  font-size: 0.6875rem;
+  font-weight: 700;
+  color: var(--text-muted, #6B7280);
+  letter-spacing: 0.05em;
+  margin-bottom: 6px;
+}
+
+.metric-num {
+  font-size: 1.5rem;
+  font-weight: 800;
+  font-variant-numeric: tabular-nums;
+  margin-bottom: 4px;
+}
+
+.metric-num.positive { color: var(--positive, #10B981); }
+.metric-num.negative { color: var(--negative, #F43F5E); }
+.metric-num.highlight { color: #38BDF8; }
+
+.metric-sub {
+  font-size: 0.75rem;
+  color: var(--text-secondary, #9CA3AF);
+}
+
+.status-pill {
+  display: inline-block;
+  font-size: 0.6875rem;
+  font-weight: 700;
+  padding: 2px 8px;
+  border-radius: 4px;
+  align-self: flex-start;
+  margin-top: 4px;
+}
+
+.status-pill.positive {
+  background-color: rgba(16, 185, 129, 0.15);
+  color: var(--positive, #10B981);
+}
+
+.status-pill.neutral {
+  background-color: rgba(56, 189, 248, 0.15);
+  color: #38BDF8;
+}
+
+.status-pill.negative {
+  background-color: rgba(244, 63, 94, 0.15);
+  color: var(--negative, #F43F5E);
+}
+
+/* ── Breakdown Progress Bars ── */
+.breakdown-section {
+  padding: 20px 0;
+  border-top: 1px solid var(--border, rgba(255, 255, 255, 0.08));
+}
+
+.breakdown-section h4 {
+  font-size: 0.875rem;
+  font-weight: 700;
+  color: var(--text-primary, #F3F4F6);
+  margin-bottom: 16px;
+}
+
+.breakdown-bar-item {
+  margin-bottom: 16px;
+}
+
+.bar-labels {
+  display: flex;
+  justify-content: space-between;
+  font-size: 0.75rem;
+  color: var(--text-secondary, #9CA3AF);
+  margin-bottom: 6px;
+}
+
+.progress-track {
+  width: 100%;
+  height: 8px;
+  background-color: var(--bg-surface-alt, #171E25);
+  border-radius: 4px;
+  overflow: hidden;
+}
+
+.progress-fill {
+  height: 100%;
+  border-radius: 4px;
+  transition: width 0.3s ease;
+}
+
+.progress-fill.ok { background-color: var(--accent, #10B981); }
+.progress-fill.warning { background-color: #F59E0B; }
+
+/* ── Results CTA Strip ── */
+.results-cta-strip {
+  margin-top: 24px;
+  padding: 16px;
+  background-color: var(--bg-surface-alt, #171E25);
+  border: 1px solid rgba(16, 185, 129, 0.2);
+  border-radius: 8px;
+  text-align: center;
+}
+
+.results-cta-strip p {
+  font-size: 0.8125rem;
+  color: var(--text-secondary, #9CA3AF);
+  margin-bottom: 12px;
+}
+
+.btn-calc-launch {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  padding: 10px 20px;
+  background-color: var(--accent, #10B981);
+  color: #FFFFFF;
+  font-size: 0.8125rem;
+  font-weight: 600;
+  border-radius: 6px;
+  text-decoration: none;
+  transition: background-color 0.15s ease;
+}
+
+.btn-calc-launch:hover {
+  background-color: var(--accent-hover, #059669);
+}
+
+/* ── Educational Guide ── */
+.calc-guide-section {
+  padding: 60px 0 20px;
+  border-top: 1px solid var(--border, rgba(255, 255, 255, 0.08));
+}
+
+.guide-content h2 {
+  font-size: clamp(1.6rem, 3vw, 2.2rem);
+  font-weight: 800;
+  color: var(--text-primary, #F3F4F6);
+  margin-bottom: 32px;
+  text-align: center;
+}
+
+.guide-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+  gap: 24px;
+}
+
+.guide-item {
+  background-color: var(--bg-surface, #11161B);
+  border: 1px solid var(--border, rgba(255, 255, 255, 0.08));
+  border-radius: 8px;
+  padding: 24px;
+}
+
+.guide-item h3 {
+  font-size: 1.0625rem;
+  font-weight: 700;
+  color: var(--text-primary, #F3F4F6);
+  margin-bottom: 10px;
+}
+
+.guide-item p {
+  font-size: 0.875rem;
+  line-height: 1.6;
+  color: var(--text-secondary, #9CA3AF);
+}

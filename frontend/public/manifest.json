@@ -1,7 +1,7 @@
 {
-  "short_name": "FinTrack",
-  "name": "FinTrack — Personal Finance Management",
-  "description": "Institutional-grade personal financial tracking, budget control, and wealth analytics.",
+  "short_name": "BudgetRoot",
+  "name": "BudgetRoot — Smart Budget Planner & Net Worth Tracker",
+  "description": "Institutional-grade personal financial tracking, zero-based budgeting, and wealth analytics with BudgetRoot.",
   "icons": [
     {
       "src": "/favicon.ico",

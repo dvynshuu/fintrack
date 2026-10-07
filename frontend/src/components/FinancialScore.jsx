@@ -6,7 +6,7 @@ const FinancialScore = ({ healthScore, financialHealth, smartSuggestions, insigh
     const navigate = useNavigate();
 
     const getScoreStatus = (score, loading) => {
-        if (loading) return { label: 'Analyzing...', class: 'status-loading', tip: 'FinTrack AI is calculating your fiscal resilience...' };
+        if (loading) return { label: 'Analyzing...', class: 'status-loading', tip: 'BudgetRoot AI is calculating your fiscal resilience...' };
         if (score >= 80) return { label: 'Excellent', class: 'status-excellent', tip: 'You are in the top tier of financial health! Keep it up.' };
         if (score >= 60) return { label: 'Good', class: 'status-good', tip: 'Doing well! Consistent habits will push you even higher.' };
         if (score >= 40) return { label: 'Fair', class: 'status-fair', tip: 'You are on the right track, but there is significant room for growth.' };

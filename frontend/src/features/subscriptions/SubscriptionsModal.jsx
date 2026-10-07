@@ -103,7 +103,7 @@ const SubscriptionsModal = ({ isOpen, onClose }) => {
               <Layers size={36} className="empty-icon" />
               <h3>No Recurring Subscriptions Found Yet</h3>
               <p>
-                When you have regular payments (like Netflix, Spotify, gym memberships, or bills) occurring on a schedule, FinTrack will automatically group them here.
+                When you have regular payments (like Netflix, Spotify, gym memberships, or bills) occurring on a schedule, BudgetRoot will automatically group them here.
               </p>
             </div>
           ) : (

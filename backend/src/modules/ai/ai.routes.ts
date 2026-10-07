@@ -145,7 +145,7 @@ aiRouter.post('/ai/ask', requireAuth, async (req: AuthenticatedRequest, res: Res
   }
 
   const prompt = `
-    You are FinTrack Institutional Strategist. Answer the user's question using ONLY the factual data below.
+    You are BudgetRoot Institutional Strategist. Answer the user's question using ONLY the factual data below.
     FACTUAL LEDGER DATA:
     - Liquid & Total Assets: ₹${totalAssets}
     - Total Liabilities / Debt: ₹${totalDebt}
@@ -188,7 +188,7 @@ aiRouter.post('/ai/ask', requireAuth, async (req: AuthenticatedRequest, res: Res
 
   // Deterministic local fallbacks for common queries
   const qLower = question.toLowerCase();
-  let answer = `Based on your FinTrack ledger: Your net worth is ₹${totalAssets - totalDebt}, with ₹${totalAssets} in total assets and ₹${totalDebt} in liabilities. Total expenses stand at ₹${totalExpenses}.`;
+  let answer = `Based on your BudgetRoot ledger: Your net worth is ₹${totalAssets - totalDebt}, with ₹${totalAssets} in total assets and ₹${totalDebt} in liabilities. Total expenses stand at ₹${totalExpenses}.`;
   if (qLower.includes('how much') || qLower.includes('spend') || qLower.includes('expense')) {
     answer = `Your total recorded expenditure is ₹${totalExpenses.toLocaleString('en-IN')}, balanced against total income inflows of ₹${totalIncome.toLocaleString('en-IN')}.`;
   } else if (qLower.includes('runway') || qLower.includes('last') || qLower.includes('buffer')) {

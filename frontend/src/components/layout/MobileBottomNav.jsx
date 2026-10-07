@@ -38,7 +38,7 @@ const MobileBottomNav = ({ onOpenAskFinTrack, onOpenCommandPalette }) => {
         type="button"
         className="mobile-nav-item ask-trigger"
         onClick={onOpenAskFinTrack}
-        aria-label="Ask FinTrack Strategist"
+        aria-label="Ask BudgetRoot Strategist"
       >
         <div className="ask-sparkle-icon">
           <Sparkles size={18} />
