@@ -1,0 +1,240 @@
+import React, { useState, useEffect } from 'react';
+import { useTheme } from '../contexts/ThemeContext';
+import api from '../utils/api';
+import { FaSun, FaGlobe, FaBell, FaClock } from 'react-icons/fa';
+import { UserSettings } from '../types';
+import './Settings.css';
+
+const Settings: React.FC = () => {
+  const { toggleTheme } = useTheme();
+  const [settings, setSettings] = useState<UserSettings>({
+    theme: 'light',
+    currency: 'INR',
+    language: 'en',
+    notifications: {
+      email: true,
+      push: true
+    },
+    display: {
+      dateFormat: 'MM/DD/YYYY',
+      timeFormat: '12h'
+    }
+  });
+  const [isLoading, setIsLoading] = useState(true);
+  const [error, setError] = useState<string | null>(null);
+  const [successMessage, setSuccessMessage] = useState('');
+
+  useEffect(() => {
+    void fetchSettings();
+  }, []);
+
+  const fetchSettings = async () => {
+    try {
+      setIsLoading(true);
+      setError(null);
+      const response = await api.get<Partial<UserSettings>>('/api/users/settings');
+      if (response.data) {
+        setSettings(prev => ({
+          ...prev,
+          ...response.data,
+          notifications: {
+            ...prev.notifications,
+            ...(response.data.notifications || {})
+          },
+          display: {
+            ...prev.display,
+            ...(response.data.display || {})
+          }
+        }));
+      }
+    } catch (err) {
+      console.error('Error fetching settings:', err);
+      setError('Failed to load settings. Please try again later.');
+    } finally {
+      setIsLoading(false);
+    }
+  };
+
+  const handleChange = async (
+    section: 'notifications' | 'display' | null,
+    field: string,
+    value: string | boolean
+  ) => {
+    // If updating theme, also inform ThemeContext
+    if (field === 'theme' && typeof value === 'string') {
+      try {
+        await toggleTheme(value);
+      } catch (err) {
+        console.error('Error toggling theme:', err);
+      }
+    }
+
+    setSettings(prev => {
+      if (section === 'notifications') {
+        return {
+          ...prev,
+          notifications: {
+            ...prev.notifications,
+            [field]: Boolean(value)
+          }
+        };
+      }
+      if (section === 'display') {
+        return {
+          ...prev,
+          display: {
+            ...prev.display,
+            [field]: String(value)
+          }
+        };
+      }
+      return {
+        ...prev,
+        [field]: value
+      };
+    });
+  };
+
+  const handleSubmit = async (e: React.FormEvent) => {
+    e.preventDefault();
+    try {
+      setError(null);
+      setSuccessMessage('');
+      await api.put('/api/users/settings', settings);
+      setSuccessMessage('Settings updated successfully!');
+      setTimeout(() => setSuccessMessage(''), 3000);
+    } catch (err) {
+      console.error('Error updating settings:', err);
+      setError('Failed to update settings. Please try again later.');
+    }
+  };
+
+  if (isLoading) {
+    return (
+      <div className="settings-container">
+        <div className="loading">Loading...</div>
+      </div>
+    );
+  }
+
+  return (
+    <div className="settings-container">
+      <div className="settings-header">
+        <h1>Settings</h1>
+        <p>Customize your app preferences</p>
+      </div>
+
+      {error && (
+        <div className="error-message">
+          {error}
+        </div>
+      )}
+
+      {successMessage && (
+        <div className="success-message">
+          {successMessage}
+        </div>
+      )}
+
+      <form onSubmit={handleSubmit} className="settings-form">
+        <div className="settings-section">
+          <h2><FaSun /> Appearance</h2>
+          <div className="form-group">
+            <label>Theme</label>
+            <select
+              value={settings.theme}
+              onChange={(e) => void handleChange(null, 'theme', e.target.value)}
+            >
+              <option value="light">Light</option>
+              <option value="dark">Dark</option>
+            </select>
+          </div>
+        </div>
+
+        <div className="settings-section">
+          <h2><FaGlobe /> Regional</h2>
+          <div className="form-group">
+            <label>Currency</label>
+            <select
+              value={settings.currency}
+              onChange={(e) => void handleChange(null, 'currency', e.target.value)}
+            >
+              <option value="USD">USD ($)</option>
+              <option value="EUR">EUR (€)</option>
+              <option value="GBP">GBP (£)</option>
+              <option value="INR">INR (₹)</option>
+            </select>
+          </div>
+          <div className="form-group">
+            <label>Language</label>
+            <select
+              value={settings.language}
+              onChange={(e) => void handleChange(null, 'language', e.target.value)}
+            >
+              <option value="en">English</option>
+              <option value="es">Español</option>
+              <option value="fr">Français</option>
+            </select>
+          </div>
+        </div>
+
+        <div className="settings-section">
+          <h2><FaBell /> Notifications</h2>
+          <div className="form-group">
+            <label className="checkbox-label">
+              <input
+                type="checkbox"
+                checked={settings.notifications.email}
+                onChange={(e) => void handleChange('notifications', 'email', e.target.checked)}
+              />
+              Email Notifications
+            </label>
+          </div>
+          <div className="form-group">
+            <label className="checkbox-label">
+              <input
+                type="checkbox"
+                checked={settings.notifications.push}
+                onChange={(e) => void handleChange('notifications', 'push', e.target.checked)}
+              />
+              Push Notifications
+            </label>
+          </div>
+        </div>
+
+        <div className="settings-section">
+          <h2><FaClock /> Display</h2>
+          <div className="form-group">
+            <label>Date Format</label>
+            <select
+              value={settings.display.dateFormat}
+              onChange={(e) => void handleChange('display', 'dateFormat', e.target.value)}
+            >
+              <option value="MM/DD/YYYY">MM/DD/YYYY</option>
+              <option value="DD/MM/YYYY">DD/MM/YYYY</option>
+              <option value="YYYY-MM-DD">YYYY-MM-DD</option>
+            </select>
+          </div>
+          <div className="form-group">
+            <label>Time Format</label>
+            <select
+              value={settings.display.timeFormat}
+              onChange={(e) => void handleChange('display', 'timeFormat', e.target.value)}
+            >
+              <option value="12h">12-hour</option>
+              <option value="24h">24-hour</option>
+            </select>
+          </div>
+        </div>
+
+        <div className="settings-actions">
+          <button type="submit" className="save-button">
+            Save Changes
+          </button>
+        </div>
+      </form>
+    </div>
+  );
+};
+
+export default Settings;

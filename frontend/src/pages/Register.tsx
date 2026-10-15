@@ -1,0 +1,222 @@
+import React, { useState, useEffect, ChangeEvent, FormEvent } from 'react';
+import { Link, useNavigate } from 'react-router-dom';
+import { useAuth } from '../contexts/AuthContext';
+import { FaExclamationCircle, FaGoogle, FaEye, FaEyeSlash } from 'react-icons/fa';
+import Logo from '../components/Logo';
+import './Register.css';
+
+const Register: React.FC = () => {
+  const [formData, setFormData] = useState({
+    name: '',
+    email: '',
+    password: '',
+    confirmPassword: ''
+  });
+  const [showPassword, setShowPassword] = useState<boolean>(false);
+  const [submitError, setSubmitError] = useState<string>('');
+  const [isLoading, setIsLoading] = useState<boolean>(false);
+  const { register, user, loginWithGoogle } = useAuth();
+  const navigate = useNavigate();
+
+  // Redirect if already authenticated
+  useEffect(() => {
+    if (user) {
+      navigate('/');
+    }
+  }, [user, navigate]);
+
+  const handleChange = (e: ChangeEvent<HTMLInputElement>) => {
+    setFormData({
+      ...formData,
+      [e.target.name]: e.target.value
+    });
+
+    // Clear error when user types
+    if (submitError) {
+      setSubmitError('');
+    }
+  };
+
+  const togglePasswordVisibility = () => {
+    setShowPassword(!showPassword);
+  };
+
+  const handleSubmit = async (e: FormEvent) => {
+    e.preventDefault();
+    const { name, email, password, confirmPassword } = formData;
+
+    // Form validation
+    if (!name || !email || !password) {
+      setSubmitError('Please fill in all fields');
+      return;
+    }
+
+    if (password !== confirmPassword) {
+      setSubmitError('Passwords do not match');
+      return;
+    }
+
+    if (password.length < 6) {
+      setSubmitError('Password must be at least 6 characters');
+      return;
+    }
+
+    setIsLoading(true);
+    try {
+      await register({ name, email, password });
+      navigate('/');
+    } catch (error: any) {
+      setSubmitError(error.message || 'Registration failed. Please try again.');
+    } finally {
+      setIsLoading(false);
+    }
+  };
+
+  const handleGoogleLogin = async () => {
+    setIsLoading(true);
+    setSubmitError('');
+    try {
+      await loginWithGoogle();
+      navigate('/');
+    } catch (error: any) {
+      setSubmitError(error.message || 'Google registration failed. Please try again.');
+    } finally {
+      setIsLoading(false);
+    }
+  };
+
+  return (
+    <div className="register-container">
+      <div className="register-card-wrapper">
+        <div className="register-card">
+          <div className="login-card-header">
+            <div className="brand-logo">
+              <Logo size={28} surface={true} />
+            </div>
+            <h1>Create Account</h1>
+            <p>Start tracking your finances with clarity and confidence</p>
+          </div>
+
+          {submitError && (
+            <div className="login-alert">
+              <FaExclamationCircle />
+              <span>{submitError}</span>
+            </div>
+          )}
+
+          <form onSubmit={handleSubmit} className="login-form">
+            <div className="form-field">
+              <label className="field-label" htmlFor="name">
+                Full Name
+              </label>
+              <div className="field-input-wrapper">
+                <input
+                  type="text"
+                  id="name"
+                  name="name"
+                  className="field-input"
+                  value={formData.name}
+                  onChange={handleChange}
+                  placeholder="e.g. Alex Morgan"
+                  required
+                  autoComplete="name"
+                />
+              </div>
+            </div>
+
+            <div className="form-field">
+              <label className="field-label" htmlFor="email">
+                Email Address
+              </label>
+              <div className="field-input-wrapper">
+                <input
+                  type="email"
+                  id="email"
+                  name="email"
+                  className="field-input"
+                  value={formData.email}
+                  onChange={handleChange}
+                  placeholder="e.g. alex@example.com"
+                  required
+                  autoComplete="email"
+                />
+              </div>
+            </div>
+
+            <div className="form-field">
+              <label className="field-label" htmlFor="password">
+                Password
+              </label>
+              <div className="field-input-wrapper">
+                <input
+                  type={showPassword ? 'text' : 'password'}
+                  id="password"
+                  name="password"
+                  className="field-input password-input"
+                  value={formData.password}
+                  onChange={handleChange}
+                  placeholder="At least 6 characters"
+                  required
+                  autoComplete="new-password"
+                />
+                <button
+                  type="button"
+                  className="password-toggle"
+                  onClick={togglePasswordVisibility}
+                  aria-label={showPassword ? 'Hide password' : 'Show password'}
+                >
+                  {showPassword ? <FaEyeSlash /> : <FaEye />}
+                </button>
+              </div>
+            </div>
+
+            <div className="form-field">
+              <label className="field-label" htmlFor="confirmPassword">
+                Confirm Password
+              </label>
+              <div className="field-input-wrapper">
+                <input
+                  type="password"
+                  id="confirmPassword"
+                  name="confirmPassword"
+                  className="field-input"
+                  value={formData.confirmPassword}
+                  onChange={handleChange}
+                  placeholder="Repeat your password"
+                  required
+                  autoComplete="new-password"
+                />
+              </div>
+            </div>
+
+            <button type="submit" className="btn-submit" disabled={isLoading}>
+              {isLoading ? 'Creating Account...' : 'Create Account'}
+            </button>
+          </form>
+
+          <div className="login-divider">
+            <span>OR CONTINUE WITH</span>
+          </div>
+
+          <div className="social-buttons">
+            <button
+              className="btn-social"
+              type="button"
+              onClick={handleGoogleLogin}
+              disabled={isLoading}
+            >
+              <FaGoogle />
+              <span>Google</span>
+            </button>
+          </div>
+
+          <div className="login-card-footer">
+            Already have an account? <Link to="/login">Sign In</Link>
+          </div>
+        </div>
+      </div>
+    </div>
+  );
+};
+
+export default Register;

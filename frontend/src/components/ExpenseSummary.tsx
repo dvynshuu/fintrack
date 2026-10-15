@@ -1,0 +1,130 @@
+import React, { useState, useEffect } from 'react';
+import { formatCurrency, sumByCategory } from '../utils/formatters';
+import api from '../utils/api';
+import './ExpenseSummary.css';
+
+export interface ExpenseSummaryItem {
+  _id: string;
+  title?: string;
+  description?: string;
+  amount: number;
+  category: string;
+  date: string;
+}
+
+const ExpenseSummary: React.FC = () => {
+  const [expenses, setExpenses] = useState<ExpenseSummaryItem[]>([]);
+  const [loading, setLoading] = useState<boolean>(true);
+  const [error, setError] = useState<string>('');
+  const [timeRange, setTimeRange] = useState<'week' | 'month' | 'year'>('month');
+
+  useEffect(() => {
+    const fetchExpenses = async () => {
+      try {
+        setLoading(true);
+        const response = await api.get(`/api/expenses/summary?timeRange=${timeRange}`);
+        setExpenses(response.data || []);
+      } catch (err) {
+        console.error('Error fetching expenses', err);
+        setError('Failed to load expense data');
+      } finally {
+        setLoading(false);
+      }
+    };
+
+    fetchExpenses();
+  }, [timeRange]);
+
+  const categoryTotals = sumByCategory(expenses);
+  const totalExpenses = expenses.reduce((sum, expense) => sum + expense.amount, 0);
+  const recentExpenses = [...expenses]
+    .sort((a, b) => new Date(b.date).getTime() - new Date(a.date).getTime())
+    .slice(0, 5);
+
+  if (loading) {
+    return (
+      <div className="expense-summary loading">
+        <div className="loading-spinner"></div>
+      </div>
+    );
+  }
+
+  if (error) {
+    return (
+      <div className="expense-summary error">
+        <p>{error}</p>
+      </div>
+    );
+  }
+
+  return (
+    <div className="expense-summary">
+      <div className="summary-header">
+        <h2>Expense Summary</h2>
+        <div className="time-range-selector">
+          <button
+            className={timeRange === 'week' ? 'active' : ''}
+            onClick={() => setTimeRange('week')}
+          >
+            Week
+          </button>
+          <button
+            className={timeRange === 'month' ? 'active' : ''}
+            onClick={() => setTimeRange('month')}
+          >
+            Month
+          </button>
+          <button
+            className={timeRange === 'year' ? 'active' : ''}
+            onClick={() => setTimeRange('year')}
+          >
+            Year
+          </button>
+        </div>
+      </div>
+
+      <div className="summary-content">
+        <div className="total-expenses">
+          <h3>Total Expenses</h3>
+          <p className="amount">{formatCurrency(totalExpenses)}</p>
+        </div>
+
+        <div className="category-breakdown">
+          <h3>By Category</h3>
+          <div className="category-list">
+            {Object.entries(categoryTotals).map(([category, amount]) => (
+              <div key={category} className="category-item">
+                <div className="category-info">
+                  <span className="category-name">{category}</span>
+                  <span className="category-amount">{formatCurrency(amount)}</span>
+                </div>
+                <div className="category-percentage">
+                  {totalExpenses > 0 ? ((amount / totalExpenses) * 100).toFixed(1) : 0}%
+                </div>
+              </div>
+            ))}
+          </div>
+        </div>
+
+        <div className="recent-expenses">
+          <h3>Recent Transactions</h3>
+          <div className="transactions-list">
+            {recentExpenses.map(expense => (
+              <div key={expense._id} className="transaction-item">
+                <div className="transaction-info">
+                  <span className="transaction-title">{expense.title || expense.description}</span>
+                  <span className="transaction-category">{expense.category}</span>
+                </div>
+                <div className="transaction-amount">
+                  {formatCurrency(expense.amount)}
+                </div>
+              </div>
+            ))}
+          </div>
+        </div>
+      </div>
+    </div>
+  );
+};
+
+export default ExpenseSummary;
